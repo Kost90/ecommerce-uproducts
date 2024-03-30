@@ -12,3 +12,34 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Product {
+  id String @id @default(uuid())
+  name String
+  imagePath String
+  description String
+  priceInCents Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders Order[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Order {
+  id               String   @id @default(uuid())
+  pricePaidInCents Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  userId    String
+  productId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+}

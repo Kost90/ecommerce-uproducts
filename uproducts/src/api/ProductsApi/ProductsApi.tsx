@@ -16,7 +16,6 @@ class ProductsApi extends API {
         signal,
         method: "POST",
         body: JSON.stringify(product),
-        headers:{'Content-Type': 'multipart/form-data'},
       });
       if (!response.ok) {
         throw new Error("Cant POST");

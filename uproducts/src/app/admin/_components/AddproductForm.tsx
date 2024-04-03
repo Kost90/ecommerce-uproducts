@@ -26,9 +26,7 @@ function AddproductForm() {
             className="cursor-pointer max-w-80"
             required
           />
-          {error.name && (
-            <div className="text-destructive">{error.image}</div>
-          )}
+          {error.name && <div className="text-destructive">{error.image}</div>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="priceInCents">Price in cents:</Label>

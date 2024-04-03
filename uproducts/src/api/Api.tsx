@@ -15,8 +15,8 @@ class API {
     ...rest
   }: {
     path: string;
-    method: string;
-    body: any;
+    method?: string;
+    body?: any;
     signal: any;
     headers?: any;
   }) {

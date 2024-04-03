@@ -1,12 +1,18 @@
 "use server";
 
 import { z } from "zod";
+import crypto from "crypto";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { S3Client, PutObjectCommand, S3ClientConfig } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, S3ClientConfig, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import ProductsApi from "@/api/ProductsApi/ProductsApi";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
+
+// Generator of random name
+const generateFileName = (bytes = 32) =>
+  crypto.randomBytes(bytes).toString("hex");
 
 // Initial validationg schemas
 const fileSchema = z.instanceof(File, { message: "Required" });
@@ -38,7 +44,7 @@ async function uploadFileToS3(file: any, fileName: string) {
     Bucket: bucketName,
     Key: `${fileName}`,
     Body: fileBuffer,
-    ContentType: "image/*",
+    ContentType: "image/jpg",
   };
 
   const command = new PutObjectCommand(params);
@@ -55,8 +61,10 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   const data = result.data;
   const file = data.image;
 
+  const imageName = generateFileName();
+
   const buffer = Buffer.from(await file.arrayBuffer());
-  const fileName = await uploadFileToS3(buffer, file.name);
+  const fileName = await uploadFileToS3(buffer, imageName);
 
   const requestData = {
     name: data.name,
@@ -68,7 +76,26 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   await ProductsApi.AddProduct(requestData);
 
   revalidatePath("/admin");
-  // revalidatePath("/products")
+  revalidatePath("/admin/products")
 
-  redirect("/admin");
+  redirect("/admin/products");
 }
+
+
+// Function that generate url for image from S3 Bucket AWS
+export async function getProductsUrl (key:string) {
+  const params = {
+    Bucket: bucketName,
+    Key: key
+  }
+
+  const command = new GetObjectCommand(params);
+  const seconds = 60
+  const url = await getSignedUrl(s3, command, { expiresIn: seconds });
+
+  return url
+}
+
+
+
+// TODO:Create function for Delete and update Products.

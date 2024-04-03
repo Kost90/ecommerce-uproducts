@@ -2,6 +2,8 @@ import { API } from "../Api";
 
 const url = "http://localhost:3001";
 
+// TODO: Create Intarface for param for AddProduct function
+
 class ProductsApi extends API {
   constructor(baseurl: string) {
     super(baseurl);
@@ -17,6 +19,20 @@ class ProductsApi extends API {
         method: "POST",
         body: JSON.stringify(product),
       });
+      if (!response.ok) {
+        throw new Error("Cant POST");
+      }
+      return response;
+    } catch (error) {
+      return console.error(error);
+    }
+  }
+
+  async getProducts(){
+    const controller = new AbortController();
+    const signal = controller.signal;
+    try {
+      const response = await this.fetch({path:"products",signal})
       if (!response.ok) {
         throw new Error("Cant POST");
       }

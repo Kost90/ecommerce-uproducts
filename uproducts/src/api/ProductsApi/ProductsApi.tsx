@@ -1,3 +1,4 @@
+import path from "path";
 import { API } from "../Api";
 
 const url = "http://localhost:3001";
@@ -28,13 +29,31 @@ class ProductsApi extends API {
     }
   }
 
-  async getProducts(){
+  async getProducts() {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await this.fetch({path:"products",signal})
+      const response = await this.fetch({ path: "products", signal });
       if (!response.ok) {
         throw new Error("Cant POST");
+      }
+      return response;
+    } catch (error) {
+      return console.error(error);
+    }
+  }
+
+  async removeProduct(id: string) {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    try {
+      const response = await this.fetch({
+        path: `products/${id}`,
+        method: "DELETE",
+        signal,
+      });
+      if (!response.ok) {
+        throw new Error("Cant DELETE");
       }
       return response;
     } catch (error) {

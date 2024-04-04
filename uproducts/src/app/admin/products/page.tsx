@@ -7,9 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getProductsUrl } from "../_actions/ProductsActions";
+import { MoreVertical } from "lucide-react";
+import DeleteDropDownItem from "./_components/DeleteDropDownItem";
 
 function page() {
   return (
@@ -37,7 +46,7 @@ async function getData() {
   const products = await res.json();
 
   for (let product of products) {
-    product.imagePath = await getProductsUrl(product.imagePath);
+    product.imagePath = await getProductsUrl(product.imageKey);
   }
 
   return products;
@@ -58,9 +67,9 @@ async function ProductsTable() {
           <TableHead>Price</TableHead>
           <TableHead>Image</TableHead>
           <TableHead>Description</TableHead>
-          {/* <TableHead className="w-0">
-              <span className="sr-only">Actions</span>
-            </TableHead> */}
+          <TableHead className="w-0">
+            <span className="sr-only">Actions</span>
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -88,6 +97,25 @@ async function ProductsTable() {
               </div>
             </TableCell>
             <TableCell>{product.description}</TableCell>
+            <TableCell>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <MoreVertical />
+                  <span className="sr-only">Actions</span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem asChild>
+
+{/* Make Button for all width of parent */}
+
+                    <DeleteDropDownItem
+                      id={product.id}
+                      filename={product.imageKey}
+                    />
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

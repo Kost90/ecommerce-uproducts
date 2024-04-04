@@ -4,7 +4,13 @@ import { z } from "zod";
 import crypto from "crypto";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { S3Client, PutObjectCommand, S3ClientConfig, GetObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  S3ClientConfig,
+  GetObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import ProductsApi from "@/api/ProductsApi/ProductsApi";
 
@@ -68,7 +74,8 @@ export async function addProduct(prevState: unknown, formData: FormData) {
 
   const requestData = {
     name: data.name,
-    imagePath: fileName,
+    imageKey: fileName,
+    imagePath: "path",
     description: data.description,
     priceInCents: data.priceInCents,
   };
@@ -76,26 +83,38 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   await ProductsApi.AddProduct(requestData);
 
   revalidatePath("/admin");
-  revalidatePath("/admin/products")
+  revalidatePath("/admin/products");
 
   redirect("/admin/products");
 }
 
-
 // Function that generate url for image from S3 Bucket AWS
-export async function getProductsUrl (key:string) {
+export async function getProductsUrl(key: string) {
   const params = {
     Bucket: bucketName,
-    Key: key
-  }
+    Key: key,
+  };
 
   const command = new GetObjectCommand(params);
-  const seconds = 60
+  const seconds = 60;
   const url = await getSignedUrl(s3, command, { expiresIn: seconds });
 
-  return url
+  return url;
 }
 
+// function for Delete media from S3 AWS.
+export async function deleteFileS3(key: string) {
+  const deleteParams = {
+    Bucket: bucketName,
+    Key: key,
+  };
+  return s3.send(new DeleteObjectCommand(deleteParams));
+}
 
-
-// TODO:Create function for Delete and update Products.
+// function for delete product from DB
+export async function deleteProduct(id: string, filename: string) {
+  await deleteFileS3(filename);
+  await ProductsApi.removeProduct(id);
+  revalidatePath("/admin/products");
+  return console.log(`Product ${id} is deleted`);
+}

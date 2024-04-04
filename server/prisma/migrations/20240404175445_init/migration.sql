@@ -3,6 +3,7 @@ CREATE TABLE "Product" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "imagePath" TEXT NOT NULL,
+    "imageKey" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "priceInCents" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

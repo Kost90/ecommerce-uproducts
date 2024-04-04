@@ -18,19 +18,19 @@ export async function getAllProducts(
   }
 }
 
-
 // FUNCTION FOR POST NEW PRODUCT TO THE S3 BUCKET AND DB
 export async function creatProduct(
   req: Request,
   res: Response
 ): Promise<Response | void> {
   try {
-    const { name, imagePath, description, priceInCents } = req.body;
+    const { name, imagePath, description, priceInCents, imageKey } = req.body;
 
     const result = await prisma.product.create({
       data: {
         name: name,
         imagePath: imagePath,
+        imageKey: imageKey,
         description: description,
         priceInCents: priceInCents,
       },
@@ -39,4 +39,11 @@ export async function creatProduct(
   } catch (error) {
     return console.error(`Product didn't created`);
   }
+}
+
+// Remove function
+export async function removeProduct(req: Request, res: Response) {
+  let id = req.params.id;
+  const result = await prisma.product.delete({ where: { id: id } });
+  return res.json(result);
 }

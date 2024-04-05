@@ -118,3 +118,67 @@ export async function deleteProduct(id: string, filename: string) {
   revalidatePath("/admin/products");
   return console.log(`Product ${id} is deleted`);
 }
+
+// SCHEMA FOR UPDATE FUNCTION
+const editSchema = addSchema.extend({
+  image: fileSchema.optional(),
+  imageKey: z.string().optional(),
+  imagePath: z.string().optional(),
+});
+
+// FUNCTION FOR UPDATE PRODUCT
+export async function updateProduct(
+  id: string,
+  prevState: unknown,
+  formData: FormData
+) {
+  const result = editSchema.safeParse(Object.fromEntries(formData.entries()));
+  if (result.success === false) {
+    return result.error.formErrors.fieldErrors;
+  }
+
+  // TODO: Thing how to make it more beautifull
+  let data = {
+    id: id,
+    ...result.data,
+  };
+
+  const file = data.image;
+
+  let FileName = "";
+
+  if (file !== undefined) {
+    if (file.size > 0) {
+      const product = await ProductsApi.getSingleProduct(id);
+      console.log(product.imageKey);
+      await deleteFileS3(product.imageKey);
+      const imageName = generateFileName();
+      const buffer = Buffer.from(await file.arrayBuffer());
+      FileName = await uploadFileToS3(buffer, imageName);
+      data = {
+        id: id,
+        name: data.name,
+        description: data.description,
+        priceInCents: data.priceInCents,
+        imageKey: FileName,
+        imagePath: "path",
+      };
+    }
+  } else {
+    const singleProduct = await ProductsApi.getSingleProduct(id);
+    data = {
+      id: id,
+      name: data.name,
+      description: data.description,
+      priceInCents: data.priceInCents,
+      imageKey: singleProduct.imageKey,
+      imagePath: "path",
+    };
+  }
+
+  await ProductsApi.updateProduct(data);
+
+  revalidatePath("/admin/products");
+
+  redirect("/admin/products");
+}

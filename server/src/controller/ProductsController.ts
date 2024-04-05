@@ -4,6 +4,7 @@ import { Response, Request } from "express";
 
 const prisma = new PrismaClient();
 
+// Function for get All products
 export async function getAllProducts(
   req: Request,
   res: Response
@@ -15,6 +16,22 @@ export async function getAllProducts(
     }
   } catch (error) {
     return console.error(`Products didn't found`);
+  }
+}
+
+// FUNCTION FOR GET SINGLE PRODUCT
+export async function getSingleProduct(
+  req: Request,
+  res: Response
+): Promise<Product | unknown> {
+  try {
+    const id = req.params.id;
+    const product = await prisma.product.findUnique({ where: { id: id } });
+    if (product !== null) {
+      return res.json(product);
+    }
+  } catch (error) {
+    return console.error(`Can't find single product`);
   }
 }
 
@@ -38,6 +55,28 @@ export async function creatProduct(
     return res.status(200).json(result);
   } catch (error) {
     return console.error(`Product didn't created`);
+  }
+}
+
+// Update function
+export async function updateProduct(req: Request, res: Response) {
+  const { id, name, description, priceInCents, imageKey, imagePath } = req.body;
+  try {
+    const response = await prisma.product.update({
+      where: { id: id },
+      data: {
+        name: name,
+        description: description,
+        priceInCents: priceInCents,
+        imageKey: imageKey,
+        imagePath: imagePath,
+      },
+    });
+    if (response !== null) {
+      return res.json(response);
+    }
+  } catch (error) {
+    return console.error(`Can't update product`);
   }
 }
 

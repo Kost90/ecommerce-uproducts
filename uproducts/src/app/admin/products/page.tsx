@@ -15,16 +15,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import Title from "@/components/ui/title";
 import Link from "next/link";
 import { getProductsUrl } from "../_actions/ProductsActions";
 import { MoreVertical } from "lucide-react";
 import DeleteDropDownItem from "./_components/DeleteDropDownItem";
 
-function page() {
+function ProductsPage() {
   return (
     <>
       <div className="flex justify-between items-center gap-4">
-        <h1>Products page</h1>
+        <Title text="Products list:" />
         <Button asChild>
           <Link href="/admin/addproduct">Add Product</Link>
         </Button>
@@ -104,10 +105,12 @@ async function ProductsTable() {
                   <span className="sr-only">Actions</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
+                  <Button asChild className="w-full my-1">
+                    <Link href={`/admin/products/${product.id}/edit`}>
+                      Edit
+                    </Link>
+                  </Button>
                   <DropdownMenuItem asChild>
-
-{/* Make Button for all width of parent */}
-
                     <DeleteDropDownItem
                       id={product.id}
                       filename={product.imageKey}
@@ -123,4 +126,4 @@ async function ProductsTable() {
   );
 }
 
-export default page;
+export default ProductsPage;

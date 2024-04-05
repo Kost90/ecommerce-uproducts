@@ -22,6 +22,8 @@ function DeleteDropDownItem({
           router.refresh();
         });
       }}
+      className="w-full"
+      variant="destructive"
     >
       Delete
     </Button>

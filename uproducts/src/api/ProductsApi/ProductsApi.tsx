@@ -1,5 +1,6 @@
 import path from "path";
 import { API } from "../Api";
+import { Product } from "@/constans/typeconstans";
 
 const url = "http://localhost:3001";
 
@@ -40,6 +41,36 @@ class ProductsApi extends API {
       return response;
     } catch (error) {
       return console.error(error);
+    }
+  }
+
+  async getSingleProduct(id: string) {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    try {
+      const response = await this.fetch({
+        path: `products/edit/${id}`,
+        signal,
+      });
+      return response;
+    } catch (error) {
+      return console.error(error);
+    }
+  }
+
+  async updateProduct(data: Product) {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    try {
+      const response = await this.fetch({
+        path: "products/update",
+        method: "PUT",
+        body: JSON.stringify(data),
+        signal,
+      });
+      return response;
+    } catch (error) {
+      return console.error("Can't update single product");
     }
   }
 

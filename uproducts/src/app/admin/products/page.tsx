@@ -20,6 +20,7 @@ import Link from "next/link";
 import { getProductsUrl } from "../_actions/ProductsActions";
 import { MoreVertical } from "lucide-react";
 import DeleteDropDownItem from "./_components/DeleteDropDownItem";
+import { formatCurrency } from "@/lib/formatter";
 
 function ProductsPage() {
   return (
@@ -35,9 +36,10 @@ function ProductsPage() {
   );
 }
 
+// Function for fetching data from server and DB
 async function getData() {
   const res = await fetch("http://localhost:3001/products", {
-    next: { revalidate: 3600 },
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -53,8 +55,7 @@ async function getData() {
   return products;
 }
 
-// TODO:Add sceleton befor data is not fetched.
-
+// Function displayed table with products data
 async function ProductsTable() {
   const products = await getData();
 
@@ -74,19 +75,14 @@ async function ProductsTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {/* TODO: Make anotation for params */}
+        {/* Maping received products from DB */}
 
         {products.map((product: any) => (
           <TableRow key={product.id}>
             <TableCell>{product.name}</TableCell>
-
-            {/* TODO: Make function for convert cents to dollars */}
-
-            {/* <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell> */}
-
-            <TableCell>{product.priceInCents}</TableCell>
+            <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>
             <TableCell>
-              <div className="w-32 h-32 relative">
+              <div className="sm:w-32 sm:h-32 relative w-10 h-10">
                 <Image
                   src={product.imagePath}
                   alt="product_image"
@@ -110,6 +106,9 @@ async function ProductsTable() {
                       Edit
                     </Link>
                   </Button>
+
+                  {/* Dropdown for edit and Delete buttons */}
+
                   <DropdownMenuItem asChild>
                     <DeleteDropDownItem
                       id={product.id}

@@ -12,6 +12,8 @@ function ProductForm({ product }: { product?: Product | null }) {
     product == null ? addProduct : updateProduct.bind(null, product.id),
     {}
   );
+  const { pending } = useFormStatus();
+
   return (
     <>
       <form action={action} className="flex flex-col gap-3">
@@ -61,10 +63,15 @@ function ProductForm({ product }: { product?: Product | null }) {
             <div className="text-destructive">{error.description}</div>
           )}
         </div>
-
-        <Button type="submit" className="max-w-40">
-          {product == null ? "Add" : "Edit"}
-        </Button>
+        {product == null ? (
+          <Button type="submit" className="max-w-40">
+            {pending ? "Saving..." : "Add"}
+          </Button>
+        ) : (
+          <Button type="submit" className="max-w-40">
+            {pending ? "Saving..." : "Edit"}
+          </Button>
+        )}
       </form>
     </>
   );

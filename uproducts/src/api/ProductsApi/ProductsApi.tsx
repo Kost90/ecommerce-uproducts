@@ -1,4 +1,3 @@
-import path from "path";
 import { API } from "../Api";
 import { Product } from "@/constans/typeconstans";
 

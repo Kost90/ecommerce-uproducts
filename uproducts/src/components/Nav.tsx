@@ -5,12 +5,16 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
 export function Nav({
+  className,
   children,
 }: Readonly<{
   children: React.ReactNode;
+  className?: string;
 }>) {
   return (
-    <nav className="flex justify-center px-4 text-primary-foreground my-1">
+    <nav
+      className={`flex justify-center px-4 text-primary-foreground my-1 ${className}`}
+    >
       {children}
     </nav>
   );

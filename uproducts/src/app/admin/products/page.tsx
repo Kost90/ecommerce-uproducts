@@ -38,9 +38,7 @@ function ProductsPage() {
 
 // Function for fetching data from server and DB
 async function getData() {
-  const res = await fetch("http://localhost:3001/products", {
-    cache: "no-store",
-  });
+  const res = await fetch("http://localhost:3001/products");
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");

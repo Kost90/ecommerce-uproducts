@@ -19,6 +19,7 @@ model Product {
   orders       Order[]
 }
 
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -26,6 +27,9 @@ model User {
   updatedAt DateTime @updatedAt
   orders    Order[]
 }
+
+
+//TODO: Think about amount of product in order. If i need it to count how many same products in one order?
 
 model Order {
   id               String   @id @default(uuid())

@@ -1,8 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, combineSlices } from '@reduxjs/toolkit'
+import {orderSlice} from './features/orders/ordersSlice'
+
+const rootReducers = combineSlices(orderSlice)
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {}
+    reducer: rootReducers,
   })
 }
 

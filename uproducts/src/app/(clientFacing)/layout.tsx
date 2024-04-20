@@ -1,6 +1,6 @@
 import React from "react";
 import { Nav, NavLink } from "@/components/Nav";
-import { ShoppingCart } from "lucide-react";
+import StoreProvider from "./StoreProvider";
 import CartComponent from "./_components/CartComponent";
 
 function CostumerFacingLayout({
@@ -9,7 +9,7 @@ function CostumerFacingLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <StoreProvider>
       <header className="container">
         <Nav className="justify-between">
           <NavLink href="/">Home</NavLink>
@@ -17,7 +17,7 @@ function CostumerFacingLayout({
         </Nav>
       </header>
       <main className="container my-6">{children}</main>
-    </>
+    </StoreProvider>
   );
 }
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Nav, NavLink } from "@/components/Nav";
 import StoreProvider from "./StoreProvider";
 import CartComponent from "./_components/CartComponent";
+import SearchInput from "./_components/SearchInput";
 
 function CostumerFacingLayout({
   children,
@@ -11,8 +12,13 @@ function CostumerFacingLayout({
   return (
     <StoreProvider>
       <header className="container">
-        <Nav className="justify-between">
+        <Nav className="justify-between mt-3">
+          {/* Сюда надо добавить лого и название магазина */}
           <NavLink href="/">Home</NavLink>
+          {/* Сюда добавляю search input для поиска товаров */}
+          <NavLink href="/search">All</NavLink>
+          {/* Добавляю ссілку на все товарі  */}
+          <SearchInput placeholder="Search for products..."/>
           <CartComponent />
         </Nav>
       </header>

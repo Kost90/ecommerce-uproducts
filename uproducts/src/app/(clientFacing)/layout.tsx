@@ -11,7 +11,7 @@ function CostumerFacingLayout({
 }>) {
   return (
     <StoreProvider>
-      <header className="container">
+      <header className="container max-w-screen-2xl">
         <Nav className="justify-between mt-3">
           {/* Сюда надо добавить лого и название магазина */}
           <NavLink href="/">Home</NavLink>

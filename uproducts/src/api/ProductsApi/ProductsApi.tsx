@@ -35,7 +35,7 @@ class ProductsApi extends API {
     try {
       const response = await this.fetch({ path: "products", signal });
       if (!response.ok) {
-        throw new Error("Cant POST");
+        throw new Error("Cant fetch Products");
       }
       return response;
     } catch (error) {

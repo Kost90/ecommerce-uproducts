@@ -1,13 +1,14 @@
 import { getProductsUrl } from "@/app/admin/_actions/ProductsActions";
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 // Function for fetching data from server and DB
 export async function getData() {
+  // !Делаю тут try/catch
   const res = await fetch("http://localhost:3001/products");
 
   if (!res.ok) {
@@ -16,9 +17,11 @@ export async function getData() {
 
   const products = await res.json();
 
+  // !Делаю это на стороне сервера
   for (let product of products) {
     product.imagePath = await getProductsUrl(product.imageKey);
   }
 
   return products;
 }
+

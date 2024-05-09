@@ -88,7 +88,7 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   redirect("/admin/products");
 }
 
-// Function that generate url for image from S3 Bucket AWS
+//! Function that generate url for image from S3 Bucket AWS - выношу на сервер
 export async function getProductsUrl(key: string) {
   const params = {
     Bucket: bucketName,

@@ -1,3 +1,4 @@
+import { cache } from "react";
 
 class API {
   protected _baseUrl: string;
@@ -11,13 +12,15 @@ class API {
     method = "GET",
     body,
     signal,
-    headers = {"Content-Type": "application/json"},
+    headers = { "Content-Type": "application/json" },
+    cache = "no-store",
     ...rest
   }: {
     path: string;
     method?: string;
     body?: any;
     signal: any;
+    cache?: any;
     headers?: any;
   }) {
     return fetch(`${this._baseUrl}/${path}`, {
@@ -27,6 +30,7 @@ class API {
         ...headers,
       },
       body,
+      cache,
       ...rest,
     }).then((response) => response.json());
   }

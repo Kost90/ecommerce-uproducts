@@ -1,18 +1,22 @@
-import { getData } from "@/lib/utils";
-import CardComponent from "./_components/Card";
-import { formatCurrency } from "@/lib/formatter";
 import Grid from "./_components/Grid";
+import ProductsApi from "@/api/ProductsApi/ProductsApi";
+import { getProductsUrl } from "../admin/_actions/ProductsActions";
 
 export default async function Home() {
-  const products = await getData();
+  const productsApi = await ProductsApi.getProducts();
+
+  // !Делаю это на стороне сервера
+  for (let product of productsApi) {
+    product.imagePath = await getProductsUrl(product.imageKey);
+  }
 
   // !Сделать функцию которая будет фильтровать самые популярные + делаю fallback + suspense
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="flex items-center justify-center gap-3 flex-col lg:flex-row h-full lg:h-[960px] w-full">
-        <Grid data={products}/>
-        {/* Выношу это потом в отдельный компонент как грид + делаю suspense для отображения скелетон пока не загрузятся*/}
+        {/* Делаю  fallback + suspense + skeleton*/}
+        <Grid data={productsApi} />
       </div>
     </div>
   );

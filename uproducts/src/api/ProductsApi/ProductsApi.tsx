@@ -25,7 +25,7 @@ class ProductsApi extends API {
       }
       return response;
     } catch (error) {
-      return console.error(error);
+      throw new Error(`Cant POST ${error}`);
     }
   }
 
@@ -34,12 +34,9 @@ class ProductsApi extends API {
     const signal = controller.signal;
     try {
       const response = await this.fetch({ path: "products", signal });
-      if (!response.ok) {
-        throw new Error("Cant fetch Products");
-      }
       return response;
     } catch (error) {
-      return console.error(error);
+      throw new Error(`Failed to fetch data, ${error}`);
     }
   }
 
@@ -53,7 +50,7 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      return console.error(error);
+      throw new Error(`Failed to fetch single product, ${error}`);
     }
   }
 
@@ -69,7 +66,7 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      return console.error("Can't update single product");
+      throw new Error(`Can't update single product, ${error}`);
     }
   }
 
@@ -82,12 +79,9 @@ class ProductsApi extends API {
         method: "DELETE",
         signal,
       });
-      if (!response.ok) {
-        throw new Error("Cant DELETE");
-      }
       return response;
     } catch (error) {
-      return console.error(error);
+      throw new Error(`Can't remove product, ${error}`);
     }
   }
 }

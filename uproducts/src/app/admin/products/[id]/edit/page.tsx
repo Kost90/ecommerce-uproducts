@@ -1,25 +1,14 @@
 import ProductForm from "@/app/admin/_components/ProductForm";
+import ProductsApi from "@/api/ProductsApi/ProductsApi";
 
 async function EditPage({ params: { id } }: { params: { id: string } }) {
-  const product = await getData({id});
+  const product = await ProductsApi.getSingleProduct(id);
 
   return (
     <div>
       <ProductForm product={product} />
     </div>
   );
-}
-
-async function getData({id}:{id:string}) {
-  const res = await fetch(`http://localhost:3001/products/edit/${id}`, { cache: 'no-store' });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  const product = await res.json();
-
-  return product;
 }
 
 export default EditPage;

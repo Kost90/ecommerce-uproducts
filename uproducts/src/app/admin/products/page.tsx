@@ -11,7 +11,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import { getProductsUrl } from "../_actions/ProductsActions";
 import { MoreVertical } from "lucide-react";
 import DeleteDropDownItem from "./_components/DeleteDropDownItem";
 import { formatCurrency } from "@/lib/formatter";
+import ProductsApi from "@/api/ProductsApi/ProductsApi";
 
 function ProductsPage() {
   return (
@@ -31,31 +31,20 @@ function ProductsPage() {
           <Link href="/admin/addproduct">Add Product</Link>
         </Button>
       </div>
+
+      {/* Сделать скелетон для таблицы */}
       <ProductsTable />
     </>
   );
 }
 
-// Function for fetching data from server and DB
-async function getData() {
-  const res = await fetch("http://localhost:3001/products");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  const products = await res.json();
+// Function displayed table with products data
+async function ProductsTable() {
+  const products = await ProductsApi.getProducts();
 
   for (let product of products) {
     product.imagePath = await getProductsUrl(product.imageKey);
   }
-
-  return products;
-}
-
-// Function displayed table with products data
-async function ProductsTable() {
-  const products = await getData();
 
   if (products.length === 0) return <p>No products found</p>;
 
@@ -65,6 +54,7 @@ async function ProductsTable() {
         <TableRow>
           <TableHead>Name</TableHead>
           <TableHead>Price</TableHead>
+          <TableHead>Categories</TableHead>
           <TableHead>Image</TableHead>
           <TableHead>Description</TableHead>
           <TableHead className="w-0">
@@ -79,6 +69,7 @@ async function ProductsTable() {
           <TableRow key={product.id}>
             <TableCell>{product.name}</TableCell>
             <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>
+            <TableCell>{product.categories}</TableCell>
             <TableCell>
               <div className="sm:w-32 sm:h-32 relative w-10 h-10">
                 <Image

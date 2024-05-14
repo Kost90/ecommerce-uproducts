@@ -5,4 +5,5 @@ export type Product = {
     imageKey?: string;
     description: string;
     priceInCents: number;
+    categories:string;
 }

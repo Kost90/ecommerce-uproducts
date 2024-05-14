@@ -20,9 +20,6 @@ class ProductsApi extends API {
         method: "POST",
         body: JSON.stringify(product),
       });
-      if (!response.ok) {
-        throw new Error("Cant POST");
-      }
       return response;
     } catch (error) {
       throw new Error(`Cant POST ${error}`);

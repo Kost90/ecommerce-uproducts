@@ -28,6 +28,7 @@ const addSchema = z.object({
   description: z.string().min(1),
   priceInCents: z.coerce.number().int().min(1),
   image: fileSchema.refine((file) => file.size > 0, "Required"),
+  categories: z.string(),
 });
 
 // Initial S3Config for S3 Bucket AWS
@@ -78,6 +79,7 @@ export async function addProduct(prevState: unknown, formData: FormData) {
     imagePath: "path",
     description: data.description,
     priceInCents: data.priceInCents,
+    categories: data.categories,
   };
 
   await ProductsApi.AddProduct(requestData);
@@ -150,7 +152,6 @@ export async function updateProduct(
   if (file !== undefined) {
     if (file.size > 0) {
       const product = await ProductsApi.getSingleProduct(id);
-      console.log(product.imageKey);
       await deleteFileS3(product.imageKey);
       const imageName = generateFileName();
       const buffer = Buffer.from(await file.arrayBuffer());
@@ -162,6 +163,7 @@ export async function updateProduct(
         priceInCents: data.priceInCents,
         imageKey: FileName,
         imagePath: "path",
+        categories: data.categories,
       };
     }
   } else {
@@ -173,6 +175,7 @@ export async function updateProduct(
       priceInCents: data.priceInCents,
       imageKey: singleProduct.imageKey,
       imagePath: "path",
+      categories: data.categories,
     };
   }
 

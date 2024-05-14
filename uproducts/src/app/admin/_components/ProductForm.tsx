@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useFormState, useFormStatus } from "react-dom";
 import { addProduct, updateProduct } from "../_actions/ProductsActions";
+import { SelectComponent } from "./Select";
 
 function ProductForm({ product }: { product?: Product | null }) {
   const [error, action] = useFormState(
@@ -46,6 +47,16 @@ function ProductForm({ product }: { product?: Product | null }) {
             name="priceInCents"
             required
             defaultValue={product !== null ? product?.priceInCents : 0}
+          />
+          {error.priceInCents && (
+            <div className="text-destructive">{error.priceInCents}</div>
+          )}
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="categories">Choose categories:</Label>
+          <SelectComponent
+            name="categories"
+            defaultValue={product !== null ? product?.categories : undefined}
           />
           {error.priceInCents && (
             <div className="text-destructive">{error.priceInCents}</div>

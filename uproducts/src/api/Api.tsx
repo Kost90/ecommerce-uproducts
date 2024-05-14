@@ -1,4 +1,3 @@
-import { cache } from "react";
 
 class API {
   protected _baseUrl: string;

@@ -1,8 +1,8 @@
-import React from "react";
 import { Nav, NavLink } from "@/components/Nav";
 import StoreProvider from "./StoreProvider";
 import CartComponent from "./_components/CartComponent";
 import SearchInput from "./_components/SearchInput";
+// import ReactQueryProvider from "@/providers/queryClientProvider";
 
 function CostumerFacingLayout({
   children,
@@ -18,7 +18,7 @@ function CostumerFacingLayout({
           {/* Сюда добавляю search input для поиска товаров */}
           <NavLink href="/search">All</NavLink>
           {/* Добавляю ссілку на все товарі  */}
-          <SearchInput placeholder="Search for products..."/>
+          <SearchInput placeholder="Search for products..." />
           <CartComponent />
         </Nav>
       </header>

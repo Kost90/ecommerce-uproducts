@@ -35,13 +35,30 @@ export async function getSingleProduct(
   }
 }
 
+// FUNCTION FOR SEARCH PRODUCTS BY NAME
+export async function searchProducts(
+  req: Request,
+  res: Response
+): Promise<Product[] | Product | unknown> {
+  try {
+    const name = req.params.name;
+    const product = await prisma.product.findMany({ where: { name: name } });
+    if (product !== null) {
+      return res.json(product);
+    }
+  } catch (error) {
+    return console.error(`Product doesn't exist`);
+  }
+}
+
 // FUNCTION FOR POST NEW PRODUCT TO THE S3 BUCKET AND DB
 export async function creatProduct(
   req: Request,
   res: Response
 ): Promise<Response | void> {
   try {
-    const { name, imagePath, description, priceInCents, imageKey, categories } = req.body;
+    const { name, imagePath, description, priceInCents, imageKey, categories } =
+      req.body;
 
     const result = await prisma.product.create({
       data: {
@@ -50,7 +67,7 @@ export async function creatProduct(
         imageKey: imageKey,
         description: description,
         priceInCents: priceInCents,
-        categories:categories,
+        categories: categories,
       },
     });
     return res.status(200).json(result);
@@ -61,7 +78,15 @@ export async function creatProduct(
 
 // Update function
 export async function updateProduct(req: Request, res: Response) {
-  const { id, name, description, priceInCents, imageKey, imagePath, categories } = req.body;
+  const {
+    id,
+    name,
+    description,
+    priceInCents,
+    imageKey,
+    imagePath,
+    categories,
+  } = req.body;
   try {
     const response = await prisma.product.update({
       where: { id: id },
@@ -71,7 +96,7 @@ export async function updateProduct(req: Request, res: Response) {
         priceInCents: priceInCents,
         imageKey: imageKey,
         imagePath: imagePath,
-        categories:categories,
+        categories: categories,
       },
     });
     if (response !== null) {

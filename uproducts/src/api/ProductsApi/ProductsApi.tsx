@@ -3,14 +3,12 @@ import { Product } from "@/constans/typeconstans";
 
 const url = "http://localhost:3001";
 
-// TODO: Create Intarface for param for AddProduct function
-
 class ProductsApi extends API {
   constructor(baseurl: string) {
     super(baseurl);
   }
 
-  async AddProduct(product: any) {
+  async AddProduct(product: Product) {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
@@ -64,6 +62,20 @@ class ProductsApi extends API {
       return response;
     } catch (error) {
       throw new Error(`Can't update single product, ${error}`);
+    }
+  }
+
+  async searchProducts(name: string) {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    try {
+      const response = await this.fetch({
+        path: `products/search/${name}`,
+        signal,
+      });
+      return response;
+    } catch (error) {
+      throw new Error(`Products doesn't exists, ${error}`);
     }
   }
 

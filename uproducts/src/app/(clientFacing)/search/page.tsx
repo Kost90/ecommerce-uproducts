@@ -1,3 +1,7 @@
+import { Suspense } from "react";
+import CardsList from "./_components/CardsList";
+import { CardListSkeleton } from "@/components/skeletons/CardSkeleton";
+
 async function Search({
   searchParams,
 }: {
@@ -9,9 +13,13 @@ async function Search({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
 
-  // ! на основании query фетчу определенній продукт думаю на счет Suspence и Fallback, чтоб сначала показівать скелетоны и пропсами передаю в компонент лист карточек query для фетча
-
-  return <div>{query}</div>;
+  return (
+    <div className="flex flex-col">
+      <Suspense fallback={<CardListSkeleton />}>
+        <CardsList query={query} />
+      </Suspense>
+    </div>
+  );
 }
 
 export default Search;

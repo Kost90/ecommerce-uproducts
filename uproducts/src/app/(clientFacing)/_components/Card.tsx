@@ -13,24 +13,32 @@ interface IProps {
   name: string;
   price: string;
   picture: string;
+  description: string;
+  className?: string;
+  imageHeigth?: string;
 }
 
 function CardComponent({ ...props }: IProps) {
-  const { name, price, picture } = props;
+  const { name, price, picture, description, className, imageHeigth } = props;
   return (
-    <Card className="hover:border-sky-600 cursor-pointer w-full h-full flex flex-col items-start justify-around">
+    <Card
+      className={`hover:border-sky-600 cursor-pointer w-full h-full flex flex-col items-start justify-around p-2 ${className}`}
+    >
       <CardHeader>
         <CardTitle>{name}</CardTitle>
       </CardHeader>
-      <CardContent className="relative">
-        <Image
-          src={picture}
-          alt={`picture_of_${name}`}
-          layout="responsive"
-          width={500}
-          height={700}
-        />
-        <CardDescription>Some description of product</CardDescription>
+      <CardContent className={`flex flex-col ${imageHeigth}`}>
+        <div className={`relative ${imageHeigth}`}>
+          <Image
+            src={picture}
+            alt={`picture_of_${name}`}
+            fill
+            style={{
+              objectFit: "cover",
+            }}
+          />
+        </div>
+        <CardDescription>{description}</CardDescription>
       </CardContent>
       <CardFooter className="flex gap-4">
         <CardTitle className="text-foreground">{price}</CardTitle>

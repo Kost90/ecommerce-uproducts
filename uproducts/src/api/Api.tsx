@@ -12,7 +12,7 @@ class API {
     body,
     signal,
     headers = { "Content-Type": "application/json" },
-    cache = "no-store",
+    cache = "default",
     ...rest
   }: {
     path: string;

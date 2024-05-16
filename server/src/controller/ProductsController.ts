@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Product } from "@prisma/client";
 import { Response, Request } from "express";
+import { getProductsUrl } from "../utils/getImageUrl";
 
 const prisma = new PrismaClient();
 
@@ -11,6 +12,9 @@ export async function getAllProducts(
 ): Promise<Product[] | Product | unknown> {
   try {
     const products = await prisma.product.findMany();
+    for (let product of products) {
+      product.imagePath = await getProductsUrl(product.imageKey);
+    }
     if (products !== null) {
       return res.json(products);
     }
@@ -26,9 +30,9 @@ export async function getSingleProduct(
 ): Promise<Product | unknown> {
   try {
     const id = req.params.id;
-    const product = await prisma.product.findUnique({ where: { id: id } });
-    if (product !== null) {
-      return res.json(product);
+    const products = await prisma.product.findUnique({ where: { id: id } });
+    if (products !== null) {
+      return res.json(products);
     }
   } catch (error) {
     return console.error(`Can't find single product`);
@@ -59,7 +63,6 @@ export async function creatProduct(
   try {
     const { name, imagePath, description, priceInCents, imageKey, categories } =
       req.body;
-
     const result = await prisma.product.create({
       data: {
         name: name,

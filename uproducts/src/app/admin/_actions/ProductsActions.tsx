@@ -2,16 +2,14 @@
 
 import { z } from "zod";
 import crypto from "crypto";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import {
   S3Client,
   PutObjectCommand,
   S3ClientConfig,
-  GetObjectCommand,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import ProductsApi from "@/api/ProductsApi/ProductsApi";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
@@ -88,20 +86,6 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   revalidatePath("/admin/products");
 
   redirect("/admin/products");
-}
-
-//! Function that generate url for image from S3 Bucket AWS - выношу на сервер
-export async function getProductsUrl(key: string) {
-  const params = {
-    Bucket: bucketName,
-    Key: key,
-  };
-
-  const command = new GetObjectCommand(params);
-  const seconds = 60;
-  const url = await getSignedUrl(s3, command, { expiresIn: seconds });
-
-  return url;
 }
 
 // function for Delete media from S3 AWS.

@@ -1,5 +1,4 @@
 import ProductsApi from "@/api/ProductsApi/ProductsApi";
-import { getProductsUrl } from "@/app/admin/_actions/ProductsActions";
 import FlexContainer from "@/components/containers/FlexContainer";
 import { Product } from "@/constans/typeconstans";
 import React from "react";
@@ -16,9 +15,6 @@ async function CardsList({ query }: { query: string }) {
 
   if (products.length === 0) return <p>No products found</p>;
 
-  for (let product of products) {
-    product.imagePath = await getProductsUrl(product.imageKey as string);
-  }
   return (
     <FlexContainer>
       {products.map((el, i) => (

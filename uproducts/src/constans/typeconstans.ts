@@ -1,7 +1,7 @@
 export type Product = {
     id?: string;
     name: string;
-    imagePath?: string;
+    imagePath?: string | File;
     imageKey?: string;
     description: string;
     priceInCents: number;

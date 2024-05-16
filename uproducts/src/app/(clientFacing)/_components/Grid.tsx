@@ -1,15 +1,9 @@
 import CardComponent from "./Card";
 import { formatCurrency } from "@/lib/formatter";
 import ProductsApi from "@/api/ProductsApi/ProductsApi";
-import { getProductsUrl } from "@/app/admin/_actions/ProductsActions";
 
 async function Grid() {
   const productsApi = await ProductsApi.getProducts();
-
-  // !Делаю это на стороне сервера
-  for (let product of productsApi) {
-    product.imagePath = await getProductsUrl(product.imageKey);
-  }
 
   return (
     <>

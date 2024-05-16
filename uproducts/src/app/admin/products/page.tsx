@@ -16,7 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import Title from "@/components/ui/title";
 import Link from "next/link";
-import { getProductsUrl } from "../_actions/ProductsActions";
 import { MoreVertical } from "lucide-react";
 import DeleteDropDownItem from "./_components/DeleteDropDownItem";
 import { formatCurrency } from "@/lib/formatter";
@@ -42,9 +41,6 @@ function ProductsPage() {
 async function ProductsTable() {
   const products = await ProductsApi.getProducts();
 
-  for (let product of products) {
-    product.imagePath = await getProductsUrl(product.imageKey);
-  }
 
   if (products.length === 0) return <p>No products found</p>;
 

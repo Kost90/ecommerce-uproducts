@@ -28,7 +28,8 @@ class ProductsApi extends API {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await this.fetch({ path: "products", signal });
+
+      const response = await this.fetch({ path: "products", signal,cache:'no-store'});
       return response;
     } catch (error) {
       throw new Error(`Failed to fetch data, ${error}`);

@@ -39,10 +39,9 @@ function ProductsPage() {
 
 // Function displayed table with products data
 async function ProductsTable() {
-  const products = await ProductsApi.getProducts();
+  const data = await ProductsApi.getProducts();
 
-
-  if (products.length === 0) return <p>No products found</p>;
+  if (data.products.length === 0) return <p>No products found</p>;
 
   return (
     <Table>
@@ -61,7 +60,7 @@ async function ProductsTable() {
       <TableBody>
         {/* Maping received products from DB */}
 
-        {products.map((product: any) => (
+        {data.products.map((product: any) => (
           <TableRow key={product.id}>
             <TableCell>{product.name}</TableCell>
             <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>

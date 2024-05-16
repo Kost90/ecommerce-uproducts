@@ -22,7 +22,7 @@ function CostumerFacingLayout({
               </div>
             </NavLink>
             <NavLink href="/search">All</NavLink>
-            <SearchInput placeholder="Search for products..." />
+            <SearchInput placeholder="Search for products name..." />
           </div>
           <CartComponent />
         </Nav>

@@ -5,19 +5,27 @@ import React from "react";
 import CardComponent from "../../_components/Card";
 import { formatCurrency } from "@/lib/formatter";
 
+type Data = {
+  products: Product[];
+  total: number;
+};
+
 async function CardsList({ query }: { query: string }) {
-  let products: Product[] = [];
+  let data: Data = {
+    products: [],
+    total: 0,
+  };
   if (query === "") {
-    products = await ProductsApi.getProducts();
+    data = await ProductsApi.getProducts();
   } else {
-    products = await ProductsApi.searchProducts(query);
+    data.products = await ProductsApi.searchProducts(query);
   }
 
-  if (products.length === 0) return <p>No products found</p>;
+  if (data.products.length === 0) return <p>No products found</p>;
 
   return (
     <FlexContainer>
-      {products.map((el, i) => (
+      {data.products.map((el, i) => (
         <CardComponent
           name={el.name}
           price={formatCurrency(el.priceInCents / 100)}

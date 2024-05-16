@@ -6,4 +6,5 @@ export type Product = {
     description: string;
     priceInCents: number;
     categories:string;
+    total?:number;
 }

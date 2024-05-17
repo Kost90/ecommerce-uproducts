@@ -16,7 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import Title from "@/components/ui/title";
 import Link from "next/link";
-import { getProductsUrl } from "../_actions/ProductsActions";
 import { MoreVertical } from "lucide-react";
 import DeleteDropDownItem from "./_components/DeleteDropDownItem";
 import { formatCurrency } from "@/lib/formatter";
@@ -40,13 +39,9 @@ function ProductsPage() {
 
 // Function displayed table with products data
 async function ProductsTable() {
-  const products = await ProductsApi.getProducts();
+  const data = await ProductsApi.getProducts();
 
-  for (let product of products) {
-    product.imagePath = await getProductsUrl(product.imageKey);
-  }
-
-  if (products.length === 0) return <p>No products found</p>;
+  if (data.products.length === 0) return <p>No products found</p>;
 
   return (
     <Table>
@@ -65,7 +60,7 @@ async function ProductsTable() {
       <TableBody>
         {/* Maping received products from DB */}
 
-        {products.map((product: any) => (
+        {data.products.map((product: any) => (
           <TableRow key={product.id}>
             <TableCell>{product.name}</TableCell>
             <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>

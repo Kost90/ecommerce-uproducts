@@ -7,11 +7,12 @@ import {
   searchProducts,
   updateProduct,
 } from "../controller/ProductsController";
+import isPagination from "../midleware/paginationMidleware";
 export const router = Express.Router();
 
-router.get("/", getAllProducts);
+router.get("/", isPagination, getAllProducts);
 router.get("/edit/:id", getSingleProduct);
-router.get('/search/:name', searchProducts);
+router.get("/search/:name", searchProducts);
 router.put("/update", updateProduct);
 router.post("/add", creatProduct);
 router.delete("/:id", removeProduct);

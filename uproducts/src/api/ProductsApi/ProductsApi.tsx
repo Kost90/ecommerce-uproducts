@@ -24,11 +24,16 @@ class ProductsApi extends API {
     }
   }
 
-  async getProducts() {
+  async getProducts(page?:string) {
     const controller = new AbortController();
     const signal = controller.signal;
+    let queryParams = `?page=${page}`;
     try {
-      const response = await this.fetch({ path: "products", signal });
+      const response = await this.fetch({
+        path: `products${queryParams}`,
+        signal,
+        cache: "no-store",
+      });
       return response;
     } catch (error) {
       throw new Error(`Failed to fetch data, ${error}`);
@@ -71,6 +76,7 @@ class ProductsApi extends API {
     try {
       const response = await this.fetch({
         path: `products/search/${name}`,
+        cache: "no-store",
         signal,
       });
       return response;

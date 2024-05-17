@@ -37,6 +37,8 @@ function ProductsPage() {
   );
 }
 
+
+// ! Добавить пагинацию для таблицы
 // Function displayed table with products data
 async function ProductsTable() {
   const data = await ProductsApi.getProducts();

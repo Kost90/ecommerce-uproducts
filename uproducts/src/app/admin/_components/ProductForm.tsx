@@ -17,7 +17,7 @@ function ProductForm({ product }: { product?: Product | null }) {
 
   return (
     <>
-      <form action={action} className="flex flex-col gap-3">
+      <form action={action} className="flex flex-col gap-3" encType="multipart/form-data">
         <div className="space-y-2">
           <Label htmlFor="name">Name of product:</Label>
           <Input

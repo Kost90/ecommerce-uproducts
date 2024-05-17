@@ -1,5 +1,5 @@
 "use server";
-
+import sharp from 'sharp';
 import { z } from "zod";
 import crypto from "crypto";
 import { redirect } from "next/navigation";
@@ -21,6 +21,7 @@ const generateFileName = (bytes = 32) =>
 // Initial validationg schemas
 const fileSchema = z.instanceof(File, { message: "Required" });
 
+// Инициализация схемы
 const addSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
@@ -68,8 +69,12 @@ export async function addProduct(prevState: unknown, formData: FormData) {
 
   const imageName = generateFileName();
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const fileName = await uploadFileToS3(buffer, imageName);
+  const fileBuffer = await sharp(await file.arrayBuffer())
+    .resize({ height: 1920, width: 1080, fit: "contain" })
+    .toBuffer()
+
+  // const buffer = Buffer.from(await file.arrayBuffer());
+  const fileName = await uploadFileToS3(fileBuffer, imageName);
 
   const requestData = {
     name: data.name,

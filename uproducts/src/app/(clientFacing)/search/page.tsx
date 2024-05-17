@@ -16,7 +16,7 @@ async function Search({
   return (
     <div className="flex flex-col">
       <Suspense fallback={<CardListSkeleton />}>
-        <CardsList query={query} />
+        <CardsList query={query} page={currentPage}/>
       </Suspense>
     </div>
   );

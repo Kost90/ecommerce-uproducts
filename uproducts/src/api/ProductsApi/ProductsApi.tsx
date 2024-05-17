@@ -24,12 +24,13 @@ class ProductsApi extends API {
     }
   }
 
-  async getProducts() {
+  async getProducts(page?:string) {
     const controller = new AbortController();
     const signal = controller.signal;
+    let queryParams = `?page=${page}`;
     try {
       const response = await this.fetch({
-        path: "products",
+        path: `products${queryParams}`,
         signal,
         cache: "no-store",
       });

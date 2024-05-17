@@ -12,15 +12,15 @@ export async function getAllProducts(
 ): Promise<Product[] | Product | unknown> {
   try {
     const offset = Number(req.params.page);
-    const products = await prisma.product.findMany({ skip: offset, take: 25 });
+    const products = await prisma.product.findMany({ skip: offset, take: 6 });
     const countProducts = await prisma.product.count();
     for (let product of products) {
       product.imagePath = await getProductsUrl(product.imageKey);
     }
     const result = {
-      products:products,
-      total:countProducts,
-    }
+      products: products,
+      total: countProducts,
+    };
 
     if (products !== null) {
       return res.json(result);
@@ -53,8 +53,8 @@ export async function searchProducts(
 ): Promise<Product[] | Product | unknown> {
   try {
     const name = req.params.name;
-    const product = await prisma.product.findMany({ where: { name: name }});
-    console.log(product)
+    const product = await prisma.product.findMany({ where: { name: name } });
+    console.log(product);
     if (product !== null) {
       for (let el of product) {
         el.imagePath = await getProductsUrl(el.imageKey);

@@ -1,4 +1,3 @@
-
 class API {
   protected _baseUrl: string;
 

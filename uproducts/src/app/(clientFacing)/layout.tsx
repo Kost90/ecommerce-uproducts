@@ -1,4 +1,4 @@
-import { Nav, NavLink } from "@/components/Nav";
+import { Nav, NavLink } from "@/components/NavLink/Nav";
 import Image from "next/image";
 import Logo from "../../../public/assets/Logo_Uproducts.svg";
 import StoreProvider from "./StoreProvider";

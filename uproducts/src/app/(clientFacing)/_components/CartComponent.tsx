@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { useAppSelector, useAppStore } from "@/lib/hooks";
-import { NavLink } from "@/components/Nav";
+import { NavLink } from "@/components/NavLink/Nav";
 import {
   Sheet,
   SheetClose,
@@ -30,39 +30,40 @@ function CartComponent() {
     <Sheet>
       <SheetTrigger>
         <div className="flex flex-row justify-center items-center group">
-        <ShoppingBasket className="text-slate-500 group-hover:text-primary"/>
+          <ShoppingBasket className="text-slate-500 group-hover:text-primary" />
           <span className="font-medium text-slate-500 group-hover:text-primary">
             {orders.length}
           </span>
         </div>
       </SheetTrigger>
-      <SheetDisplya/>
+      <SheetDisplya />
     </Sheet>
   );
 }
 
 // ! Передаю сюда пропсами данные из редакс стора о заказе или заказах.
-function SheetDisplya(){
-
-  return(
+function SheetDisplya() {
+  return (
     <SheetContent>
-    <SheetHeader>
-      <SheetTitle>Are you absolutely sure?</SheetTitle>
-      <SheetDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </SheetDescription>
-    </SheetHeader>
+      <SheetHeader>
+        <SheetTitle>Are you absolutely sure?</SheetTitle>
+        <SheetDescription>
+          This action cannot be undone. This will permanently delete your
+          account and remove your data from our servers.
+        </SheetDescription>
+      </SheetHeader>
 
-    {/* Сюда добавляю тело щита - все о товарах которые в корзине */}
+      {/* Сюда добавляю тело щита - все о товарах которые в корзине */}
 
-    <SheetFooter>
-      <SheetClose asChild>
-      <NavLink href="/cart"><Button>Checkout</Button></NavLink>
-      </SheetClose>
-    </SheetFooter>
-  </SheetContent>
-  )
+      <SheetFooter>
+        <SheetClose asChild>
+          <NavLink href="/cart">
+            <Button>Checkout</Button>
+          </NavLink>
+        </SheetClose>
+      </SheetFooter>
+    </SheetContent>
+  );
 }
 
 export default CartComponent;

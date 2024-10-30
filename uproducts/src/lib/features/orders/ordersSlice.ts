@@ -2,7 +2,6 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/createAppSlice";
 // import { RootState } from "@/lib/store";
 
-// TODO: думаю об интерфейсе. как добавлять в заказы по два продукты, если покупатель указал купить 2 или более. Наверно высчитывается общая стоимость заказа, а продукты складываются в массив?
 export interface IOrders {
   productId: string;
   pricePaidInCents: string;

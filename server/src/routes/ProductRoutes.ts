@@ -6,8 +6,8 @@ import {
   getSingleProduct,
   searchProducts,
   updateProduct,
-} from "../controller/ProductsController";
-import isPagination from "../midleware/paginationMidleware";
+} from "../controllers/ProductsController";
+import isPagination from "../midlewares/paginationMidleware";
 export const router = Express.Router();
 
 router.get("/", isPagination, getAllProducts);

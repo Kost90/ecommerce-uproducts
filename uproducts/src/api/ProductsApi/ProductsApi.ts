@@ -19,12 +19,15 @@ class ProductsApi extends API {
         body: JSON.stringify(product),
       });
       return response;
-    } catch (error) {
-      throw new Error(`Cant POST ${error}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to add product ${error.message}`);
+      }
+      throw new Error(`Unexpected error in AddProduct method: ${error}`);
     }
   }
 
-  async getProducts(page?:string) {
+  async getProducts(page?: string) {
     const controller = new AbortController();
     const signal = controller.signal;
     let queryParams = `?page=${page}`;
@@ -32,11 +35,14 @@ class ProductsApi extends API {
       const response = await this.fetch({
         path: `products${queryParams}`,
         signal,
-        cache: "no-store",
+        // cache: "no-store",
       });
       return response;
     } catch (error) {
-      throw new Error(`Failed to fetch data, ${error}`);
+      if (error instanceof Error) {
+        throw new Error(`Failed to get products ${error.message}`);
+      }
+      throw new Error(`Unexpected error in getProducts method: ${error}`);
     }
   }
 
@@ -50,7 +56,10 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      throw new Error(`Failed to fetch single product, ${error}`);
+      if (error instanceof Error) {
+        throw new Error(`Failed to get single product ${error.message}`);
+      }
+      throw new Error(`Unexpected error in getSingleProduct method: ${error}`);
     }
   }
 
@@ -60,13 +69,16 @@ class ProductsApi extends API {
     try {
       const response = await this.fetch({
         path: "products/update",
-        method: "PUT",
+        method: "PATCH",
         body: JSON.stringify(data),
         signal,
       });
       return response;
     } catch (error) {
-      throw new Error(`Can't update single product, ${error}`);
+      if (error instanceof Error) {
+        throw new Error(`Failed to update product ${error.message}`);
+      }
+      throw new Error(`Unexpected error in updateProduct method: ${error}`);
     }
   }
 
@@ -81,7 +93,10 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      throw new Error(`Products doesn't exists, ${error}`);
+      if (error instanceof Error) {
+        throw new Error(`Failed to search products ${error.message}`);
+      }
+      throw new Error(`Unexpected error in searchProducts method: ${error}`);
     }
   }
 
@@ -96,7 +111,10 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      throw new Error(`Can't remove product, ${error}`);
+      if (error instanceof Error) {
+        throw new Error(`Failed to remove products ${error.message}`);
+      }
+      throw new Error(`Unexpected error in removeProduct method: ${error}`);
     }
   }
 }

@@ -61,7 +61,7 @@ async function uploadFileToS3(file: any, fileName: string) {
 // Function for sending Data to Node.js Server and DB
 export async function addProduct(prevState: unknown, formData: FormData) {
   const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
-  if (result.success === false) {
+  if (!result.success) {
     return result.error.formErrors.fieldErrors;
   }
   const data = result.data;
@@ -76,7 +76,7 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   // const buffer = Buffer.from(await file.arrayBuffer());
   const fileName = await uploadFileToS3(fileBuffer, imageName);
 
-  const requestData = {
+  const body = {
     name: data.name,
     imageKey: fileName,
     imagePath: "path",
@@ -85,12 +85,12 @@ export async function addProduct(prevState: unknown, formData: FormData) {
     categories: data.categories,
   };
 
-  await ProductsApi.AddProduct(requestData);
+  await ProductsApi.AddProduct(body);
 
-  revalidatePath("/admin");
-  revalidatePath("/admin/products");
+  revalidatePath("/profile");
+  revalidatePath("/profile/products");
 
-  redirect("/admin/products");
+  redirect("/profile/products");
 }
 
 // function for Delete media from S3 AWS.
@@ -106,8 +106,7 @@ export async function deleteFileS3(key: string) {
 export async function deleteProduct(id: string, filename: string) {
   await deleteFileS3(filename);
   await ProductsApi.removeProduct(id);
-  revalidatePath("/admin/products");
-  return console.log(`Product ${id} is deleted`);
+  revalidatePath("/profile/products");
 }
 
 // SCHEMA FOR UPDATE FUNCTION
@@ -124,7 +123,7 @@ export async function updateProduct(
   formData: FormData
 ) {
   const result = editSchema.safeParse(Object.fromEntries(formData.entries()));
-  if (result.success === false) {
+  if (!result.success) {
     return result.error.formErrors.fieldErrors;
   }
 
@@ -138,7 +137,7 @@ export async function updateProduct(
 
   let FileName = "";
 
-  if (file !== undefined) {
+  if (file) {
     if (file.size > 0) {
       const product = await ProductsApi.getSingleProduct(id);
       await deleteFileS3(product.imageKey);
@@ -170,7 +169,7 @@ export async function updateProduct(
 
   await ProductsApi.updateProduct(data);
 
-  revalidatePath("/admin/products");
+  revalidatePath("/profile/products");
 
-  redirect("/admin/products");
+  redirect("/profile/products");
 }

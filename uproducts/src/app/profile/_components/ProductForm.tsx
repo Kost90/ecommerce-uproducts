@@ -10,7 +10,7 @@ import { SelectComponent } from "./Select";
 
 function ProductForm({ product }: { product?: Product | null }) {
   const [error, action] = useFormState(
-    product == null ? addProduct : updateProduct.bind(null, product.id),
+    product == null ? addProduct : updateProduct.bind(null, product.id as string),
     {}
   );
   const { pending } = useFormStatus();

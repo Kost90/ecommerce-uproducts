@@ -1,7 +1,7 @@
-import { API } from "../Api";
-import { Product } from "@/constans/typeconstans";
+import { API } from '../Api';
+import { Product } from '@/constans/typeconstans';
 
-const url = "http://localhost:3001";
+const url = 'http://localhost:3001';
 
 class ProductsApi extends API {
   constructor(baseurl: string) {
@@ -15,7 +15,7 @@ class ProductsApi extends API {
       const response = await this.fetch({
         path: `products/add`,
         signal,
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(product),
       });
       return response;
@@ -59,8 +59,13 @@ class ProductsApi extends API {
     const signal = controller.signal;
     try {
       const response = await this.fetch({
+<<<<<<< Updated upstream:uproducts/src/api/ProductsApi/ProductsApi.tsx
         path: "products/update",
         method: "PUT",
+=======
+        path: 'products/update',
+        method: 'PUT',
+>>>>>>> Stashed changes:uproducts/src/api/ProductsApi/ProductsApi.ts
         body: JSON.stringify(data),
         signal,
       });
@@ -76,7 +81,7 @@ class ProductsApi extends API {
     try {
       const response = await this.fetch({
         path: `products/search/${name}`,
-        cache: "no-store",
+        cache: 'no-store',
         signal,
       });
       return response;
@@ -91,7 +96,7 @@ class ProductsApi extends API {
     try {
       const response = await this.fetch({
         path: `products/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
         signal,
       });
       return response;

@@ -6,12 +6,12 @@ class API {
   }
 
   fetch({
-    path = "",
-    method = "GET",
+    path = '',
+    method = 'GET',
     body,
     signal,
-    headers = { "Content-Type": "application/json" },
-    cache = "default",
+    headers = { 'Content-Type': 'application/json' },
+    cache = 'default',
     ...rest
   }: {
     path: string;

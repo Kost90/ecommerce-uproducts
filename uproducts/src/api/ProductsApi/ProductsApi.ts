@@ -24,7 +24,7 @@ class ProductsApi extends API {
     }
   }
 
-  async getProducts(page?:string) {
+  async getProducts(page?: string) {
     const controller = new AbortController();
     const signal = controller.signal;
     let queryParams = `?page=${page}`;
@@ -32,7 +32,7 @@ class ProductsApi extends API {
       const response = await this.fetch({
         path: `products${queryParams}`,
         signal,
-        cache: "no-store",
+        cache: 'no-store',
       });
       return response;
     } catch (error) {
@@ -59,13 +59,8 @@ class ProductsApi extends API {
     const signal = controller.signal;
     try {
       const response = await this.fetch({
-<<<<<<< Updated upstream:uproducts/src/api/ProductsApi/ProductsApi.tsx
-        path: "products/update",
-        method: "PUT",
-=======
         path: 'products/update',
         method: 'PUT',
->>>>>>> Stashed changes:uproducts/src/api/ProductsApi/ProductsApi.ts
         body: JSON.stringify(data),
         signal,
       });

@@ -10,15 +10,7 @@ import { SelectComponent } from './Select';
 import Form from '@/components/form/Form';
 
 function ProductForm({ product }: { product?: Product | null }) {
-<<<<<<< Updated upstream
-  const [error, action] = useFormState(
-    product == null ? addProduct : updateProduct.bind(null, product.id),
-    {}
-  );
-  const { pending } = useFormStatus();
-=======
   const [error, action] = useFormState(product == null ? addProduct : updateProduct.bind(null, product.id as string), {});
->>>>>>> Stashed changes
 
   return (
     <>
@@ -41,7 +33,7 @@ function ProductForm({ product }: { product?: Product | null }) {
         <div className="space-y-2">
           <Label htmlFor="categories">Choose categories:</Label>
           <SelectComponent name="categories" defaultValue={product !== null ? product?.categories : undefined} />
-          {error?.priceInCents && <div className="text-destructive">{error?.priceInCents}</div>}
+          {error?.categories && <div className="text-destructive">{error?.categories}</div>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="description">Product description:</Label>

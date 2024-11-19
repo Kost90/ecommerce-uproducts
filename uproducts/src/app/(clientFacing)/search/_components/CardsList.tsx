@@ -1,28 +1,22 @@
-import ProductsApi from "@/api/ProductsApi/ProductsApi";
-import FlexContainer from "@/components/containers/FlexContainer";
-import { Product } from "@/constans/typeconstans";
-import React from "react";
-import CardComponent from "../../_components/Card";
-import { formatCurrency } from "@/lib/formatter";
-import PaginationSection from "./Pagination";
+import ProductsApi from '@/api/ProductsApi/ProductsApi';
+import FlexContainer from '@/components/containers/FlexContainer';
+import { Product } from '@/constans/typeconstans';
+import React from 'react';
+import CardComponent from '../../_components/Card';
+import { formatCurrency } from '@/lib/formatter';
+import PaginationSection from './Pagination';
 
 type Data = {
   products: Product[];
   total: number;
 };
 
-async function CardsList({
-  query,
-  page,
-}: {
-  query: string;
-  page: string | number;
-}) {
+async function CardsList({ query, page }: { query: string; page: string | number }) {
   let data: Data = {
     products: [],
     total: 0,
   };
-  if (query === "") {
+  if (query === '') {
     data = await ProductsApi.getProducts(page as string);
   } else {
     data.products = await ProductsApi.searchProducts(query);
@@ -45,9 +39,7 @@ async function CardsList({
           />
         ))}
       </FlexContainer>
-      {query.length === 0 ? (
-        <PaginationSection totalProducts={data.total} />
-      ) : null}
+      {query.length === 0 ? <PaginationSection totalProducts={data.total} /> : null}
     </>
   );
 }

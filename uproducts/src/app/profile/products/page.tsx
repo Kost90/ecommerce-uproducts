@@ -1,25 +1,13 @@
-import Image from "next/image";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import Title from "@/components/ui/title";
-import Link from "next/link";
-import { MoreVertical } from "lucide-react";
-import DeleteDropDownItem from "./_components/DeleteDropDownItem";
-import { formatCurrency } from "@/lib/formatter";
-import ProductsApi from "@/api/ProductsApi/ProductsApi";
+import Image from 'next/image';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import Title from '@/components/ui/title';
+import Link from 'next/link';
+import { MoreVertical } from 'lucide-react';
+import DeleteDropDownItem from './_components/DeleteDropDownItem';
+import { formatCurrency } from '@/lib/formatter';
+import ProductsApi from '@/api/ProductsApi/ProductsApi';
 
 function ProductsPage() {
   return (
@@ -27,7 +15,7 @@ function ProductsPage() {
       <div className="flex justify-between items-center gap-4">
         <Title text="Products list:" />
         <Button asChild>
-          <Link href="/admin/addproduct">Add Product</Link>
+          <Link href="/profile/addproduct">Add Product</Link>
         </Button>
       </div>
 
@@ -37,13 +25,16 @@ function ProductsPage() {
   );
 }
 
-
 // ! Добавить пагинацию для таблицы
 // Function displayed table with products data
 async function ProductsTable() {
   const data = await ProductsApi.getProducts();
 
-  if (data.products.length === 0) return <p>No products found</p>;
+  if (!data) {
+    return <p>Something went wrong</p>;
+  }
+
+  if (data && data.products.length === 0) return <p>No products found</p>;
 
   return (
     <Table>
@@ -74,7 +65,7 @@ async function ProductsTable() {
                   alt="product_image"
                   fill
                   style={{
-                    objectFit: "cover",
+                    objectFit: 'cover',
                   }}
                 />
               </div>
@@ -88,18 +79,13 @@ async function ProductsTable() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <Button asChild className="w-full my-1">
-                    <Link href={`/admin/products/${product.id}/edit`}>
-                      Edit
-                    </Link>
+                    <Link href={`/admin/products/${product.id}/edit`}>Edit</Link>
                   </Button>
 
                   {/* Dropdown for edit and Delete buttons */}
 
                   <DropdownMenuItem asChild>
-                    <DeleteDropDownItem
-                      id={product.id}
-                      filename={product.imageKey}
-                    />
+                    <DeleteDropDownItem id={product.id} filename={product.imageKey} />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

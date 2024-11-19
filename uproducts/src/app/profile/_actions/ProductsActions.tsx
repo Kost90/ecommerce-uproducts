@@ -17,11 +17,11 @@ const fileSchema = z.instanceof(File, { message: 'Required' });
 
 // Инициализация схемы
 const addSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().min(1),
-  priceInCents: z.coerce.number().int().min(1),
-  image: fileSchema.refine((file) => file.size > 0, 'Required'),
-  categories: z.string(),
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().min(1, 'Description is required'),
+  priceInCents: z.coerce.number().int().min(1, 'Price must be at least 1 cent'),
+  image: fileSchema.refine((file) => file.size > 0, 'Image file is required and cannot be empty'),
+  categories: z.string().min(1, 'At least one category is required'),
 });
 
 // Initial S3Config for S3 Bucket AWS
@@ -37,7 +37,7 @@ const s3Config: S3ClientConfig = {
 const s3 = new S3Client(s3Config);
 
 // Function for uploading photos to AWS
-async function uploadFileToS3(file: any, fileName: string) {
+async function uploadFileToS3(file: any, fileName: string): Promise<string> {
   const fileBuffer = file;
 
   const params = {
@@ -55,7 +55,7 @@ async function uploadFileToS3(file: any, fileName: string) {
 // Function for sending Data to Node.js Server and DB
 export async function addProduct(prevState: unknown, formData: FormData) {
   const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
-  if (result.success === false) {
+  if (!result.success) {
     return result.error.formErrors.fieldErrors;
   }
   const data = result.data;
@@ -70,7 +70,7 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   // const buffer = Buffer.from(await file.arrayBuffer());
   const fileName = await uploadFileToS3(fileBuffer, imageName);
 
-  const requestData = {
+  const body = {
     name: data.name,
     imageKey: fileName,
     imagePath: 'path',
@@ -79,14 +79,6 @@ export async function addProduct(prevState: unknown, formData: FormData) {
     categories: data.categories,
   };
 
-<<<<<<< Updated upstream
-  await ProductsApi.AddProduct(requestData);
-
-  revalidatePath("/admin");
-  revalidatePath("/admin/products");
-
-  redirect("/admin/products");
-=======
   const res = await ProductsApi.AddProduct(body);
 
   if (!res.ok) {
@@ -95,7 +87,6 @@ export async function addProduct(prevState: unknown, formData: FormData) {
 
   revalidatePath('/profile/products');
   redirect('/profile/products');
->>>>>>> Stashed changes
 }
 
 // function for Delete media from S3 AWS.
@@ -111,12 +102,7 @@ export async function deleteFileS3(key: string) {
 export async function deleteProduct(id: string, filename: string) {
   await deleteFileS3(filename);
   await ProductsApi.removeProduct(id);
-<<<<<<< Updated upstream
-  revalidatePath("/admin/products");
-  return console.log(`Product ${id} is deleted`);
-=======
   revalidatePath('/profile/products');
->>>>>>> Stashed changes
 }
 
 // SCHEMA FOR UPDATE FUNCTION
@@ -175,13 +161,7 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
 
   await ProductsApi.updateProduct(data);
 
-<<<<<<< Updated upstream
-  revalidatePath("/admin/products");
-
-  redirect("/admin/products");
-=======
   revalidatePath('/profile/products');
 
   redirect('/profile/products');
->>>>>>> Stashed changes
 }

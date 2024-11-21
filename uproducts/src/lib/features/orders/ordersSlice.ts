@@ -1,5 +1,5 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { createAppSlice } from "@/lib/createAppSlice";
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createAppSlice } from '@/lib/createAppSlice';
 // import { RootState } from "@/lib/store";
 
 export interface IOrders {
@@ -10,19 +10,45 @@ export interface IOrders {
   userId?: string;
 }
 
-export const initialState: IOrders[] = [];
+export interface IOrdersState {
+  ordersById: Record<string, IOrders>; // Хранение заказов по их productId
+  userOrders: Record<string, string[]>; // Сопоставление userId -> массив productId
+}
+
+export const initialState: IOrdersState = {
+  ordersById: {},
+  userOrders: {},
+};
 
 export const orderSlice = createAppSlice({
-  name: "orders",
+  name: 'orders',
   initialState,
   reducers: (create) => ({
-    initializeOrders: create.reducer(
-      (state, action: PayloadAction<IOrders>) => {
-        return { ...state, ...action.payload };
-      }
-    ),
+    initializeOrders: create.reducer((state, action: PayloadAction<IOrders[]>) => {
+      action.payload.map((order) => {
+        state.ordersById[order.productId] = order;
+        if (!state.userOrders[order.userId!]) {
+          state.userOrders[order.userId!] = [];
+        }
+        state.userOrders[order.userId!].push(order.productId);
+      });
+    }),
     addnewOrder: create.reducer((state, action: PayloadAction<IOrders>) => {
-      state.push(action.payload);
+      const order = action.payload;
+      if (order.userId) {
+        if (!state.userOrders[order.userId!]) {
+          state.userOrders[order.userId] = [];
+        }
+        state.userOrders[order.userId!].push(order.productId);
+      }
+    }),
+    removeOrder: create.reducer((state, action: PayloadAction<string>) => {
+      const productId = action.payload;
+      const order = state.ordersById[productId];
+      if (order && order.userId) {
+        state.userOrders[order.userId] = state.userOrders[order.userId].filter((id) => id !== productId);
+      }
+      delete state.ordersById[productId];
     }),
   }),
   selectors: {

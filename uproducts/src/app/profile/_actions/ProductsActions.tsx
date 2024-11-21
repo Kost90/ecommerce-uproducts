@@ -1,40 +1,35 @@
-"use server";
-
-import { z } from "zod";
-import crypto from "crypto";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-import {
-  S3Client,
-  PutObjectCommand,
-  S3ClientConfig,
-  DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
-import ProductsApi from "@/api/ProductsApi/ProductsApi";
+'use server';
+import sharp from 'sharp';
+import { z } from 'zod';
+import crypto from 'crypto';
+import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+import { S3Client, PutObjectCommand, S3ClientConfig, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import ProductsApi from '@/api/ProductsApi/ProductsApi';
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
 // Generator of random name
-const generateFileName = (bytes = 32) =>
-  crypto.randomBytes(bytes).toString("hex");
+const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
 
 // Initial validationg schemas
-const fileSchema = z.instanceof(File, { message: "Required" });
+const fileSchema = z.instanceof(File, { message: 'Required' });
 
+// Инициализация схемы
 const addSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().min(1),
-  priceInCents: z.coerce.number().int().min(1),
-  image: fileSchema.refine((file) => file.size > 0, "Required"),
-  categories: z.string(),
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().min(1, 'Description is required'),
+  priceInCents: z.coerce.number().int().min(1, 'Price must be at least 1 cent'),
+  image: fileSchema.refine((file) => file.size > 0, 'Image file is required and cannot be empty'),
+  categories: z.string().min(1, 'At least one category is required'),
 });
 
 // Initial S3Config for S3 Bucket AWS
 const s3Config: S3ClientConfig = {
   region: process.env.AWS_BUCKET_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY || "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+    accessKeyId: process.env.AWS_ACCESS_KEY || '',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
   },
 };
 
@@ -42,14 +37,14 @@ const s3Config: S3ClientConfig = {
 const s3 = new S3Client(s3Config);
 
 // Function for uploading photos to AWS
-async function uploadFileToS3(file: any, fileName: string) {
+async function uploadFileToS3(file: any, fileName: string): Promise<string> {
   const fileBuffer = file;
 
   const params = {
     Bucket: bucketName,
     Key: `${fileName}`,
     Body: fileBuffer,
-    ContentType: "image/jpg",
+    ContentType: 'image/jpg',
   };
 
   const command = new PutObjectCommand(params);
@@ -60,7 +55,7 @@ async function uploadFileToS3(file: any, fileName: string) {
 // Function for sending Data to Node.js Server and DB
 export async function addProduct(prevState: unknown, formData: FormData) {
   const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
-  if (result.success === false) {
+  if (!result.success) {
     return result.error.formErrors.fieldErrors;
   }
   const data = result.data;
@@ -68,24 +63,30 @@ export async function addProduct(prevState: unknown, formData: FormData) {
 
   const imageName = generateFileName();
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const fileName = await uploadFileToS3(buffer, imageName);
+  const fileBuffer = await sharp(await file.arrayBuffer())
+    .resize({ height: 1920, width: 1080, fit: 'contain' })
+    .toBuffer();
 
-  const requestData = {
+  // const buffer = Buffer.from(await file.arrayBuffer());
+  const fileName = await uploadFileToS3(fileBuffer, imageName);
+
+  const body = {
     name: data.name,
     imageKey: fileName,
-    imagePath: "path",
+    imagePath: 'path',
     description: data.description,
     priceInCents: data.priceInCents,
     categories: data.categories,
   };
 
-  await ProductsApi.AddProduct(requestData);
+  const res = await ProductsApi.AddProduct(body);
 
-  revalidatePath("/admin");
-  revalidatePath("/admin/products");
+  if (!res.ok) {
+    console.error(Error);
+  }
 
-  redirect("/admin/products");
+  revalidatePath('/profile/products');
+  redirect('/profile/products');
 }
 
 // function for Delete media from S3 AWS.
@@ -101,8 +102,7 @@ export async function deleteFileS3(key: string) {
 export async function deleteProduct(id: string, filename: string) {
   await deleteFileS3(filename);
   await ProductsApi.removeProduct(id);
-  revalidatePath("/admin/products");
-  return console.log(`Product ${id} is deleted`);
+  revalidatePath('/profile/products');
 }
 
 // SCHEMA FOR UPDATE FUNCTION
@@ -113,11 +113,7 @@ const editSchema = addSchema.extend({
 });
 
 // FUNCTION FOR UPDATE PRODUCT
-export async function updateProduct(
-  id: string,
-  prevState: unknown,
-  formData: FormData
-) {
+export async function updateProduct(id: string, prevState: unknown, formData: FormData) {
   const result = editSchema.safeParse(Object.fromEntries(formData.entries()));
   if (result.success === false) {
     return result.error.formErrors.fieldErrors;
@@ -131,7 +127,7 @@ export async function updateProduct(
 
   const file = data.image;
 
-  let FileName = "";
+  let FileName = '';
 
   if (file !== undefined) {
     if (file.size > 0) {
@@ -146,7 +142,7 @@ export async function updateProduct(
         description: data.description,
         priceInCents: data.priceInCents,
         imageKey: FileName,
-        imagePath: "path",
+        imagePath: 'path',
         categories: data.categories,
       };
     }
@@ -158,14 +154,14 @@ export async function updateProduct(
       description: data.description,
       priceInCents: data.priceInCents,
       imageKey: singleProduct.imageKey,
-      imagePath: "path",
+      imagePath: 'path',
       categories: data.categories,
     };
   }
 
   await ProductsApi.updateProduct(data);
 
-  revalidatePath("/admin/products");
+  revalidatePath('/profile/products');
 
-  redirect("/admin/products");
+  redirect('/profile/products');
 }

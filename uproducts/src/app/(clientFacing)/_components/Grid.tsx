@@ -1,38 +1,33 @@
-import CardComponent from "./Card";
-import { formatCurrency } from "@/lib/formatter";
-import ProductsApi from "@/api/ProductsApi/ProductsApi";
+import CardComponent from './Card';
+import { formatCurrency } from '@/lib/formatter';
+import ProductsApi from '@/api/ProductsApi/ProductsApi';
+import { Product } from '@/constans/typeconstans';
 
 async function Grid() {
   const productsApi = await ProductsApi.getProducts();
+  const firstThree = productsApi ? productsApi.products.slice(0, 3) : [];
+
+  const firstItem = firstThree[0];
+  const otherItems = firstThree.slice(1);
+
+  const renderCard = (product: Product, imageHeight: string) => (
+    <CardComponent
+      key={product.id}
+      id={product.id as string}
+      name={product.name}
+      description={product.description}
+      price={formatCurrency(product.priceInCents / 100)}
+      picture={product.imagePath as string}
+      imageHeigth={imageHeight}
+    />
+  );
 
   return (
     <>
-      <div className="flex h-full w-full lg:w-3/4">
-        {/* Remove hardcode */}
-        <CardComponent
-          name={productsApi.products[0].name}
-          description={productsApi.products[0].description}
-          price={formatCurrency(productsApi.products[0].priceInCents / 100)}
-          picture={productsApi.products[0].imagePath as string}
-          imageHeigth="w-full max-h-[500px] h-full"
-        />
-      </div>
+      <div className="flex h-full w-full lg:col-span-3">{firstItem && renderCard(firstItem, 'w-full max-h-[500px] h-full')}</div>
 
-      <div className="flex flex-col gap-4 items-center justify-center h-full w-full lg:w-1/4">
-        <CardComponent
-          name={productsApi.products[1].name}
-          description={productsApi.products[1].description}
-          price={formatCurrency(productsApi.products[1].priceInCents / 100)}
-          picture={productsApi.products[1].imagePath as string}
-          imageHeigth="w-full max-h-[300px] h-full"
-        />
-        <CardComponent
-          name={productsApi.products[2].name}
-          description={productsApi.products[2].description}
-          price={formatCurrency(productsApi.products[2].priceInCents / 100)}
-          picture={productsApi.products[2].imagePath as string}
-          imageHeigth="w-full max-h-[300px] h-full"
-        />
+      <div className="flex flex-col gap-4 items-center justify-center h-full w-full">
+        {otherItems.map((product: Product) => renderCard(product, 'w-full max-h-[300px] h-full'))}
       </div>
     </>
   );

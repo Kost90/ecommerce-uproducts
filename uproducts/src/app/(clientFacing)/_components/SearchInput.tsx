@@ -1,8 +1,8 @@
-"use client";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useDebouncedCallback } from "use-debounce";
+'use client';
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 
 function SearchInput({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();
@@ -14,12 +14,11 @@ function SearchInput({ placeholder }: { placeholder: string }) {
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
     if (term) {
-      params.set("query", term);
+      params.set('query', term);
     } else {
-      params.delete("query");
+      params.delete('query');
     }
     replace(`/search?${params.toString()}`);
-    
   }, 300);
 
   return (
@@ -31,7 +30,7 @@ function SearchInput({ placeholder }: { placeholder: string }) {
         onChange={(e) => {
           handleSearch(e.currentTarget.value);
         }}
-        defaultValue={searchParams.get("query")?.toString()}
+        defaultValue={searchParams.get('query')?.toString()}
       />
 
       <Search className="text-muted-foreground absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2" />

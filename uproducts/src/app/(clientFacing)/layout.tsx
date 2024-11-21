@@ -1,10 +1,10 @@
-import { Nav, NavLink } from "@/components/Nav";
-import Image from "next/image";
-import Logo from "../../../public/assets/Logo_Uproducts.svg";
-import StoreProvider from "./StoreProvider";
-import CartComponent from "./_components/CartComponent";
-import SearchInput from "./_components/SearchInput";
-import { Separator } from "@/components/ui/separator";
+import { Nav, NavLink } from '@/components/NavLink/Nav';
+import Image from 'next/image';
+import Logo from '../../../public/assets/Logo_Uproducts.svg';
+import StoreProvider from './StoreProvider';
+import CartComponent from './_components/CartComponent';
+import SearchInput from './_components/SearchInput';
+import { Separator } from '@/components/ui/separator';
 
 function CostumerFacingLayout({
   children,

@@ -1,8 +1,9 @@
-import { API } from "../Api";
-import { Product } from "@/constans/typeconstans";
+import { API } from '../Api';
+import { Product } from '@/constans/typeconstans';
 
-const url = "http://localhost:3001";
+const url = 'http://localhost:3001';
 
+// TODO:Make type of returns
 class ProductsApi extends API {
   constructor(baseurl: string) {
     super(baseurl);
@@ -15,7 +16,7 @@ class ProductsApi extends API {
       const response = await this.fetch({
         path: `products/add`,
         signal,
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(product),
       });
       return response;
@@ -24,7 +25,7 @@ class ProductsApi extends API {
     }
   }
 
-  async getProducts(page?:string) {
+  async getProducts(page?: string) {
     const controller = new AbortController();
     const signal = controller.signal;
     let queryParams = `?page=${page}`;
@@ -32,7 +33,7 @@ class ProductsApi extends API {
       const response = await this.fetch({
         path: `products${queryParams}`,
         signal,
-        cache: "no-store",
+        cache: 'no-store',
       });
       return response;
     } catch (error) {
@@ -59,8 +60,8 @@ class ProductsApi extends API {
     const signal = controller.signal;
     try {
       const response = await this.fetch({
-        path: "products/update",
-        method: "PUT",
+        path: 'products/update',
+        method: 'PUT',
         body: JSON.stringify(data),
         signal,
       });
@@ -76,7 +77,7 @@ class ProductsApi extends API {
     try {
       const response = await this.fetch({
         path: `products/search/${name}`,
-        cache: "no-store",
+        cache: 'no-store',
         signal,
       });
       return response;
@@ -91,7 +92,7 @@ class ProductsApi extends API {
     try {
       const response = await this.fetch({
         path: `products/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
         signal,
       });
       return response;

@@ -1,8 +1,6 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { createAppSlice } from "@/lib/createAppSlice";
-// import { RootState } from "@/lib/store";
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createAppSlice } from '@/lib/createAppSlice';
 
-// TODO: думаю об интерфейсе. как добавлять в заказы по два продукты, если покупатель указал купить 2 или более. Наверно высчитывается общая стоимость заказа, а продукты складываются в массив?
 export interface IOrders {
   productId: string;
   pricePaidInCents: string;
@@ -11,28 +9,49 @@ export interface IOrders {
   userId?: string;
 }
 
-export const initialState: IOrders[] = [];
+export interface IOrdersState {
+  ordersById: Record<string, IOrders>;
+  userOrders: Record<string, string[]>;
+}
+
+export const initialState: IOrdersState = {
+  ordersById: {},
+  userOrders: {},
+};
 
 export const orderSlice = createAppSlice({
-  name: "orders",
+  name: 'orders',
   initialState,
   reducers: (create) => ({
-    initializeOrders: create.reducer(
-      (state, action: PayloadAction<IOrders>) => {
-        return { ...state, ...action.payload };
-      }
-    ),
+    initializeOrders: create.reducer((state, action: PayloadAction<IOrders[]>) => {
+      action.payload.map((order) => {
+        state.ordersById[order.productId] = order;
+        if (!state.userOrders[order.userId!]) {
+          state.userOrders[order.userId!] = [];
+        }
+        state.userOrders[order.userId!].push(order.productId);
+      });
+    }),
     addnewOrder: create.reducer((state, action: PayloadAction<IOrders>) => {
-      state.push(action.payload);
+      const order = action.payload;
+      if (order.userId) {
+        if (!state.userOrders[order.userId!]) {
+          state.userOrders[order.userId] = [];
+        }
+        state.userOrders[order.userId!].push(order.productId);
+      }
+    }),
+    removeOrder: create.reducer((state, action: PayloadAction<string>) => {
+      const productId = action.payload;
+      const order = state.ordersById[productId];
+      if (order && order.userId) {
+        state.userOrders[order.userId] = state.userOrders[order.userId].filter((id) => id !== productId);
+      }
+      delete state.ordersById[productId];
     }),
   }),
-  selectors: {
-    selectOrders: (orders) => orders,
-  },
 });
 
 export const { initializeOrders, addnewOrder } = orderSlice.actions;
-
-export const { selectOrders } = orderSlice.selectors;
 
 export default orderSlice.reducer;

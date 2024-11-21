@@ -3,6 +3,7 @@ import { Product } from '@/constans/typeconstans';
 
 const url = 'http://localhost:3001';
 
+// TODO:Make type of returns
 class ProductsApi extends API {
   constructor(baseurl: string) {
     super(baseurl);

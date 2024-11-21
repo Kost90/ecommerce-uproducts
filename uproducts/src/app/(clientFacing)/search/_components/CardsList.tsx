@@ -29,6 +29,7 @@ async function CardsList({ query, page }: { query: string; page: string | number
       <FlexContainer>
         {data.products.map((el, i) => (
           <CardComponent
+            id={el.id as string}
             name={el.name}
             price={formatCurrency(el.priceInCents / 100)}
             description={el.description}

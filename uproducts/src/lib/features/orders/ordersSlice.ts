@@ -1,6 +1,5 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAppSlice } from '@/lib/createAppSlice';
-// import { RootState } from "@/lib/store";
 
 export interface IOrders {
   productId: string;
@@ -11,8 +10,8 @@ export interface IOrders {
 }
 
 export interface IOrdersState {
-  ordersById: Record<string, IOrders>; // Хранение заказов по их productId
-  userOrders: Record<string, string[]>; // Сопоставление userId -> массив productId
+  ordersById: Record<string, IOrders>;
+  userOrders: Record<string, string[]>;
 }
 
 export const initialState: IOrdersState = {
@@ -51,13 +50,8 @@ export const orderSlice = createAppSlice({
       delete state.ordersById[productId];
     }),
   }),
-  selectors: {
-    selectOrders: (orders) => orders,
-  },
 });
 
 export const { initializeOrders, addnewOrder } = orderSlice.actions;
-
-export const { selectOrders } = orderSlice.selectors;
 
 export default orderSlice.reducer;

@@ -2,11 +2,10 @@
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useAppDispatch } from '@/lib/hooks';
-import { useDispatch, UseDispatch } from 'react-redux';
-import { addItem } from '@/lib/features/cart/cartSlice';
-import { CartItem } from '@/lib/features/cart/types';
-import { AppDispatch } from '@/lib/store';
+import { useDispatch } from 'react-redux';
+import { addItem } from '@/lib/redux/reducers/cart/cartSlice';
+import { CartItem } from '@/lib/redux/reducers/cart/types';
+import { AppDispatch } from '@/lib/redux/store';
 import { useCallback } from 'react';
 
 interface IProps {
@@ -48,7 +47,15 @@ function CardComponent({ ...props }: IProps) {
         <CardTitle className="text-foreground">{price}</CardTitle>
         <Button
           className="bg-sky-500 rounded-lg h-8"
-          onClick={() => handelAddItem({ productId: id, productName: name, priceInCents: Number(price.replace(/[$,]/g, '')), quantity: 1 })}
+          onClick={() =>
+            handelAddItem({
+              productId: id,
+              productName: name,
+              priceInCents: Number(price.replace(/[$,]/g, '')),
+              quantity: 1,
+              picture: picture,
+            })
+          }
         >
           Add
         </Button>

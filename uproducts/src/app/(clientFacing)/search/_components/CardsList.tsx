@@ -1,9 +1,9 @@
-import ProductsApi from '@/api/ProductsApi/ProductsApi';
+import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import FlexContainer from '@/components/containers/FlexContainer';
 import { Product } from '@/constans/typeconstans';
 import React from 'react';
 import CardComponent from '../../_components/Card';
-import { formatCurrency } from '@/lib/formatter';
+import { formatCurrency } from '@/lib/helpers/formatter';
 import PaginationSection from './Pagination';
 
 type Data = {

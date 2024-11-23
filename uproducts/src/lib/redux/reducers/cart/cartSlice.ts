@@ -1,5 +1,6 @@
+'use client';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { createAppSlice } from '@/lib/createAppSlice';
+import { createAppSlice } from '@/lib/redux/createAppSlice';
 import { CartItem, CartState } from './types';
 
 export const initialState: CartState = {
@@ -13,11 +14,11 @@ export const cartSlice = createAppSlice({
   initialState,
   reducers: (create) => ({
     addItem: create.reducer((state, action: PayloadAction<CartItem>) => {
-      const { productId, productName, priceInCents, quantity = 1 } = action.payload;
+      const { productId, productName, priceInCents, quantity = 1, picture } = action.payload;
       if (state.items[productId]) {
         state.items[productId].quantity += quantity;
       } else {
-        state.items[productId] = { productId, productName, priceInCents, quantity };
+        state.items[productId] = { productId, productName, priceInCents, quantity, picture };
       }
       state.totalQuantity += quantity;
       state.totalPriceInCents += priceInCents * quantity;
@@ -52,9 +53,20 @@ export const cartSlice = createAppSlice({
       state.totalPriceInCents = 0;
       state.totalQuantity = 0;
     },
+    replaceCart: create.reducer((state, action: PayloadAction<CartState>) => {
+      const { items, totalPriceInCents, totalQuantity } = action.payload;
+
+      if (items && totalPriceInCents >= 0 && totalQuantity >= 0) {
+        state.items = items;
+        state.totalPriceInCents = totalPriceInCents;
+        state.totalQuantity = totalQuantity;
+      } else {
+        console.error('Invalid cart data received in replaceCart action.');
+      }
+    }),
   }),
 });
 
-export const { addItem, removeItem, updateItem, clearCart } = cartSlice.actions;
+export const { addItem, removeItem, updateItem, clearCart, replaceCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -3,17 +3,17 @@ import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import { useState } from 'react';
 
 function SearchInput({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const { replace } = useRouter();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('query') || '');
 
-  // ! Думаю как сделать, чтоб при нажатии на enter перелетало на страницу Search с параметрами
   const handleSearch = useDebouncedCallback((term: string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
     params.set('page', '1');
-    if (term) {
+    if (term.trim()) {
       params.set('query', term);
     } else {
       params.delete('query');
@@ -21,15 +21,19 @@ function SearchInput({ placeholder }: { placeholder: string }) {
     replace(`/search?${params.toString()}`);
   }, 300);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    setSearchTerm(value);
+    handleSearch(value);
+  };
+
   return (
     <div className="relative flex flex-shrink-0 w-full md:w-80">
       <Input
         type="text"
         placeholder={placeholder}
         className="text-black"
-        onChange={(e) => {
-          handleSearch(e.currentTarget.value);
-        }}
+        onChange={handleInputChange}
         defaultValue={searchParams.get('query')?.toString()}
       />
 

@@ -1,6 +1,6 @@
 import CardComponent from './Card';
-import { formatCurrency } from '@/lib/formatter';
-import ProductsApi from '@/api/ProductsApi/ProductsApi';
+import { formatCurrency } from '@/lib/helpers/formatter';
+import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import { Product } from '@/constans/typeconstans';
 
 async function Grid() {

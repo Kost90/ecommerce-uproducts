@@ -1,6 +1,6 @@
 import { configureStore, combineSlices, Middleware, combineReducers } from '@reduxjs/toolkit';
-import { orderSlice } from '@/lib/features/orders/ordersSlice';
-import { cartSlice } from '@/lib/features/cart/cartSlice';
+import { orderSlice } from '@/lib/redux/reducers/orders/ordersSlice';
+import { cartSlice } from '@/lib/redux/reducers/cart/cartSlice';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 // TODO:Think how make preload

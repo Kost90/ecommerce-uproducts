@@ -1,5 +1,5 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { createAppSlice } from '@/lib/createAppSlice';
+import { createAppSlice } from '@/lib/redux/createAppSlice';
 
 export interface IOrders {
   productId: string;

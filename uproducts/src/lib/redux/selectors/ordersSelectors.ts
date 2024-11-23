@@ -1,4 +1,4 @@
-import { RootState } from '@/lib/store';
+import { RootState } from '@/lib/redux/store';
 
 export const selectUserOrders = (state: RootState, userId: string) => {
   const userOrdersIds = state.orders.userOrders[userId] || [];

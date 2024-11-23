@@ -1,4 +1,4 @@
-import { API } from '../Api';
+import { API } from '@/api/Api';
 import { Product } from '@/constans/typeconstans';
 
 const url = 'http://localhost:3001';

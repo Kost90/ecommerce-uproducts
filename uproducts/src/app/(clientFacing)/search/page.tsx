@@ -14,7 +14,7 @@ async function Search({
   const currentPage = Number(searchParams?.page) || 1;
 
   return (
-    <div className="flex flex-col">
+    <div className="my-28 flex flex-col">
       <Suspense fallback={<CardListSkeleton />}>
         <CardsList query={query} page={currentPage} />
       </Suspense>

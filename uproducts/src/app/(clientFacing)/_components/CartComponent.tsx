@@ -110,7 +110,15 @@ function CartItemDetails({
       </Label>
       <p className="text-sm text-gray-700">{item.productName}</p>
       <div className="w-40 relative h-40">
-        <Image src={item.picture} alt={`picture_of_${item.productName}`} fill className="rounded-sm object-cover" />
+        <Image
+          src={item.picture}
+          alt={`picture_of_${item.productName}`}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 
+                   (max-width: 1200px) 50vw, 
+                   33vw"
+        />
       </div>
       <p className="text-sm text-gray-700">
         Price: <span className="text-black">{item.priceInCents}$</span>

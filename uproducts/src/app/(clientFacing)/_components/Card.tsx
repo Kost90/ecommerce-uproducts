@@ -21,7 +21,7 @@ interface IProps {
 function CardComponent({ ...props }: IProps) {
   const { name, price, picture, description, className, imageHeigth, id } = props;
   const dispatch = useDispatch<AppDispatch>();
-  const handelAddItem = useCallback((item: CartItem) => {
+  const handelAddItem = useCallback((item: CartItem): void => {
     dispatch(addItem(item));
   }, []);
 
@@ -31,14 +31,15 @@ function CardComponent({ ...props }: IProps) {
         <CardTitle>{name}</CardTitle>
       </CardHeader>
       <CardContent className={`flex flex-col ${imageHeigth}`}>
-        <div className={`relative ${imageHeigth}`}>
+        <div className={`relative w-full aspect-video overflow-hidden rounded-md`}>
           <Image
             src={picture}
             alt={`picture_of_${name}`}
             fill
-            style={{
-              objectFit: 'cover',
-            }}
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 
+                   (max-width: 1200px) 50vw, 
+                   33vw"
           />
         </div>
         <CardDescription>{description}</CardDescription>
@@ -46,7 +47,7 @@ function CardComponent({ ...props }: IProps) {
       <CardFooter className="flex gap-4">
         <CardTitle className="text-foreground">{price}</CardTitle>
         <Button
-          className="bg-sky-500 rounded-lg h-8"
+          className="rounded-lg h-8"
           onClick={() =>
             handelAddItem({
               productId: id,

@@ -1,5 +1,5 @@
-import ProductForm from "@/app/profile/_components/ProductForm";
-import ProductsApi from "@/api/ProductsApi/ProductsApi";
+import ProductForm from '@/app/profile/_components/ProductForm';
+import ProductsApi from '@/api/services/productsServices/ProductsApi';
 
 async function EditPage({ params: { id } }: { params: { id: string } }) {
   const product = await ProductsApi.getSingleProduct(id);

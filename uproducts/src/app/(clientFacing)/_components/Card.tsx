@@ -28,7 +28,7 @@ function CardComponent({ ...props }: IProps) {
   return (
     <Card className={`hover:border-sky-600 cursor-pointer w-full h-full flex flex-col items-start justify-around p-2 ${className}`}>
       <CardHeader>
-        <CardTitle>{name}</CardTitle>
+        <CardTitle className="capitalize">{name}</CardTitle>
       </CardHeader>
       <CardContent className={`flex flex-col ${imageHeigth}`}>
         <div className={`relative w-full aspect-video overflow-hidden rounded-md`}>

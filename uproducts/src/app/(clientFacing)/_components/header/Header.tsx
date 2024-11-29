@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { Nav, NavLink } from '@/components/NavLink/Nav';
 import React, { lazy, useEffect, useState } from 'react';
 import SearchInput from '../SearchInput';
-import CartComponent from '../CartComponent';
 import { Separator } from '@/components/ui/separator';
 import Logo from '../../../../../public/assets/Logo_Uproducts.svg';
 
@@ -27,7 +26,7 @@ function Header() {
 
   return (
     <header
-      className={`container max-w-screen-2xl fixed top-0 z-50 transition-all ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}
+      className={`container lg:max-w-full fixed top-0 z-50 transition-all right-0 left-0 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}
     >
       <Nav className="justify-between mt-3 items-center">
         <div className="flex justify-between items-center gap-3">
@@ -39,7 +38,7 @@ function Header() {
           <NavLink href="/search">All</NavLink>
           <SearchInput placeholder="Search for products name..." />
         </div>
-        <CartComponent />
+        <Cart />
       </Nav>
       <Separator />
     </header>

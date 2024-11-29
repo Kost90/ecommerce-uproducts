@@ -1,12 +1,12 @@
 import React from 'react';
-import { UseDispatch, useSelector } from 'react-redux';
-import { selectCartItems } from '@/lib/redux/selectors/cartSelectors';
+import CheckoutWrapper from '@/components/checkout/checkoutWrapper/CheckoutWrapper';
 
 function Cartpage() {
-  // const cartItems = useSelector(selectCartItems);
-
-  // console.log(cartItems);
-  return <div>Cart</div>;
+  return (
+    <div className="my-28 md:my-32 m-auto container min-h-screen">
+      <CheckoutWrapper />
+    </div>
+  );
 }
 
 export default Cartpage;

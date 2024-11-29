@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { MoreVertical } from 'lucide-react';
 import DeleteDropDownItem from './_components/DeleteDropDownItem';
 import { formatCurrency } from '@/lib/helpers/formatter';
-import ProductsApi from '@/api/ProductsApi/ProductsApi';
+import ProductsApi from '@/api/services/productsServices/ProductsApi';
 
 function ProductsPage() {
   return (

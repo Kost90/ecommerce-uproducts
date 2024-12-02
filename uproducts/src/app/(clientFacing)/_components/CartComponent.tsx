@@ -87,7 +87,7 @@ function SheetDisplya({ cartItems, totalPrice }: { cartItems: Record<'string', C
       <SheetFooter className="items-center">
         <h3 className="text-left">Total price: {totalPrice.toFixed(2)}$</h3>
         <SheetClose asChild>
-          <NavLink href="/cart">
+          <NavLink href="/checkout">
             <Button>Checkout</Button>
           </NavLink>
         </SheetClose>

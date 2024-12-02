@@ -1,10 +1,11 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAppSlice } from '@/lib/redux/createAppSlice';
+import { IAdress } from '@/lib/helpers/helpers';
 
 export interface ICostumerData {
   firstname: string;
   lastname: string;
-  deliveryAdress: string;
+  deliveryAdress: IAdress;
   phone: string;
   email: string;
 }

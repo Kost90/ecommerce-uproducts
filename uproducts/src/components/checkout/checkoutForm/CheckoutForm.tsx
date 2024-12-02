@@ -1,28 +1,63 @@
-'use client';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { memo, useCallback, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import ButtonComponent from '@/components/button/Button';
 import { Autocomplete } from '@react-google-maps/api';
 import { LocationParam } from '../checkoutWrapper/CheckoutWrapper';
 import { useDispatch } from 'react-redux';
-import { addCostumerDetails } from '@/app/(clientFacing)/cart/actions/CartActions';
+import { addCostumerDetails } from '@/app/(clientFacing)/checkout/actions/CheckoutActions';
 import { setCustomerDetails } from '@/lib/redux/reducers/orders/ordersSlice';
 import { useRouter } from 'next/navigation';
+import { parseAddress } from '@/lib/helpers/helpers';
+import { IAdress } from '@/lib/helpers/types';
+import useErrorsManageHook from '@/hooks/errorsManageHook';
+import InputCheckout from './checkoutInput/CheckoutInput';
+import { getFieldLable } from '@/lib/helpers/helpers';
 
-interface IErrors {
-  firstname?: string[];
-  lastname?: string[];
-  deliveryAdress?: string[];
-  phone?: string[];
-  email?: string[];
-  global?: string[];
+export interface IErrors {
+  firstname?: string;
+  lastname?: string;
+  deliveryAdress?: IAdress;
+  phone?: string;
+  email?: string;
 }
+
+export interface IAddressForm {
+  places: IAdress | null;
+  errors: IErrors['deliveryAdress'];
+  handlePlaceChanged: () => void;
+  autocompleteRef: React.MutableRefObject<google.maps.places.Autocomplete | null>;
+}
+
+export type AddressFields = keyof IAdress;
+export type ErrorFields = keyof IErrors;
+
+const AddressForm = memo(({ places, errors, handlePlaceChanged, autocompleteRef }: IAddressForm) => {
+  return places ? (
+    <>
+      {(['street_number', 'route', 'postal_town', 'country', 'postal_code'] as AddressFields[]).map((field, i) => (
+        <InputCheckout
+          key={field + i}
+          name={field}
+          label={getFieldLable(field)}
+          placeholder={`Enter ${getFieldLable(field)}}`}
+          defaultValue={places[field] || ''}
+          error={errors?.[field] as string}
+        />
+      ))}
+    </>
+  ) : (
+    <Autocomplete onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)} onPlaceChanged={handlePlaceChanged}>
+      <Input type="text" className="w-full" name="deliveryAdress" placeholder="Write delivery address" />
+    </Autocomplete>
+  );
+});
 
 function CheckoutForm({ onChangePlace }: { onChangePlace: (location: LocationParam) => void }) {
   const dispatch = useDispatch();
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const [erros, setErrors] = useState<IErrors>({});
+  const [places, setPlaces] = useState<IAdress | null>(null);
+  const { errors, setErrors } = useErrorsManageHook<IErrors>();
   const router = useRouter();
 
   const handlePlaceChanged = useCallback((): void => {
@@ -33,47 +68,62 @@ function CheckoutForm({ onChangePlace }: { onChangePlace: (location: LocationPar
           lat: place.geometry.location.lat(),
           lng: place.geometry.location.lng(),
         };
+
+        const addressComponents = place.address_components as google.maps.GeocoderAddressComponent[];
+        const adressPlaces = parseAddress(addressComponents);
+        setPlaces(adressPlaces);
         onChangePlace(location);
       }
     }
-  }, []);
+  }, [onChangePlace]);
 
   const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const result = await addCostumerDetails(formData);
-    if (!result.success) {
-      if (result.errors) {
-        setErrors(result.errors);
-      }
-    }
+
+    const customerData = {
+      firstname: formData.get('firstname') as string,
+      lastname: formData.get('lastname') as string,
+      phone: formData.get('phone') as string,
+      email: formData.get('email') as string,
+      deliveryAdress: {
+        street_number: formData.get('street_number') as string,
+        route: formData.get('route') as string,
+        postal_town: formData.get('postal_town') as string,
+        country: formData.get('country') as string,
+        postal_code: formData.get('postal_code') as string,
+      },
+    };
+
+    const result = await addCostumerDetails(customerData);
 
     if (result.success && result.data) {
       setErrors({});
       dispatch(setCustomerDetails(result.data));
+      // TODO:Change for something else
       router.push('/');
+    } else if (result.errors) {
+      setErrors(result.errors);
     }
   };
 
   return (
-    <form className="w-full flex justify-center flex-col gap-5" onSubmit={handelSubmit}>
-      <Label htmlFor="firstname">First name:</Label>
-      <Input type="text" className="w-full" name="firstname" placeholder="Your first name" />
-      {erros.firstname ? <span className="text-red-600">{erros.firstname}</span> : null}
-      <Label htmlFor="lastname">Last name:</Label>
-      <Input type="text" className="w-full" name="lastname" placeholder="Your last name" />
-      {erros.lastname ? <span className="text-red-600">{erros.lastname}</span> : null}
-      <Label htmlFor="deliveryAdress">Adress:</Label>
-      <Autocomplete onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)} onPlaceChanged={handlePlaceChanged}>
-        <Input type="text" className="w-full" name="deliveryAdress" placeholder="Write deliveri adress" />
-      </Autocomplete>
-      {erros.deliveryAdress ? <span className="text-red-600">{erros.deliveryAdress}</span> : null}
-      <Label htmlFor="phone">Telephone:</Label>
-      <Input type="text" className="w-full" name="phone" placeholder="phone number" />
-      {erros.phone ? <span className="text-red-600">{erros.phone}</span> : null}
-      <Label htmlFor="email">Email:</Label>
-      <Input type="text" className="w-full" name="email" placeholder="email" />
-      {erros.email ? <span className="text-red-600">{erros.email}</span> : null}
+    <form className="w-full flex flex-col gap-5" onSubmit={handelSubmit}>
+      {(['firstname', 'lastname', 'phone', 'email'] as ErrorFields[]).map((field) => (
+        <InputCheckout
+          label={field.replace('_', ' ').toUpperCase()}
+          name={field}
+          placeholder={`Enter ${field}`}
+          error={errors?.[field] as string}
+        />
+      ))}
+      <Label htmlFor="deliveryAdress">ADDRESS:</Label>
+      <AddressForm
+        places={places}
+        errors={errors.deliveryAdress}
+        handlePlaceChanged={handlePlaceChanged}
+        autocompleteRef={autocompleteRef}
+      />
       <ButtonComponent type="submit" text="Submit" className="max-w-28" />
     </form>
   );

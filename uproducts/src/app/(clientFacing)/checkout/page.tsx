@@ -3,7 +3,7 @@ import CheckoutWrapper from '@/components/checkout/checkoutWrapper/CheckoutWrapp
 
 function Cartpage() {
   return (
-    <div className="my-28 md:my-32 m-auto container min-h-screen">
+    <div className="my-28 md:my-44 m-auto container min-h-screen">
       <CheckoutWrapper />
     </div>
   );

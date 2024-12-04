@@ -53,7 +53,13 @@ const AddressForm = memo(({ places, errors, handlePlaceChanged, autocompleteRef 
   );
 });
 
-function CheckoutForm({ onChangePlace }: { onChangePlace: (location: LocationParam) => void }) {
+function CheckoutForm({
+  onChangePlace,
+  onChangeAddress,
+}: {
+  onChangePlace: (location: LocationParam) => void;
+  onChangeAddress: () => void;
+}) {
   const dispatch = useDispatch();
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [places, setPlaces] = useState<IAdress | null>(null);
@@ -101,7 +107,8 @@ function CheckoutForm({ onChangePlace }: { onChangePlace: (location: LocationPar
       setErrors({});
       dispatch(setCustomerDetails(result.data));
       // TODO:Change for something else
-      router.push('/');
+      onChangeAddress();
+      // router.push('/');
     } else if (result.errors) {
       setErrors(result.errors);
     }
@@ -109,8 +116,9 @@ function CheckoutForm({ onChangePlace }: { onChangePlace: (location: LocationPar
 
   return (
     <form className="w-full flex flex-col gap-5" onSubmit={handelSubmit}>
-      {(['firstname', 'lastname', 'phone', 'email'] as ErrorFields[]).map((field) => (
+      {(['firstname', 'lastname', 'phone', 'email'] as ErrorFields[]).map((field, i) => (
         <InputCheckout
+          key={field + i}
           label={field.replace('_', ' ').toUpperCase()}
           name={field}
           placeholder={`Enter ${field}`}

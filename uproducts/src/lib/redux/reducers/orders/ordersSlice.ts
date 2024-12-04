@@ -75,6 +75,7 @@ export const orderSlice = createAppSlice({
       }
       delete state.orders[orderNumber];
     }),
+    // TODO:Think how to make it right and save to the userOrders
     setCustomerDetails: create.reducer((state, action: PayloadAction<ICostumerData>) => {
       const customerDetails = action.payload;
       if (customerDetails) {

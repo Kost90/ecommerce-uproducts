@@ -33,3 +33,5 @@ export const getFieldLable = (field: AddressFields) => {
 
   return fileds[field] || field.replace('_', ' ');
 };
+
+export { IAdress };

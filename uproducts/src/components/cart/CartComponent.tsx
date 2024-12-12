@@ -22,7 +22,7 @@ import { CartItem, CartState } from '@/lib/redux/reducers/cart/types';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 
-function CartComponent() {
+function CartComponent(): JSX.Element {
   const { items, totalPrice } = useAppSelector(selectCartData);
   const numberOfCartItems = Object.keys(items).length;
 
@@ -54,7 +54,7 @@ function CartComponent() {
   );
 }
 
-function SheetDisplya({ cartItems, totalPrice }: { cartItems: Record<'string', CartItem>; totalPrice: number }) {
+function SheetDisplya({ cartItems, totalPrice }: { cartItems: Record<'string', CartItem>; totalPrice: number }): JSX.Element {
   const cartArray = Object.values(cartItems);
   const dispatch = useDispatch<AppDispatch>();
 

@@ -22,7 +22,7 @@ export const parseAddress = (arr: { types: string[]; long_name: string }[]): IAd
   return address;
 };
 
-export const getFieldLable = (field: AddressFields) => {
+export const getFieldLable = (field: AddressFields): string => {
   const fileds: Record<AddressFields, string> = {
     postal_code: 'Postal Code',
     route: 'Street Name',
@@ -34,4 +34,11 @@ export const getFieldLable = (field: AddressFields) => {
   return fileds[field] || field.replace('_', ' ');
 };
 
-export { IAdress };
+export const setFirstLetterUppercase = (string: string): string => {
+  const firstLetter = string[0].toUpperCase();
+  const otherLetters = string.slice(1);
+
+  return `${firstLetter}${otherLetters}`;
+};
+
+export type { IAdress };

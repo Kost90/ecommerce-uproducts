@@ -52,7 +52,7 @@ export async function getSingleProduct(
     if (!product) {
       throw new Error(`product is undefined or null`);
     }
-
+    product.imagePath = await getProductsUrl(product.imageKey);
     return res.status(200).json(product);
   } catch (error) {
     return console.error(`Can't find single product: ${error}`);

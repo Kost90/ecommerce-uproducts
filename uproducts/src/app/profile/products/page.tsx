@@ -5,11 +5,11 @@ import { Button } from '@/components/ui/button';
 import Title from '@/components/ui/title';
 import Link from 'next/link';
 import { MoreVertical } from 'lucide-react';
-import DeleteDropDownItem from './_components/DeleteDropDownItem';
+import DeleteDropDownItem from '../../../components/deleteDropDownItem/DeleteDropDownItem';
 import { formatCurrency } from '@/lib/helpers/formatter';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 
-function ProductsPage() {
+function ProductsPage(): JSX.Element {
   return (
     <>
       <div className="flex justify-between items-center gap-4">
@@ -27,7 +27,7 @@ function ProductsPage() {
 
 // ! Добавить пагинацию для таблицы
 // Function displayed table with products data
-async function ProductsTable() {
+async function ProductsTable(): Promise<JSX.Element> {
   const data = await ProductsApi.getProducts();
 
   if (!data) {

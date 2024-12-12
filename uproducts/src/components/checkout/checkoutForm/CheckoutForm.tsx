@@ -5,7 +5,7 @@ import ButtonComponent from '@/components/button/Button';
 import { Autocomplete } from '@react-google-maps/api';
 import { LocationParam } from '../checkoutWrapper/CheckoutWrapper';
 import { useDispatch } from 'react-redux';
-import { addCostumerDetails } from '@/app/(clientFacing)/checkout/actions/CheckoutActions';
+import { addCostumerDetails } from '@/app/(clientFacing)/actions/CheckoutActions';
 import { setCustomerDetails } from '@/lib/redux/reducers/orders/ordersSlice';
 import { useRouter } from 'next/navigation';
 import { parseAddress } from '@/lib/helpers/helpers';

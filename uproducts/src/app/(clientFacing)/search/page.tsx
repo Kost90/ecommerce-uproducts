@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import CardsList from './_components/CardsList';
+import CardsList from '../../../components/cardList/CardsList';
 import { CardListSkeleton } from '@/components/skeletons/CardSkeleton';
 
 async function Search({

@@ -1,11 +1,11 @@
 import StoreProvider from './StoreProvider';
-import Header from './_components/header/Header';
+import Header from '@/components/header/Header';
 
 function CostumerFacingLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): JSX.Element {
   return (
     <StoreProvider>
       <Header />

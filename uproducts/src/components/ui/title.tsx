@@ -1,8 +1,7 @@
-import { cn } from '@/lib/utils/utils';
 import React from 'react';
 
-function Title({ text }: { text: string }) {
-  return <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary my-4">{text}</h1>;
+function Title({ text }: { text: string }): React.JSX.Element {
+  return <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{text}</h1>;
 }
 
 export default Title;

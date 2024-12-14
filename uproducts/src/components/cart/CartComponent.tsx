@@ -16,11 +16,11 @@ import { ShoppingBasket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { selectCartData } from '@/lib/redux/selectors/cartSelectors';
 import { useDispatch } from 'react-redux';
-import { replaceCart, addItem, removeItem, updateItem } from '@/lib/redux/reducers/cart/cartSlice';
+import { replaceCart, removeItem, updateItem } from '@/lib/redux/reducers/cart/cartSlice';
 import { AppDispatch } from '@/lib/redux/store';
 import { CartItem, CartState } from '@/lib/redux/reducers/cart/types';
-import { Label } from '@/components/ui/label';
-import Image from 'next/image';
+import CartItemDetails from './CartItemDetails';
+import TypographyH3 from '../typography/TyphographyH3';
 
 function CartComponent(): JSX.Element {
   const { items, totalPrice } = useAppSelector(selectCartData);
@@ -28,7 +28,7 @@ function CartComponent(): JSX.Element {
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       try {
         const cartData = localStorage.getItem('cart');
         if (cartData) {
@@ -85,57 +85,18 @@ function SheetDisplya({ cartItems, totalPrice }: { cartItems: Record<'string', C
       </div>
 
       <SheetFooter className="items-center">
-        <h3 className="text-left">Total price: {totalPrice.toFixed(2)}$</h3>
+        <TypographyH3 text={`Total price: ${totalPrice.toFixed(2)}$`} />
         <SheetClose asChild>
-          <NavLink href="/checkout">
-            <Button>Checkout</Button>
-          </NavLink>
+          {cartArray.length > 0 ? (
+            <NavLink href="/checkout">
+              <Button>Checkout</Button>
+            </NavLink>
+          ) : (
+            <Button disabled>Checkout</Button>
+          )}
         </SheetClose>
       </SheetFooter>
     </SheetContent>
-  );
-}
-
-function CartItemDetails({
-  item,
-  onQuantityChange,
-}: {
-  item: CartItem;
-  onQuantityChange: (actionType: string, productId: string, quantity?: number) => void;
-}) {
-  return (
-    <div className="flex flex-col gap-2 items-start">
-      <Label htmlFor={`productName-${item.productId}`} className="text-right font-bold">
-        Product:
-      </Label>
-      <p className="text-sm text-gray-700">{item.productName}</p>
-      <div className="w-40 relative h-40">
-        <Image
-          src={item.picture}
-          alt={`picture_of_${item.productName}`}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 
-                   (max-width: 1200px) 50vw, 
-                   33vw"
-        />
-      </div>
-      <p className="text-sm text-gray-700">
-        Price: <span className="text-black">{item.priceInCents}$</span>
-      </p>
-      <div>
-        <p className="text-sm text-gray-700">
-          Quantity:{' '}
-          <button onClick={() => onQuantityChange('update', item.productId, item.quantity - 1)} className="hover:text-black text-base">
-            -
-          </button>{' '}
-          {item.quantity}{' '}
-          <button onClick={() => onQuantityChange('update', item.productId, item.quantity + 1)} className="hover:text-black text-base">
-            +
-          </button>
-        </p>
-      </div>
-    </div>
   );
 }
 

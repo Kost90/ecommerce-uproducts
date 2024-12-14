@@ -15,12 +15,12 @@ interface IProps {
   name: string;
   price: string;
   picture: string;
-  description: string;
+  description?: string;
 }
 
 function AddToBusketButton({ ...props }: IProps): React.JSX.Element {
   const { toast } = useToast();
-  const { name, price, picture, id, description } = props;
+  const { name, price, picture, id } = props;
   const dispatch = useDispatch<AppDispatch>();
   const handelAddItem = useCallback(
     (item: CartItem): void => {
@@ -34,7 +34,7 @@ function AddToBusketButton({ ...props }: IProps): React.JSX.Element {
       onClick={() => {
         toast({
           title: setFirstLetterUppercase(name),
-          description: description,
+          description: 'Added to basket',
         });
         handelAddItem({
           productId: id,

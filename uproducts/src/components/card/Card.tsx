@@ -34,7 +34,9 @@ function CardComponent({ ...props }: IProps): JSX.Element {
   );
 
   return (
-    <Card className={`hover:border-sky-600 cursor-pointer w-full h-full flex flex-col items-start justify-around p-2 ${className}`}>
+    <Card
+      className={`cursor-pointer w-full h-full flex flex-col items-start justify-around p-2 hover:shadow-md hover:shadow-slate-300 hover:scale-105 transition-all ${className}`}
+    >
       <CardHeader>
         <CardTitle className="capitalize">{name}</CardTitle>
       </CardHeader>
@@ -65,7 +67,7 @@ function CardComponent({ ...props }: IProps): JSX.Element {
           onClick={() => {
             toast({
               title: setFirstLetterUppercase(name),
-              description: description,
+              description: 'Added to the basket',
             });
             handelAddItem({
               productId: id,

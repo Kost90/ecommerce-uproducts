@@ -48,7 +48,7 @@ export const cartSlice = createAppSlice({
         }
       }
     }),
-    clearCart: (state) => {
+    clearCart: (state): void => {
       state.items = {};
       state.totalPriceInCents = 0;
       state.totalQuantity = 0;

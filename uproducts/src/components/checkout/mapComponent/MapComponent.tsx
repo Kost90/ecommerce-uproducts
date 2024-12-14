@@ -6,7 +6,7 @@ interface IMapComponentProps {
   location: LocationParam | null;
 }
 
-function MapComponent({ location }: IMapComponentProps) {
+function MapComponent({ location }: IMapComponentProps): React.JSX.Element {
   return (
     <div className="w-full h-72 md:h-96">
       <GoogleMap

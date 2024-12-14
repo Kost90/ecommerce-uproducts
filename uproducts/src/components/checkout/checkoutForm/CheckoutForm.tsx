@@ -7,12 +7,13 @@ import { LocationParam } from '../checkoutWrapper/CheckoutWrapper';
 import { useDispatch } from 'react-redux';
 import { addCostumerDetails } from '@/app/(clientFacing)/actions/CheckoutActions';
 import { setCustomerDetails } from '@/lib/redux/reducers/orders/ordersSlice';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { parseAddress } from '@/lib/helpers/helpers';
 import { IAdress } from '@/lib/helpers/types';
 import useErrorsManageHook from '@/hooks/errorsManageHook';
-import InputCheckout from './checkoutInput/CheckoutInput';
+import { InputCheckout } from './checkoutInput/CheckoutInput';
 import { getFieldLable } from '@/lib/helpers/helpers';
+import { motion } from 'motion/react';
 
 export interface IErrors {
   firstname?: string;
@@ -21,6 +22,8 @@ export interface IErrors {
   phone?: string;
   email?: string;
 }
+
+const MotionInputCompoenent = motion.create(InputCheckout);
 
 export interface IAddressForm {
   places: IAdress | null;
@@ -32,24 +35,33 @@ export interface IAddressForm {
 export type AddressFields = keyof IAdress;
 export type ErrorFields = keyof IErrors;
 
-const AddressForm = memo(({ places, errors, handlePlaceChanged, autocompleteRef }: IAddressForm) => {
-  return places ? (
+// eslint-disable-next-line react/display-name
+const AddressForm = memo(({ places, errors, handlePlaceChanged, autocompleteRef }: IAddressForm): React.JSX.Element => {
+  if (!places) {
+    return (
+      <Autocomplete onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)} onPlaceChanged={handlePlaceChanged}>
+        <Input type="text" className="w-full" name="deliveryAdress" placeholder="Write delivery address" />
+      </Autocomplete>
+    );
+  }
+
+  return (
     <>
       {(['street_number', 'route', 'postal_town', 'country', 'postal_code'] as AddressFields[]).map((field, i) => (
-        <InputCheckout
-          key={field + i}
+        <MotionInputCompoenent
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          viewport={{ once: true }}
+          key={field + i + places?.[field]}
           name={field}
           label={getFieldLable(field)}
           placeholder={`Enter ${getFieldLable(field)}}`}
           defaultValue={places[field] || ''}
-          error={errors?.[field] as string}
+          error={errors?.[field]}
         />
       ))}
     </>
-  ) : (
-    <Autocomplete onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)} onPlaceChanged={handlePlaceChanged}>
-      <Input type="text" className="w-full" name="deliveryAdress" placeholder="Write delivery address" />
-    </Autocomplete>
   );
 });
 
@@ -59,12 +71,12 @@ function CheckoutForm({
 }: {
   onChangePlace: (location: LocationParam) => void;
   onChangeAddress: () => void;
-}) {
+}): React.JSX.Element {
   const dispatch = useDispatch();
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [places, setPlaces] = useState<IAdress | null>(null);
   const { errors, setErrors } = useErrorsManageHook<IErrors>();
-  const router = useRouter();
+  // const router = useRouter();
 
   const handlePlaceChanged = useCallback((): void => {
     if (autocompleteRef.current) {
@@ -75,7 +87,7 @@ function CheckoutForm({
           lng: place.geometry.location.lng(),
         };
 
-        const addressComponents = place.address_components as google.maps.GeocoderAddressComponent[];
+        const addressComponents = place.address_components!;
         const adressPlaces = parseAddress(addressComponents);
         setPlaces(adressPlaces);
         onChangePlace(location);
@@ -83,7 +95,7 @@ function CheckoutForm({
     }
   }, [onChangePlace]);
 
-  const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handelSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget as HTMLFormElement);
 

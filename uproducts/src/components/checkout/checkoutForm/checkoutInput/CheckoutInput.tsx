@@ -12,16 +12,10 @@ interface IInput {
 
 export const InputCheckout = forwardRef<HTMLInputElement, IInput>(({ label, name, placeholder, defaultValue, error }: IInput, ref) => {
   return (
-    <div>
+    // ! ref this is for motin animation
+    <div ref={ref}>
       <Label htmlFor={name}>{label}</Label>
-      <Input
-        ref={ref} // Передаем ref сюда
-        name={name}
-        type="text"
-        placeholder={placeholder}
-        defaultValue={defaultValue}
-        className="w-full"
-      />
+      <Input name={name} type="text" placeholder={placeholder} defaultValue={defaultValue} className="w-full" />
       {error && <span className="text-red-600">{error}</span>}
     </div>
   );

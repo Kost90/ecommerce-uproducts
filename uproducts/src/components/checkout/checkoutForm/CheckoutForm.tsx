@@ -14,6 +14,7 @@ import useErrorsManageHook from '@/hooks/errorsManageHook';
 import { InputCheckout } from './checkoutInput/CheckoutInput';
 import { getFieldLable } from '@/lib/helpers/helpers';
 import { motion } from 'motion/react';
+import { animations } from '@/lib/animations/animations';
 
 export interface IErrors {
   firstname?: string;
@@ -49,16 +50,13 @@ const AddressForm = memo(({ places, errors, handlePlaceChanged, autocompleteRef 
     <>
       {(['street_number', 'route', 'postal_town', 'country', 'postal_code'] as AddressFields[]).map((field, i) => (
         <MotionInputCompoenent
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          viewport={{ once: true }}
           key={field + i + places?.[field]}
           name={field}
           label={getFieldLable(field)}
           placeholder={`Enter ${getFieldLable(field)}}`}
           defaultValue={places[field] || ''}
           error={errors?.[field]}
+          {...animations.slideUpd}
         />
       ))}
     </>
@@ -118,9 +116,7 @@ function CheckoutForm({
     if (result.success && result.data) {
       setErrors({});
       dispatch(setCustomerDetails(result.data));
-      // TODO:Change for something else
       onChangeAddress();
-      // router.push('/');
     } else if (result.errors) {
       setErrors(result.errors);
     }

@@ -4,10 +4,8 @@ import CheckoutForm from '../checkoutForm/CheckoutForm';
 import MapComponent from '../mapComponent/MapComponent';
 import { Separator } from '@/components/ui/separator';
 import { LoadScriptNext } from '@react-google-maps/api';
-// import { useAppSelector } from '@/hooks/hooks';
-// import { selectCostumerDetails } from '@/lib/redux/selectors/ordersSelectors';
-import { Button } from '@/components/ui/button';
 import TypographyH1 from '@/components/typography/TypographyH1';
+import ShowOrderDetails from '../showOrderDetails/ShowOrderDetails';
 
 export type LocationParam = {
   lat: number;
@@ -17,7 +15,6 @@ export type LocationParam = {
 const googleMapApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
 
 function CheckoutWrapper(): React.JSX.Element {
-  // const costumerDetails = useAppSelector(selectCostumerDetails);
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [deliveryAdress, setDeliveryAddress] = useState<boolean>(false);
   const [mapKey, setMapKey] = useState<number>(0);
@@ -32,17 +29,12 @@ function CheckoutWrapper(): React.JSX.Element {
   }, [deliveryAdress]);
 
   if (deliveryAdress) {
-    return (
-      <>
-        <h1>Address is set</h1>
-        <Button onClick={handelsetDeliveryAdress}>back</Button>
-      </>
-    );
+    return <ShowOrderDetails onClick={handelsetDeliveryAdress} />;
   }
 
   return (
     <LoadScriptNext googleMapsApiKey={googleMapApiKey} libraries={['places']}>
-      <div className="flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between md:h-screen gap-16">
+      <div className="flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-16">
         <div className="w-full flex justify-center flex-1 flex-col items-center gap-8">
           <TypographyH1 text="Write delivery location" />
           <CheckoutForm onChangePlace={handelChandeLocation} onChangeAddress={handelsetDeliveryAdress} />

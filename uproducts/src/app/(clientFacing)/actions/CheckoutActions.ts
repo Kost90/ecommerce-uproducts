@@ -20,6 +20,7 @@ const addCostumerDetailsSchema = z.object({
   email: z.string().email('This is not valid email'),
 });
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const addCostumerDetails = async (formData: ICostumerData) => {
   const rowsFormData = addCostumerDetailsSchema.safeParse(formData);
   if (!rowsFormData.success) {

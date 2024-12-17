@@ -58,16 +58,19 @@ function SheetDisplya({ cartItems, totalPrice }: { cartItems: Record<'string', C
   const cartArray = Object.values(cartItems);
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleClick = useCallback((actionType: string, productId: string, quantity?: number): void => {
-    switch (actionType) {
-      case 'update':
-        dispatch(updateItem({ productId: productId, quantity: quantity! }));
-        break;
-      case 'remove':
-        dispatch(removeItem(productId));
-        break;
-    }
-  }, []);
+  const handleClick = useCallback(
+    (actionType: string, productId: string, quantity?: number): void => {
+      switch (actionType) {
+        case 'update':
+          dispatch(updateItem({ productId: productId, quantity: quantity! }));
+          break;
+        case 'remove':
+          dispatch(removeItem(productId));
+          break;
+      }
+    },
+    [dispatch],
+  );
 
   return (
     <SheetContent>

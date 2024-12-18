@@ -1,6 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAppSlice } from '@/lib/redux/createAppSlice';
 import { IAdress } from '@/lib/helpers/helpers';
+import { CartItem } from '../cart/types';
 
 export interface ICostumerData {
   firstname: string;
@@ -12,18 +13,16 @@ export interface ICostumerData {
 
 export interface IOrders {
   orderNumber: string;
-  productId: string;
+  items: Omit<CartItem, 'picture'>[];
   pricePaidInCents: string;
-  productName: string;
-  amount: number;
   userId?: string;
-  costumerDetails: ICostumerData;
+  costumerDetails: ICostumerData | object;
 }
 
 export interface IOrdersState {
   orders: Record<string, IOrders>;
   userOrders: Record<string, string[]>;
-  userDetails: Partial<ICostumerData>;
+  userDetails: ICostumerData | object;
 }
 
 export const initialState: IOrdersState = {
@@ -85,9 +84,12 @@ export const orderSlice = createAppSlice({
         };
       }
     }),
+    clearCostumerDetails: (state): void => {
+      state.userDetails = {};
+    },
   }),
 });
 
-export const { initializeOrders, addnewOrder, removeOrder, setCustomerDetails } = orderSlice.actions;
+export const { initializeOrders, addnewOrder, removeOrder, setCustomerDetails, clearCostumerDetails } = orderSlice.actions;
 
 export default orderSlice.reducer;

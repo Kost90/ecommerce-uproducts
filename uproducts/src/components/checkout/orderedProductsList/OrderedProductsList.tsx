@@ -3,7 +3,8 @@ import { CartState } from '@/lib/redux/reducers/cart/types';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/lib/redux/store';
 import { removeItem, updateItem } from '@/lib/redux/reducers/cart/cartSlice';
-import CartItemDetails from '@/components/cart/CartItemDetails';
+import CartAndOrderItem from '@/components/cartAndOrderItem/CartAndOrderItem';
+import TypographyH4 from '@/components/typography/TypographyH4';
 
 interface IOrderedProductListProps {
   cartDataProp: CartState;
@@ -11,8 +12,6 @@ interface IOrderedProductListProps {
 
 function OrderedProductsList({ cartDataProp }: IOrderedProductListProps): React.JSX.Element {
   const cartArray = Object.values(cartDataProp.items);
-
-  console.log(cartArray);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleClick = useCallback(
@@ -30,10 +29,18 @@ function OrderedProductsList({ cartDataProp }: IOrderedProductListProps): React.
   );
 
   return (
-    <div>
-      {cartArray.map((item, i) => (
-        <CartItemDetails item={item} onQuantityChange={handleClick} key={`${item.productId} + ${i}`} />
-      ))}
+    <div className="flex flex-col gap-5">
+      <TypographyH4 text={'Ordered products:'} />
+      <div className="flex flex-col lg:flex-row justify-center items-center gap-5 w-full flex-grow">
+        {cartArray.map((item, i) => (
+          <CartAndOrderItem
+            item={item}
+            onQuantityChange={handleClick}
+            key={`${item.productId} + ${i}`}
+            containerStyles={'border border-slate-400 p-2 rounded-sm'}
+          />
+        ))}
+      </div>
     </div>
   );
 }

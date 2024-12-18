@@ -1,23 +1,23 @@
 import { CartItem } from '@/lib/redux/reducers/cart/types';
-import { Label } from '../ui/label';
 import { TypographyP } from '../typography/TypographyP';
 import Image from 'next/image';
 import { setFirstLetterUppercase } from '@/lib/helpers/helpers';
 
-function CartItemDetails({
+function CartAndOrderItem({
   item,
+  containerStyles,
+  imageStyles,
   onQuantityChange,
 }: {
   item: CartItem;
+  containerStyles?: string;
+  imageStyles?: string;
   onQuantityChange: (actionType: string, productId: string, quantity?: number) => void;
 }): JSX.Element {
   return (
-    <div className="flex flex-col gap-2 items-start">
-      <Label htmlFor={`productName-${item.productId}`} className="text-right font-bold">
-        Product:
-      </Label>
+    <div className={`flex flex-col gap-2 items-start ${containerStyles}`}>
       <TypographyP text={setFirstLetterUppercase(item.productName)} />
-      <div className="w-40 relative h-40">
+      <div className={`w-40 relative h-40 ${imageStyles}`}>
         <Image
           src={item.picture}
           alt={`picture_of_${item.productName}`}
@@ -47,4 +47,4 @@ function CartItemDetails({
   );
 }
 
-export default CartItemDetails;
+export default CartAndOrderItem;

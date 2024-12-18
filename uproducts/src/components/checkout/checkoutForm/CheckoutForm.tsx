@@ -7,7 +7,6 @@ import { LocationParam } from '../checkoutWrapper/CheckoutWrapper';
 import { useDispatch } from 'react-redux';
 import { addCostumerDetails } from '@/app/(clientFacing)/actions/CheckoutActions';
 import { setCustomerDetails } from '@/lib/redux/reducers/orders/ordersSlice';
-// import { useRouter } from 'next/navigation';
 import { parseAddress } from '@/lib/helpers/helpers';
 import { IAdress } from '@/lib/helpers/types';
 import useErrorsManageHook from '@/hooks/errorsManageHook';
@@ -63,18 +62,11 @@ const AddressForm = memo(({ places, errors, handlePlaceChanged, autocompleteRef 
   );
 });
 
-function CheckoutForm({
-  onChangePlace,
-  onChangeAddress,
-}: {
-  onChangePlace: (location: LocationParam) => void;
-  onChangeAddress: () => void;
-}): React.JSX.Element {
+function CheckoutForm({ onChangePlace }: { onChangePlace: (location: LocationParam) => void }): React.JSX.Element {
   const dispatch = useDispatch();
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [places, setPlaces] = useState<IAdress | null>(null);
   const { errors, setErrors } = useErrorsManageHook<IErrors>();
-  // const router = useRouter();
 
   const handlePlaceChanged = useCallback((): void => {
     if (autocompleteRef.current) {
@@ -116,7 +108,6 @@ function CheckoutForm({
     if (result.success && result.data) {
       setErrors({});
       dispatch(setCustomerDetails(result.data));
-      onChangeAddress();
     } else if (result.errors) {
       setErrors(result.errors);
     }

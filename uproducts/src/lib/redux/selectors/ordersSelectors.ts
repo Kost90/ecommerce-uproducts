@@ -11,6 +11,6 @@ export const selectOrderByProductId = (state: RootState, orderNumber: string): I
   return state.orders.orders[orderNumber];
 };
 
-export const selectCostumerDetails = (state: RootState): Partial<ICostumerData> => {
+export const selectCostumerDetails = (state: RootState): ICostumerData | object => {
   return state.orders.userDetails;
 };

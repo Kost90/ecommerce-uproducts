@@ -1,5 +1,6 @@
 import { AddressFields } from '@/components/checkout/checkoutForm/CheckoutForm';
 import { IAdress } from './types';
+import { ICostumerData } from '../redux/reducers/orders/ordersSlice';
 
 export const parseAddress = (arr: { types: string[]; long_name: string }[]): IAdress => {
   let address: IAdress = {
@@ -40,5 +41,15 @@ export const setFirstLetterUppercase = (string: string): string => {
 
   return `${firstLetter}${otherLetters}`;
 };
+
+export const formatDeliveryAddress = (address?: ICostumerData['deliveryAdress']): string | null => {
+  if (!address) return null;
+
+  const { street_number, route, postal_town, country, postal_code } = address;
+
+  return [street_number, route, postal_town, country, postal_code].filter(Boolean).join(', ');
+};
+
+export const isEmptyObject = (obj: object): boolean => Object.keys(obj).length === 0;
 
 export type { IAdress };

@@ -5,6 +5,15 @@ export const selectCartItems = (state: RootState): Record<string, CartItem> => {
   return state.cart.items;
 };
 
+export const selectCartItemsWithoutPicture = (state: RootState): Omit<CartItem, 'picture'>[] => {
+  const items = Object.values(state.cart.items);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const result = items.map(({ picture, ...itemWithoutPicture }) => itemWithoutPicture);
+
+  return result;
+};
+
 export const selectCartQuantity = (state: RootState): number => state.cart.totalQuantity;
 
 export const selectCartTotalPrice = (state: RootState): number => state.cart.totalPrice;

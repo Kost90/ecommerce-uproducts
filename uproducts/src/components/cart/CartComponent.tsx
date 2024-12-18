@@ -19,8 +19,9 @@ import { useDispatch } from 'react-redux';
 import { replaceCart, removeItem, updateItem } from '@/lib/redux/reducers/cart/cartSlice';
 import { AppDispatch } from '@/lib/redux/store';
 import { CartItem, CartState } from '@/lib/redux/reducers/cart/types';
-import CartItemDetails from './CartItemDetails';
+import CartAndOrderItem from '../cartAndOrderItem/CartAndOrderItem';
 import TypographyH3 from '../typography/TyphographyH3';
+import { Label } from '../ui/label';
 
 function CartComponent(): JSX.Element {
   const { items, totalPrice } = useAppSelector(selectCartData);
@@ -82,8 +83,13 @@ function SheetDisplya({ cartItems, totalPrice }: { cartItems: Record<'string', C
       </SheetHeader>
 
       <div className="flex flex-col items-start gap-4 my-4 overflow-y-auto max-h-96">
+        {cartArray.length !== 0 && (
+          <Label htmlFor={`products`} className="text-right font-bold">
+            Products:
+          </Label>
+        )}
         {cartArray.map((el, i) => (
-          <CartItemDetails item={el} key={el.productId + i} onQuantityChange={handleClick} />
+          <CartAndOrderItem item={el} key={el.productId + i} onQuantityChange={handleClick} />
         ))}
       </div>
 

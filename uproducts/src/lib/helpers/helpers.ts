@@ -35,6 +35,22 @@ export const getFieldLable = (field: AddressFields): string => {
   return fileds[field] || field.replace('_', ' ');
 };
 
+export const getErrorForAddresInput = (filed: string, errors: string[]): string => {
+  const word = filed.replace('_', ' ');
+  if (!Array.isArray(errors)) {
+    return '';
+  }
+  const result = errors.filter((error) => {
+    return error.toLowerCase().includes(word.toLowerCase());
+  });
+
+  if (result.length !== 0) {
+    return result[0];
+  }
+
+  return '';
+};
+
 export const setFirstLetterUppercase = (string: string): string => {
   const firstLetter = string[0].toUpperCase();
   const otherLetters = string.slice(1);

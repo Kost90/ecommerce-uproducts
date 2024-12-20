@@ -7,7 +7,7 @@ import { LocationParam } from '../checkoutWrapper/CheckoutWrapper';
 import { useDispatch } from 'react-redux';
 import { addCostumerDetails } from '@/app/(clientFacing)/actions/CheckoutActions';
 import { setCustomerDetails } from '@/lib/redux/reducers/orders/ordersSlice';
-import { parseAddress } from '@/lib/helpers/helpers';
+import { getErrorForAddresInput, parseAddress } from '@/lib/helpers/helpers';
 import { IAdress } from '@/lib/helpers/types';
 import useErrorsManageHook from '@/hooks/errorsManageHook';
 import { InputCheckout } from './checkoutInput/CheckoutInput';
@@ -18,7 +18,7 @@ import { animations } from '@/lib/animations/animations';
 export interface IErrors {
   firstname?: string;
   lastname?: string;
-  deliveryAdress?: IAdress;
+  deliveryAdress?: string[];
   phone?: string;
   email?: string;
 }
@@ -52,9 +52,9 @@ const AddressForm = memo(({ places, errors, handlePlaceChanged, autocompleteRef 
           key={field + i + places?.[field]}
           name={field}
           label={getFieldLable(field)}
-          placeholder={`Enter ${getFieldLable(field)}}`}
+          placeholder={`Enter ${getFieldLable(field)}`}
           defaultValue={places[field] || ''}
-          error={errors?.[field]}
+          error={getErrorForAddresInput(field, errors!)}
           {...animations.slideUpd}
         />
       ))}
@@ -109,6 +109,7 @@ function CheckoutForm({ onChangePlace }: { onChangePlace: (location: LocationPar
       setErrors({});
       dispatch(setCustomerDetails(result.data));
     } else if (result.errors) {
+      console.log(result.errors);
       setErrors(result.errors);
     }
   };

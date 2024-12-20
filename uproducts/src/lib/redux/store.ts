@@ -1,24 +1,54 @@
-import { configureStore, combineSlices, Middleware, combineReducers } from '@reduxjs/toolkit';
+import { configureStore, Middleware, combineReducers } from '@reduxjs/toolkit';
 import { orderSlice } from '@/lib/redux/reducers/orders/ordersSlice';
 import { cartSlice } from '@/lib/redux/reducers/cart/cartSlice';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { modalSlice } from './reducers/modal/modalSlice';
 
-// TODO:Think how make preload
-const cartMidleware: Middleware = (store) => (next) => (action: any) => {
+const cartMiddleware: Middleware = (store) => (next) => (action: any) => {
   const result = next(action);
+
   if (action.type.startsWith('cart/')) {
     const state = store.getState();
-    localStorage.setItem('cart', JSON.stringify(state.cart));
+
+    const expireInMs = 3 * 60 * 60 * 1000;
+    const expireDate = Date.now() + expireInMs;
+
+    const cartData = {
+      data: state.cart,
+      expireAt: expireDate,
+    };
+
+    localStorage.setItem('cart', JSON.stringify(cartData));
   }
+
   return result;
 };
 
-const rootReducers = combineReducers({ orders: orderSlice.reducer, cart: cartSlice.reducer });
+const loadCartFromLocalStorage = (): any => {
+  const cartItem = localStorage.getItem('cart');
+
+  if (!cartItem) return null;
+
+  const { data, expireAt } = JSON.parse(cartItem);
+
+  if (Date.now() > expireAt) {
+    localStorage.removeItem('cart');
+    return null;
+  }
+
+  return data;
+};
+
+const rootReducers = combineReducers({ orders: orderSlice.reducer, cart: cartSlice.reducer, modal: modalSlice.reducer });
 
 export const makeStore = () => {
+  const preloadedCart = loadCartFromLocalStorage();
+
   return configureStore({
     reducer: rootReducers,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(cartMidleware),
+    preloadedState: {
+      cart: preloadedCart || undefined,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(cartMiddleware),
   });
 };
 

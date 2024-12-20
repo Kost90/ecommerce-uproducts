@@ -11,6 +11,7 @@ interface IInput {
 }
 
 export const InputCheckout = forwardRef<HTMLInputElement, IInput>(({ label, name, placeholder, defaultValue, error }: IInput, ref) => {
+  console.log(error);
   return (
     // ! ref this is for motin animation
     <div ref={ref}>

@@ -33,7 +33,7 @@ async function CardsList({ query, page }: { query: string; page: string | number
             name={el.name}
             price={formatCurrency(el.priceInCents / 100)}
             description={el.description}
-            key={i}
+            key={`${el.id} + ${i}`}
             picture={el.imagePath as string}
             className="md:w-[400px] md:h-[420px] w-full h-[400px]"
             imageHeigth="w-full max-h-[250px] h-full"

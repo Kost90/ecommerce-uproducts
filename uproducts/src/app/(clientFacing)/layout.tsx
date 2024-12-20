@@ -1,4 +1,3 @@
-import StoreProvider from './StoreProvider';
 import Header from '@/components/header/Header';
 
 function CostumerFacingLayout({
@@ -7,10 +6,10 @@ function CostumerFacingLayout({
   children: React.ReactNode;
 }>): JSX.Element {
   return (
-    <StoreProvider>
+    <>
       <Header />
-      <main className="container my-6">{children}</main>
-    </StoreProvider>
+      <main className="container my-6 relative">{children}</main>
+    </>
   );
 }
 

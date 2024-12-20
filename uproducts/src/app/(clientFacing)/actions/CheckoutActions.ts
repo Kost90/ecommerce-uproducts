@@ -13,10 +13,10 @@ export const addressSchema = z.object({
 });
 
 const addCostumerDetailsSchema = z.object({
-  firstname: z.string().min(1, 'Firstname is required'),
-  lastname: z.string().min(1, 'Lastname is required'),
+  firstname: z.string().min(3, 'Firstname is required and must be at least 3 character'),
+  lastname: z.string().min(3, 'Lastname is required and must be at least 3 character'),
   deliveryAdress: addressSchema,
-  phone: z.string().regex(phoneRegex, 'Invalid phone number'),
+  phone: z.string().regex(phoneRegex, 'Invalid phone number must start from +44'),
   email: z.string().email('This is not valid email'),
 });
 

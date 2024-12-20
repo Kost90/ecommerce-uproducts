@@ -9,7 +9,7 @@ async function Search({
     query?: string;
     page?: string;
   };
-}) {
+}): Promise<JSX.Element> {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 

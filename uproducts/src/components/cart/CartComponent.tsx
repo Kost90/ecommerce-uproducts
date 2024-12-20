@@ -1,5 +1,4 @@
-'use client';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useAppSelector } from '@/hooks/hooks';
 import { NavLink } from '@/components/NavLink/Nav';
 import {
@@ -16,9 +15,9 @@ import { ShoppingBasket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { selectCartData } from '@/lib/redux/selectors/cartSelectors';
 import { useDispatch } from 'react-redux';
-import { replaceCart, removeItem, updateItem } from '@/lib/redux/reducers/cart/cartSlice';
+import { removeItem, updateItem } from '@/lib/redux/reducers/cart/cartSlice';
 import { AppDispatch } from '@/lib/redux/store';
-import { CartItem, CartState } from '@/lib/redux/reducers/cart/types';
+import { CartItem } from '@/lib/redux/reducers/cart/types';
 import CartAndOrderItem from '../cartAndOrderItem/CartAndOrderItem';
 import TypographyH3 from '../typography/TyphographyH3';
 import { Label } from '../ui/label';
@@ -26,21 +25,6 @@ import { Label } from '../ui/label';
 function CartComponent(): JSX.Element {
   const { items, totalPrice } = useAppSelector(selectCartData);
   const numberOfCartItems = Object.keys(items).length;
-
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const cartData = localStorage.getItem('cart');
-        if (cartData) {
-          const cartParsedData: CartState = JSON.parse(cartData);
-          dispatch(replaceCart(cartParsedData));
-        }
-      } catch (error) {
-        console.error('Failed to load cart from localStorage:', error);
-      }
-    }
-  }, [dispatch]);
 
   return (
     <Sheet>

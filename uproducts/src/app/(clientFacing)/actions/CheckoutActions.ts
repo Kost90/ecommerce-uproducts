@@ -5,9 +5,9 @@ import { IErrors } from '@/components/checkout/checkoutForm/CheckoutForm';
 const phoneRegex = /^\+44(\d{2}|\d{3})\d{7}$/;
 
 export const addressSchema = z.object({
-  street_number: z.string().optional(),
+  street_number: z.string().min(1, 'Number of house or name is required'),
   route: z.string().min(1, 'Street address is required'),
-  postal_town: z.string().optional(),
+  postal_town: z.string().min(3, 'Town or city is required'),
   country: z.string().min(1, 'Country is required'),
   postal_code: z.string().min(1, 'Postal code is required'),
 });

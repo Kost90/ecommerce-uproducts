@@ -109,7 +109,6 @@ function CheckoutForm({ onChangePlace }: { onChangePlace: (location: LocationPar
       setErrors({});
       dispatch(setCustomerDetails(result.data));
     } else if (result.errors) {
-      console.log(result.errors);
       setErrors(result.errors);
     }
   };

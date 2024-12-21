@@ -34,6 +34,7 @@ function CheckoutWrapper(): React.JSX.Element {
     dispatch(clearCostumerDetails());
   }, [dispatch]);
 
+  // TODO: Do I need to make ShowOrderDetails lazy loading?
   if (!isEmptyObject(costumerDetails)) {
     return <ShowOrderDetails onClick={handelsetDeliveryAdress} />;
   }

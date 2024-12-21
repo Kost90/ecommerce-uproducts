@@ -36,14 +36,27 @@ export const getFieldLable = (field: AddressFields): string => {
 };
 
 export const getErrorForAddresInput = (filed: string, errors: string[]): string => {
-  const word = filed.replace('_', ' ');
+  let word = filed.replace('_', ' ');
+
+  switch (filed) {
+    case 'route':
+      word = 'address';
+      break;
+    case 'street_number':
+      word = 'number';
+      break;
+    case 'postal_town':
+      word = 'city';
+      break;
+    default:
+      break;
+  }
   if (!Array.isArray(errors)) {
     return '';
   }
   const result = errors.filter((error) => {
     return error.toLowerCase().includes(word.toLowerCase());
   });
-
   if (result.length !== 0) {
     return result[0];
   }

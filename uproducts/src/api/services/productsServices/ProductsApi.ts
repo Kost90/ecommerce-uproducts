@@ -41,13 +41,14 @@ class ProductsApi extends API {
     }
   }
 
-  async getSingleProduct(id: string) {
+  async getSingleProduct(id: string): Promise<Product> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await this.fetch({
+      const response: Promise<Product> = await this.fetch({
         path: `products/edit/${id}`,
         signal,
+        cache: 'no-cache',
       });
       return response;
     } catch (error) {

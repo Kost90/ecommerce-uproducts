@@ -5,12 +5,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useFormState } from 'react-dom';
-import { addProduct, updateProduct } from '../_actions/ProductsActions';
-import { SelectComponent } from './Select';
+import { addProduct, updateProduct } from '../../app/profile/_actions/ProductsActions';
+import { SelectComponent } from '../selectComponent/Select';
 import Form from '@/components/form/Form';
 
-function ProductForm({ product }: { product?: Product | null }) {
-  const [error, action] = useFormState(product == null ? addProduct : updateProduct.bind(null, product.id as string), {});
+function ProductForm({ product }: { product?: Product | null }): JSX.Element {
+  const [error, action] = useFormState(product == null ? addProduct : updateProduct.bind(null, product.id!), {});
 
   return (
     <>

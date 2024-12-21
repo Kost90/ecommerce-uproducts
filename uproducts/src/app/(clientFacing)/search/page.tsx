@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import CardsList from './_components/CardsList';
+import CardsList from '../../../components/cardList/CardsList';
 import { CardListSkeleton } from '@/components/skeletons/CardSkeleton';
 
 async function Search({
@@ -9,12 +9,12 @@ async function Search({
     query?: string;
     page?: string;
   };
-}) {
+}): Promise<JSX.Element> {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 
   return (
-    <div className="flex flex-col">
+    <div className="my-28 flex flex-col">
       <Suspense fallback={<CardListSkeleton />}>
         <CardsList query={query} page={currentPage} />
       </Suspense>

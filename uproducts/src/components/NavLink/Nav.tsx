@@ -10,17 +10,17 @@ export function Nav({
 }: Readonly<{
   children: React.ReactNode;
   className?: string;
-}>) {
+}>): JSX.Element {
   return <nav className={`flex justify-center px-4 text-primary-foreground my-1 ${className}`}>{children}</nav>;
 }
 
-export function NavLink(props: Omit<ComponentProps<typeof Link>, 'className'>) {
+export function NavLink(props: Omit<ComponentProps<typeof Link>, 'className'> & { className?: string }): JSX.Element {
   const pathname = usePathname();
   return (
     <Link
       {...props}
       className={cn(
-        'p-2 text-slate-500 font-bold hover:text-primary focus-visible:text-secondary',
+        `p-2 text-slate-500 font-bold hover:text-primary focus-visible:text-secondary ${props.className}`,
         props.href === pathname && 'text-secondary-foreground',
       )}
     />

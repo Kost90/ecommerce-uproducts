@@ -6,7 +6,7 @@ import { CartItem, CartState } from './types';
 export const initialState: CartState = {
   items: {},
   totalQuantity: 0,
-  totalPriceInCents: 0,
+  totalPrice: 0,
 };
 
 export const cartSlice = createAppSlice({
@@ -21,14 +21,14 @@ export const cartSlice = createAppSlice({
         state.items[productId] = { productId, productName, priceInCents, quantity, picture };
       }
       state.totalQuantity += quantity;
-      state.totalPriceInCents += priceInCents * quantity;
+      state.totalPrice += priceInCents * quantity;
     }),
     removeItem: create.reducer((state, action: PayloadAction<string>) => {
       const productId = action.payload;
       const item = state.items[productId];
       if (item) {
         state.totalQuantity -= item.quantity;
-        state.totalPriceInCents -= item.priceInCents * item.quantity;
+        state.totalPrice -= item.priceInCents * item.quantity;
         delete state.items[productId];
       }
     }),
@@ -40,7 +40,7 @@ export const cartSlice = createAppSlice({
       if (item) {
         const diference = quantity - item.quantity;
         state.totalQuantity += diference;
-        state.totalPriceInCents += diference * item.priceInCents;
+        state.totalPrice += diference * item.priceInCents;
         item.quantity = quantity;
 
         if (item.quantity <= 0) {
@@ -48,17 +48,17 @@ export const cartSlice = createAppSlice({
         }
       }
     }),
-    clearCart: (state) => {
+    clearCart: (state): void => {
       state.items = {};
-      state.totalPriceInCents = 0;
+      state.totalPrice = 0;
       state.totalQuantity = 0;
     },
     replaceCart: create.reducer((state, action: PayloadAction<CartState>) => {
-      const { items, totalPriceInCents, totalQuantity } = action.payload;
+      const { items, totalPrice, totalQuantity } = action.payload;
 
-      if (items && totalPriceInCents >= 0 && totalQuantity >= 0) {
+      if (items && totalPrice >= 0 && totalQuantity >= 0) {
         state.items = items;
-        state.totalPriceInCents = totalPriceInCents;
+        state.totalPrice = totalPrice;
         state.totalQuantity = totalQuantity;
       } else {
         console.error('Invalid cart data received in replaceCart action.');

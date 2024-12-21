@@ -1,11 +1,11 @@
 'use client';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { useState } from 'react';
 
-function SearchInput({ placeholder }: { placeholder: string }) {
+function SearchInput({ placeholder }: { placeholder: string }): JSX.Element {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('query') || '');
@@ -21,14 +21,14 @@ function SearchInput({ placeholder }: { placeholder: string }) {
     replace(`/search?${params.toString()}`);
   }, 300);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.currentTarget.value;
     setSearchTerm(value);
     handleSearch(value);
   };
 
   return (
-    <div className="relative flex flex-shrink-0 w-full md:w-80">
+    <div className="relative flex w-full md:w-80">
       <Input
         type="text"
         placeholder={placeholder}

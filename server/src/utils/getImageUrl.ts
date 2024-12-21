@@ -17,17 +17,23 @@ const s3Config: S3ClientConfig = {
 //S3 client instance
 const s3: any = new S3Client(s3Config);
 
-export async function getProductsUrl(key: string) {
-  const params = {
-    Bucket: bucketName,
-    Key: key,
-  };
+export async function getProductsUrl(key: string): Promise<string> {
+  try {
+    const params = {
+      Bucket: bucketName,
+      Key: key,
+    };
 
-  const command: any = new GetObjectCommand(params);
-  const seconds = 60;
-  const url = await getSignedUrl(s3, command, { expiresIn: seconds });
+    const command: any = new GetObjectCommand(params);
+    const seconds = 60;
+    const url = await getSignedUrl(s3, command, { expiresIn: seconds });
 
-  console.log(url);
+    if (!url) {
+      throw new Error(`Can't fetch product url`);
+    }
 
-  return url;
+    return url;
+  } catch (error) {
+    throw new Error(`Error in getProductsUrl function: ${error}`);
+  }
 }

@@ -1,19 +1,19 @@
-import CardComponent from './Card';
+import CardComponent from '../card/Card';
 import { formatCurrency } from '@/lib/helpers/formatter';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import { Product } from '@/constans/typeconstans';
 
-async function Grid() {
+async function Grid(): Promise<JSX.Element> {
   const productsApi = await ProductsApi.getProducts();
   const firstThree = productsApi ? productsApi.products.slice(0, 3) : [];
 
   const firstItem = firstThree[0];
   const otherItems = firstThree.slice(1);
 
-  const renderCard = (product: Product, imageHeight: string) => (
+  const renderCard = (product: Product, imageHeight: string): JSX.Element => (
     <CardComponent
       key={product.id}
-      id={product.id as string}
+      id={product.id!}
       name={product.name}
       description={product.description}
       price={formatCurrency(product.priceInCents / 100)}

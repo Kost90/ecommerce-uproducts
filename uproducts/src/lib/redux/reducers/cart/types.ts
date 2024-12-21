@@ -9,7 +9,7 @@ export interface CartItem {
 export interface CartState {
   items: Record<string, CartItem>;
   totalQuantity: number;
-  totalPriceInCents: number;
+  totalPrice: number;
   discountInCents?: number;
   taxInCents?: number;
 }

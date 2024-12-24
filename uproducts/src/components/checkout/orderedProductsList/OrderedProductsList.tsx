@@ -41,6 +41,7 @@ function OrderedProductsList({ cartDataProp }: IOrderedProductListProps): React.
           />
         ))}
       </div>
+      <TypographyH4 text={`Total price: ${cartDataProp.totalPrice}$`} />
     </div>
   );
 }

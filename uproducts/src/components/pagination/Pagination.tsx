@@ -13,13 +13,13 @@ import { useEffect, useState } from 'react';
 
 const pageNumbers: number[] = [];
 
-function PaginationSection({ totalProducts }: { totalProducts: number }) {
+function PaginationSection({ totalProducts }: { totalProducts: number }): JSX.Element {
   const [isClient, setIsClient] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
 
-  const createPageURL = (pageNumber: number | string) => {
+  const createPageURL = (pageNumber: number | string): string => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', pageNumber.toString());
     return `${pathname}?${params.toString()}`;
@@ -33,7 +33,7 @@ function PaginationSection({ totalProducts }: { totalProducts: number }) {
       }
     }
     setIsClient(true);
-  }, [currentPage, isClient]);
+  }, [currentPage, isClient, totalProducts]);
 
   return (
     <>

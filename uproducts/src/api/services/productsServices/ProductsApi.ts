@@ -1,5 +1,5 @@
 import { API } from '@/api/Api';
-import { Product } from '@/constans/typeconstans';
+import { Product, IProductsResponse } from '@/constans/typeconstans';
 
 const url = 'http://localhost:3001';
 
@@ -25,12 +25,12 @@ class ProductsApi extends API {
     }
   }
 
-  async getProducts(page?: string) {
+  async getProducts(page?: string): Promise<IProductsResponse> {
     const controller = new AbortController();
     const signal = controller.signal;
-    let queryParams = `?page=${page}`;
+    const queryParams = `?page=${page}`;
     try {
-      const response = await this.fetch({
+      const response: IProductsResponse = await this.fetch({
         path: `products${queryParams}`,
         signal,
         cache: 'no-store',

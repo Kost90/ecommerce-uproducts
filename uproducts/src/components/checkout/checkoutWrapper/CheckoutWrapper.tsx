@@ -5,12 +5,12 @@ import MapComponent from '../mapComponent/MapComponent';
 import { Separator } from '@/components/ui/separator';
 import { LoadScriptNext } from '@react-google-maps/api';
 import TypographyH1 from '@/components/typography/TypographyH1';
-import ShowOrderDetails from '../showOrderDetails/ShowOrderDetails';
 import { selectCostumerDetails } from '@/lib/redux/selectors/ordersSelectors';
 import { useAppSelector } from '@/hooks/hooks';
 import { isEmptyObject } from '@/lib/helpers/helpers';
 import { clearCostumerDetails } from '@/lib/redux/reducers/orders/ordersSlice';
 import { useDispatch } from 'react-redux';
+import dynamic from 'next/dynamic';
 
 export type LocationParam = {
   lat: number;
@@ -23,7 +23,7 @@ function CheckoutWrapper(): React.JSX.Element {
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const dispatch = useDispatch();
   const [mapKey, setMapKey] = useState<number>(0);
-  const costumerDetails = useAppSelector(selectCostumerDetails);
+  const customerDetails = useAppSelector(selectCostumerDetails);
 
   const handelChandeLocation = useCallback((newlocation: LocationParam) => {
     setLocation(newlocation);
@@ -34,9 +34,9 @@ function CheckoutWrapper(): React.JSX.Element {
     dispatch(clearCostumerDetails());
   }, [dispatch]);
 
-  // TODO: Do I need to make ShowOrderDetails lazy loading?
-  if (!isEmptyObject(costumerDetails)) {
-    return <ShowOrderDetails onClick={handelsetDeliveryAdress} />;
+  if (!isEmptyObject(customerDetails)) {
+    const LazyShowOrderDetails = dynamic(() => import('../showOrderDetails/ShowOrderDetails'), { ssr: false });
+    return <LazyShowOrderDetails onClick={handelsetDeliveryAdress} />;
   }
 
   return (

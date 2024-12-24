@@ -8,3 +8,8 @@ export type Product = {
   categories: string;
   total?: number;
 };
+
+export interface IProductsResponse {
+  products: Product[];
+  total: number;
+}

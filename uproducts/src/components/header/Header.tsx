@@ -35,7 +35,7 @@ function Header(): React.JSX.Element {
               <Image src={Logo} alt="logo" fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
             </div>
           </NavLink>
-          <NavLink href="/search" className="hidden md:block">
+          <NavLink href="/search" className="block">
             All
           </NavLink>
           <SearchInput placeholder="Search..." />

@@ -7,11 +7,11 @@ import { LocationParam } from '../checkoutWrapper/CheckoutWrapper';
 import { useDispatch } from 'react-redux';
 import { addCostumerDetails } from '@/app/(clientFacing)/actions/CheckoutActions';
 import { setCustomerDetails } from '@/lib/redux/reducers/orders/ordersSlice';
-import { getErrorForAddresInput, parseAddress } from '@/lib/helpers/helpers';
-import { IAdress } from '@/lib/helpers/types';
+import { getErrorForAddresInput, parseAddress } from '@/helpers/helpers';
+import { IAdress } from '@/helpers/types';
 import useErrorsManageHook from '@/hooks/errorsManageHook';
 import { InputCheckout } from './checkoutInput/CheckoutInput';
-import { getFieldLable } from '@/lib/helpers/helpers';
+import { getFieldLable } from '@/helpers/helpers';
 import { motion } from 'motion/react';
 import { animations } from '@/lib/animations/animations';
 

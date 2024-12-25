@@ -8,7 +8,7 @@ import { useCallback } from 'react';
 import { Button } from '../ui/button';
 import { TypographyP } from '../typography/TypographyP';
 import { useToast } from '@/hooks/use-toast';
-import { setFirstLetterUppercase } from '@/lib/helpers/helpers';
+import { setFirstLetterUppercase } from '@/helpers/helpers';
 
 interface IProps {
   id: string;

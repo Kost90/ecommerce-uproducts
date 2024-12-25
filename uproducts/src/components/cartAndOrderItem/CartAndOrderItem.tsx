@@ -1,7 +1,7 @@
 import { CartItem } from '@/lib/redux/reducers/cart/types';
 import { TypographyP } from '../typography/TypographyP';
 import Image from 'next/image';
-import { setFirstLetterUppercase } from '@/lib/helpers/helpers';
+import { setFirstLetterUppercase } from '@/helpers/helpers';
 
 function CartAndOrderItem({
   item,

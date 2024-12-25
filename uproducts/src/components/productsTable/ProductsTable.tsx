@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/lib/helpers/formatter';
+import { formatCurrency } from '@/helpers/formatter';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import Image from 'next/image';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';

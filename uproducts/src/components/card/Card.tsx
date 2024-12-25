@@ -10,7 +10,7 @@ import { AppDispatch } from '@/lib/redux/store';
 import { useCallback } from 'react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
-import { setFirstLetterUppercase } from '@/lib/helpers/helpers';
+import { setFirstLetterUppercase } from '@/helpers/helpers';
 
 interface IProps {
   id: string;

@@ -7,7 +7,7 @@ import { LoadScriptNext } from '@react-google-maps/api';
 import TypographyH1 from '@/components/typography/TypographyH1';
 import { selectCostumerDetails } from '@/lib/redux/selectors/ordersSelectors';
 import { useAppSelector } from '@/hooks/hooks';
-import { isEmptyObject } from '@/lib/helpers/helpers';
+import { isEmptyObject } from '@/helpers/helpers';
 import { clearCostumerDetails } from '@/lib/redux/reducers/orders/ordersSlice';
 import { useDispatch } from 'react-redux';
 import dynamic from 'next/dynamic';

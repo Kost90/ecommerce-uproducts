@@ -54,7 +54,7 @@ function ShowOrderDetails({ onClick }: { onClick: () => void }): React.JSX.Eleme
           <CostumerDetailsList costumerDetails={costumerDetails} />
           <OrderedProductsList cartDataProp={cartData} />
         </div>
-        <div className="flex items-center gap-16">
+        <div className="flex items-center gap-16 flex-wrap">
           <Button onClick={onClick} className="min-w-32">
             Change details
           </Button>

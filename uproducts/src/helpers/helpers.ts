@@ -1,6 +1,6 @@
 import { AddressFields } from '@/components/checkout/checkoutForm/CheckoutForm';
 import { IAdress } from './types';
-import { ICostumerData } from '../redux/reducers/orders/ordersSlice';
+import { ICostumerData } from '../lib/redux/reducers/orders/ordersSlice';
 
 export const parseAddress = (arr: { types: string[]; long_name: string }[]): IAdress => {
   let address: IAdress = {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isValidPassword } from './lib/helpers/isValidpassword';
+import { isValidPassword } from './helpers/isValidpassword';
 
 // Middleware for take accese to the admin route
 export default async function Middleware(req: NextRequest) {

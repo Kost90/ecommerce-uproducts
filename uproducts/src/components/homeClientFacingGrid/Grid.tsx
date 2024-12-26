@@ -1,5 +1,5 @@
 import CardComponent from '../card/Card';
-import { formatCurrency } from '@/lib/helpers/formatter';
+import { formatCurrency } from '@/helpers/formatter';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import { Product } from '@/constans/typeconstans';
 

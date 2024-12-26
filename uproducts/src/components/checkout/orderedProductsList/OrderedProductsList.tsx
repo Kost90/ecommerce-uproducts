@@ -31,7 +31,7 @@ function OrderedProductsList({ cartDataProp }: IOrderedProductListProps): React.
   return (
     <div className="flex flex-col gap-5">
       <TypographyH4 text={'Ordered products:'} />
-      <div className="flex flex-col lg:flex-row justify-center items-center gap-5 w-full flex-grow">
+      <div className="flex flex-col lg:flex-row justify-center items-center gap-5 w-full flex-grow flex-wrap">
         {cartArray.map((item, i) => (
           <CartAndOrderItem
             item={item}
@@ -41,6 +41,7 @@ function OrderedProductsList({ cartDataProp }: IOrderedProductListProps): React.
           />
         ))}
       </div>
+      <TypographyH4 text={`Total price: ${cartDataProp.totalPrice}$`} />
     </div>
   );
 }

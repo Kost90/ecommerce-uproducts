@@ -1,6 +1,6 @@
 import TypographyH4 from '@/components/typography/TypographyH4';
 import { ICostumerData } from '@/lib/redux/reducers/orders/ordersSlice';
-import { formatDeliveryAddress } from '@/lib/helpers/helpers';
+import { formatDeliveryAddress } from '@/helpers/helpers';
 
 interface ICostumerDetailsListProps {
   costumerDetails: Partial<ICostumerData>;

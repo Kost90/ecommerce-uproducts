@@ -1,9 +1,8 @@
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import FlexContainer from '@/components/containers/FlexContainer';
 import { Product } from '@/constans/typeconstans';
-import React from 'react';
 import CardComponent from '../card/Card';
-import { formatCurrency } from '@/lib/helpers/formatter';
+import { formatCurrency } from '@/helpers/formatter';
 import PaginationSection from '../pagination/Pagination';
 
 type Data = {
@@ -11,12 +10,24 @@ type Data = {
   total: number;
 };
 
-async function CardsList({ query, page }: { query: string; page: string | number }): Promise<React.JSX.Element> {
+async function CardsList({
+  query,
+  page,
+  category,
+}: {
+  query: string;
+  page: string | number;
+  category?: string;
+}): Promise<React.JSX.Element> {
   let data: Data = {
     products: [],
     total: 0,
   };
-  if (query === '') {
+
+  // TODO: Make refactor
+  if (query === '' && category) {
+    data = await ProductsApi.getProductsByCategory(category, page as string);
+  } else if (query === '' && !category) {
     data = await ProductsApi.getProducts(page as string);
   } else {
     data.products = await ProductsApi.searchProducts(query);

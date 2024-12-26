@@ -1,4 +1,4 @@
-import React from 'react';
+'use client';
 import CostumerDetailsList from '../costumerDetaillsList/CostumerDetailsList';
 import { selectCostumerDetails } from '@/lib/redux/selectors/ordersSelectors';
 import { selectCartData, selectCartItemsWithoutPicture } from '@/lib/redux/selectors/cartSelectors';
@@ -11,6 +11,8 @@ import { useDispatch } from 'react-redux';
 import { clearCart } from '@/lib/redux/reducers/cart/cartSlice';
 import { openModal } from '@/lib/redux/reducers/modal/modalSlice';
 import Link from 'next/link';
+import { useState } from 'react';
+import AdminLoading from '@/app/profile/loading';
 
 function ShowOrderDetails({ onClick }: { onClick: () => void }): React.JSX.Element {
   const dispatch = useDispatch();
@@ -18,7 +20,13 @@ function ShowOrderDetails({ onClick }: { onClick: () => void }): React.JSX.Eleme
   const cartData = useAppSelector(selectCartData);
   const cartDataWithouPicture = useAppSelector(selectCartItemsWithoutPicture);
 
-  const handelAddOrder = (): void => {
+  // ! just for showing loader, in production change for real request
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handelAddOrder = async (): Promise<void> => {
+    setIsLoading(true);
+    // ! just for showing loader
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     const randomPart = Math.floor(1000 + Math.random() * 9000);
     const orderNumber = `ORD-${Date.now()}-${randomPart}`;
     const order = {
@@ -30,8 +38,14 @@ function ShowOrderDetails({ onClick }: { onClick: () => void }): React.JSX.Eleme
 
     dispatch(addnewOrder(order));
     dispatch(clearCart());
+    setIsLoading(false);
     dispatch(openModal({ componentProps: { title: 'Thank you for your order', text: `your order number is: ${order.orderNumber}` } }));
   };
+
+  if (isLoading) {
+    return <AdminLoading />;
+  }
+
   return (
     <>
       <TypographyH2 text="Costumer details and delivery address:" />
@@ -40,7 +54,7 @@ function ShowOrderDetails({ onClick }: { onClick: () => void }): React.JSX.Eleme
           <CostumerDetailsList costumerDetails={costumerDetails} />
           <OrderedProductsList cartDataProp={cartData} />
         </div>
-        <div className="flex items-center gap-16">
+        <div className="flex items-center gap-16 flex-wrap">
           <Button onClick={onClick} className="min-w-32">
             Change details
           </Button>

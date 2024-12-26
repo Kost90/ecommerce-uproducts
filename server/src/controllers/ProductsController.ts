@@ -41,6 +41,48 @@ export async function getAllProducts(
   }
 }
 
+export async function getProductsByCategory(
+  req: Request,
+  res: Response
+): Promise<Product[] | Product | unknown> {
+  try {
+    const { category } = req.params;
+    if (!category) {
+      throw new Error(`category param is undefined or null`);
+    }
+    const limit = 6;
+    const page = Number(req.query.page) || 1;
+    const offset = (page - 1) * limit;
+    const [products, countProducts] = await Promise.all([
+      prisma.product.findMany({
+        where: { categories: category.toLocaleLowerCase() },
+        skip: offset,
+        take: limit,
+      }),
+      prisma.product.count({
+        where: { categories: category.toLocaleLowerCase() },
+      }),
+    ]);
+
+    if (!products) {
+      throw new Error(`Products is undefined or null`);
+    }
+    for (const product of products) {
+      product.imagePath = await getProductsUrl(product.imageKey);
+    }
+    const result = {
+      products: products,
+      total: countProducts,
+    };
+
+    return res.status(200).json(result);
+  } catch (error) {
+    throw new Error(
+      `Error in ProductsController method getAllProducts: ${error}`
+    );
+  }
+}
+
 // FUNCTION FOR GET SINGLE PRODUCT
 export async function getSingleProduct(
   req: Request,

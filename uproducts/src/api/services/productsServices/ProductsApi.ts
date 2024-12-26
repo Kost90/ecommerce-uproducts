@@ -9,7 +9,7 @@ class ProductsApi extends API {
     super(baseurl);
   }
 
-  async AddProduct(product: Product) {
+  async AddProduct(product: Product): Promise<unknown> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
@@ -56,11 +56,11 @@ class ProductsApi extends API {
     }
   }
 
-  async updateProduct(data: Product) {
+  async updateProduct(data: Product): Promise<Product> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await this.fetch({
+      const response: Product = await this.fetch({
         path: 'products/update',
         method: 'PUT',
         body: JSON.stringify(data),
@@ -72,12 +72,28 @@ class ProductsApi extends API {
     }
   }
 
-  async searchProducts(name: string) {
+  async searchProducts(name: string): Promise<Product | Product[]> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await this.fetch({
+      const response: Product | Product[] = await this.fetch({
         path: `products/search/${name}`,
+        cache: 'no-store',
+        signal,
+      });
+      return response;
+    } catch (error) {
+      throw new Error(`Products doesn't exists, ${error}`);
+    }
+  }
+
+  async getProductsByCategory(category: string, page: string): Promise<IProductsResponse> {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const queryParams = `?page=${page}`;
+    try {
+      const response: IProductsResponse = await this.fetch({
+        path: `products/${category}${queryParams}`,
         cache: 'no-store',
         signal,
       });

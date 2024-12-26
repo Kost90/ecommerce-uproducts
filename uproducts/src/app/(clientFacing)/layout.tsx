@@ -1,4 +1,5 @@
 import Header from '@/components/header/Header';
+import SideMenu from '@/components/sideMenu/SideMenu';
 
 function CostumerFacingLayout({
   children,
@@ -6,10 +7,13 @@ function CostumerFacingLayout({
   children: React.ReactNode;
 }>): JSX.Element {
   return (
-    <>
+    <div className="relative">
       <Header />
-      <main className="container my-6 relative">{children}</main>
-    </>
+      <div className="flex mt-24 h-screen-minus-header">
+        <SideMenu />
+        <main className="container relative w-full mx-auto my-0 overflow-y-auto">{children}</main>
+      </div>
+    </div>
   );
 }
 

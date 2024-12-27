@@ -14,10 +14,12 @@ function page({
 }): React.JSX.Element {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
+  const category = params.category;
+
   return (
     <div className="my-28 flex flex-col">
       <Suspense fallback={<CardListSkeleton />}>
-        <CardsList query={query} page={currentPage} category={params.category} />
+        <CardsList query={query} page={currentPage} category={category} />
       </Suspense>
     </div>
   );

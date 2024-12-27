@@ -10,8 +10,8 @@ class API {
     method = 'GET',
     body,
     signal,
-    headers = { 'Content-Type': 'application/json' },
-    cache = 'default',
+    headers = { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' },
+    cache = 'no-store',
     ...rest
   }: {
     path: string;

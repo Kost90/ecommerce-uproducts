@@ -5,11 +5,16 @@ import React, { lazy, useEffect, useState } from 'react';
 import SearchInput from '@/components/searchInput/SearchInput';
 import { Separator } from '@/components/ui/separator';
 import Logo from '../../../public/assets/Logo_Uproducts.svg';
+import MobileNavigationMenu from '../mobileNavigationMenu/MobileNavigationMenu';
+import { Menu, X } from 'lucide-react';
+import { motion } from 'motion/react';
+import { animations } from '@/lib/animations/animations';
 
 const Cart = lazy(() => import('@/components/cart/CartComponent'));
 
 function Header(): React.JSX.Element {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const handelScroll = (): void => {
@@ -23,6 +28,10 @@ function Header(): React.JSX.Element {
       window.removeEventListener('scroll', handelScroll);
     };
   }, []);
+
+  const toggleMenu = (): void => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <header
@@ -40,7 +49,28 @@ function Header(): React.JSX.Element {
           </NavLink>
           <SearchInput placeholder="Search..." />
         </div>
-        <Cart />
+        <div className="flex items-center gap-3">
+          <motion.button
+            onClick={toggleMenu}
+            className="lg:hidden focus:outline-none"
+            aria-label="Toggle menu"
+            variants={animations.iconRotation}
+            initial="initial"
+            animate={isOpen ? 'animateOpen' : 'animateClosed'}
+          >
+            {isOpen ? (
+              <motion.div variants={animations.iconAppear} initial="initial" animate="animate">
+                <X className="w-6 h-6 text-slate-500" />
+              </motion.div>
+            ) : (
+              <motion.div variants={animations.iconAppear} initial="initial" animate="animate">
+                <Menu className="w-6 h-6 text-slate-500" />
+              </motion.div>
+            )}
+          </motion.button>
+          <Cart />
+        </div>
+        <MobileNavigationMenu isOpen={isOpen} onClick={toggleMenu} />
       </Nav>
       <Separator />
     </header>

@@ -13,7 +13,7 @@ function SideMenu(): React.JSX.Element {
       <div className="flex justify-between items-start h-full w-full">
         <div className="flex flex-col w-full justify-center items-start p-10 gap-10">
           {categoryArr.map((el, i) => (
-            <SideMenuItem key={`${i} + ${el}`} item={setFirstLetterUppercase(el)} />
+            <SideMenuItem key={`${i} + ${el}`} item={setFirstLetterUppercase(el)} className={'font-bold'} />
           ))}
         </div>
         <Separator orientation="vertical" />

@@ -5,11 +5,14 @@ import React, { lazy, useEffect, useState } from 'react';
 import SearchInput from '@/components/searchInput/SearchInput';
 import { Separator } from '@/components/ui/separator';
 import Logo from '../../../public/assets/Logo_Uproducts.svg';
+import MobileNavigationMenu from '../mobileNavigationMenu/MobileNavigationMenu';
+import HamburgerIcon from '../hamburgerIcon/HamburgerIcon';
 
 const Cart = lazy(() => import('@/components/cart/CartComponent'));
 
 function Header(): React.JSX.Element {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const handelScroll = (): void => {
@@ -23,6 +26,10 @@ function Header(): React.JSX.Element {
       window.removeEventListener('scroll', handelScroll);
     };
   }, []);
+
+  const toggleMenu = (): void => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <header
@@ -40,7 +47,11 @@ function Header(): React.JSX.Element {
           </NavLink>
           <SearchInput placeholder="Search..." />
         </div>
-        <Cart />
+        <div className="flex items-center gap-3">
+          <HamburgerIcon isOpen={isOpen} toggle={toggleMenu} />
+          <Cart />
+        </div>
+        <MobileNavigationMenu isOpen={isOpen} onClick={toggleMenu} />
       </Nav>
       <Separator />
     </header>

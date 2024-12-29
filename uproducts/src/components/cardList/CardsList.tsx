@@ -10,48 +10,43 @@ type Data = {
   total: number;
 };
 
-async function CardsList({
-  query,
-  page,
-  category,
-}: {
-  query: string;
-  page: string | number;
-  category?: string;
-}): Promise<React.JSX.Element> {
-  let data: Data = {
-    products: [],
-    total: 0,
-  };
-
-  // TODO: Make refactor
-  if (query === '' && category) {
-    data = await ProductsApi.getProductsByCategory(category, page as string);
-  } else if (query === '' && !category) {
-    data = await ProductsApi.getProducts(page as string);
-  } else {
-    data.products = await ProductsApi.searchProducts(query);
+async function fetchProducts(query: string, page: number, category?: string): Promise<Data> {
+  if (query) {
+    const products = await ProductsApi.searchProducts(query);
+    return { products, total: products.length };
   }
 
-  if (data.products.length === 0) return <p>No products found</p>;
+  if (category) {
+    return await ProductsApi.getProductsByCategory(category, page.toString());
+  }
+
+  return await ProductsApi.getProducts(page.toString());
+}
+
+async function CardsList({ query, page, category }: { query: string; page: number; category?: string }): Promise<JSX.Element> {
+  const data = await fetchProducts(query, page, category);
+
+  if (data.products.length === 0) {
+    return <p className="text-center text-gray-600">No products found</p>;
+  }
 
   return (
     <>
       <FlexContainer>
-        {data.products.map((el, i) => (
+        {data.products.map((product) => (
           <CardComponent
-            id={el.id!}
-            name={el.name}
-            price={formatCurrency(el.priceInCents / 100)}
-            description={el.description}
-            key={`${el.id} + ${i}`}
-            picture={el.imagePath as string}
+            key={product.id}
+            id={product.id!}
+            name={product.name}
+            price={formatCurrency(product.priceInCents / 100)}
+            description={product.description}
+            picture={(product.imagePath as string) || ''}
             className="md:w-[400px] md:h-[420px] w-full h-[400px]"
             imageHeigth="w-full max-h-[250px] h-full"
           />
         ))}
       </FlexContainer>
-      {query.length === 0 ? <PaginationSection totalProducts={data.total} /> : null}
+      {!query && <PaginationSection totalProducts={data.total} />}
     </>
   );
 }

@@ -9,15 +9,18 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { useSearchParams, usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
-const pageNumbers: number[] = [];
+import { useEffect, useState, useMemo } from 'react';
 
 function PaginationSection({ totalProducts }: { totalProducts: number }): JSX.Element {
   const [isClient, setIsClient] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
+
+  const pageNumbers = useMemo(() => {
+    const pages = Math.ceil(totalProducts / 6);
+    return Array.from({ length: pages }, (_, index) => index + 1);
+  }, [totalProducts]);
 
   const createPageURL = (pageNumber: number | string): string => {
     const params = new URLSearchParams(searchParams.toString());
@@ -26,14 +29,8 @@ function PaginationSection({ totalProducts }: { totalProducts: number }): JSX.El
   };
 
   useEffect(() => {
-    if (pageNumbers.length === 0) {
-      setIsClient(true);
-      for (let i = 1; i <= Math.ceil(totalProducts / 6); i++) {
-        pageNumbers.push(i);
-      }
-    }
     setIsClient(true);
-  }, [currentPage, isClient, totalProducts]);
+  }, []);
 
   return (
     <>

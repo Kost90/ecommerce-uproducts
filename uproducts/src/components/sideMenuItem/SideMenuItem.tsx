@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import { TypographyLead } from '../typography/TypographyLead';
+import { TypographyMuted } from '../typography/TypographyMuted';
 
-function SideMenuItem({ item }: { item: string }): React.JSX.Element {
+function SideMenuItem({ item, className, toggleMenu }: { item: string; className?: string; toggleMenu?: () => void }): React.JSX.Element {
   return (
     <div>
-      <Link href={`/${item}`}>
-        <TypographyLead text={item} />
+      <Link href={`/${item}`} onClick={toggleMenu}>
+        <TypographyMuted text={item} className={className} />
       </Link>
     </div>
   );

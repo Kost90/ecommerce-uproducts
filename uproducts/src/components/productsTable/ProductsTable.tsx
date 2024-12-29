@@ -7,7 +7,7 @@ import Link from 'next/link';
 import DeleteDropDownItem from '../deleteDropDownItem/DeleteDropDownItem';
 import { Button } from '../ui/button';
 import { Product, IProductsResponse } from '@/constans/typeconstans';
-import PaginationSection from '../pagination/Pagination';
+// import PaginationSection from '../pagination/Pagination';
 
 async function ProductsTable({ data }: { data: IProductsResponse }): Promise<JSX.Element> {
   // Todo:Catch error with toaster
@@ -72,7 +72,7 @@ async function ProductsTable({ data }: { data: IProductsResponse }): Promise<JSX
           ))}
         </TableBody>
       </Table>
-      {data.products.length > 0 && <PaginationSection totalProducts={data.total} />}
+      {/* {data.products.length > 0 && <PaginationSection totalProducts={data.total} />} */}
     </>
   );
 }

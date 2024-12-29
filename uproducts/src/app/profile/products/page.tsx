@@ -9,9 +9,11 @@ interface Props {
 function ProductsPage({ searchParams }: Props): JSX.Element {
   const page = searchParams.page || '1';
   return (
-    <Suspense fallback={<AdminLoading />}>
-      <ProductsTableWrapper page={page} />
-    </Suspense>
+    <>
+      <Suspense fallback={<AdminLoading />}>
+        <ProductsTableWrapper page={page} />
+      </Suspense>
+    </>
   );
 }
 

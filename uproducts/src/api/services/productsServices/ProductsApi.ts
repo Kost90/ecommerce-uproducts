@@ -33,7 +33,6 @@ class ProductsApi extends API {
       const response: IProductsResponse = await this.fetch({
         path: `products${queryParams}`,
         signal,
-        cache: 'no-store',
       });
       return response;
     } catch (error) {
@@ -48,7 +47,6 @@ class ProductsApi extends API {
       const response: Promise<Product> = await this.fetch({
         path: `products/edit/${id}`,
         signal,
-        cache: 'no-cache',
       });
       return response;
     } catch (error) {
@@ -72,13 +70,12 @@ class ProductsApi extends API {
     }
   }
 
-  async searchProducts(name: string): Promise<Product | Product[]> {
+  async searchProducts(name: string): Promise<Product[]> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response: Product | Product[] = await this.fetch({
+      const response: Product[] = await this.fetch({
         path: `products/search/${name}`,
-        cache: 'no-store',
         signal,
       });
       return response;
@@ -94,7 +91,6 @@ class ProductsApi extends API {
     try {
       const response: IProductsResponse = await this.fetch({
         path: `products/${category}${queryParams}`,
-        cache: 'no-store',
         signal,
       });
       return response;

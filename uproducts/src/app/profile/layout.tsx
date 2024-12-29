@@ -15,7 +15,7 @@ function AdminRootLayout({
           <NavLink href="/profile/addproduct">Add product</NavLink>
         </Nav>
       </header>
-      <div className="container my-6">{children}</div>
+      <div className="container my-6 overflow-y-auto min-h-screen">{children}</div>
     </>
   );
 }

@@ -4,6 +4,7 @@ import ProductsTable from '../productsTable/ProductsTable';
 import { Button } from '../ui/button';
 import TypographyH1 from '../typography/TypographyH1';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
+import PaginationSection from '../pagination/Pagination';
 
 async function ProductsTableWrapper({ page }: { page: string }): Promise<React.JSX.Element> {
   const data = await ProductsApi.getProducts(page as string);
@@ -17,6 +18,8 @@ async function ProductsTableWrapper({ page }: { page: string }): Promise<React.J
       </div>
 
       <ProductsTable data={data} />
+
+      <PaginationSection totalProducts={data.total} />
     </>
   );
 }

@@ -31,7 +31,7 @@ function OrderedProductsList({ cartDataProp }: IOrderedProductListProps): React.
   return (
     <div className="flex flex-col gap-5">
       <TypographyH4 text={'Ordered products:'} />
-      <div className="flex flex-col lg:flex-row justify-center items-center gap-5 w-full flex-grow flex-wrap">
+      <div className="flex flex-col lg:flex-row justify-start items-center gap-5 w-full flex-grow md:flex-wrap lg:max-w-lg overflow-y-auto overflow-hidden max-h-96">
         {cartArray.map((item, i) => (
           <CartAndOrderItem
             item={item}

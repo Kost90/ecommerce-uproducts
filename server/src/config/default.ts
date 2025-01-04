@@ -1,13 +1,29 @@
-import dotenv from "dotenv";
-import { ServerConfig } from "../types/types";
+import dotenv from 'dotenv';
+import { ServerConfig } from '../types/types';
 dotenv.config();
 
 interface IConfig {
-    server:ServerConfig;
+  server: ServerConfig;
+  apiAuth: {
+    key: string;
+    name: string;
+  };
 }
 
-export const config:IConfig = {
-    server:{
-        port:parseInt(process.env.PORT || "3001", 10),
-    }
+function getEnvVar(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Environment variable ${name} is not defined`);
+  }
+  return value;
 }
+
+export const config: IConfig = {
+  server: {
+    port: parseInt(process.env.PORT || '3001', 10),
+  },
+  apiAuth: {
+    key: getEnvVar('API_KEY'),
+    name: getEnvVar('API_NAME'),
+  },
+};

@@ -1,4 +1,4 @@
-import Express from "express";
+import Express from 'express';
 import {
   getAllProducts,
   creatProduct,
@@ -7,13 +7,14 @@ import {
   searchProducts,
   updateProduct,
   getProductsByCategory,
-} from "../controllers/ProductsController";
+} from '../controllers/ProductsController';
+import { AuthenticationMiddleware } from '../midlewares/authenticationMidleware';
 export const router = Express.Router();
 
-router.get("/", getAllProducts);
-router.get("/:category", getProductsByCategory);
-router.get("/edit/:id", getSingleProduct);
-router.get("/search/:name", searchProducts);
-router.put("/update", updateProduct);
-router.post("/add", creatProduct);
-router.delete("/:id", removeProduct);
+router.get('/', AuthenticationMiddleware.verifyApiKey, getAllProducts);
+router.get('/:category', getProductsByCategory);
+router.get('/edit/:id', getSingleProduct);
+router.get('/search/:name', searchProducts);
+router.put('/update', updateProduct);
+router.post('/add', creatProduct);
+router.delete('/:id', removeProduct);

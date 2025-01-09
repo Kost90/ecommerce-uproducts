@@ -1,7 +1,7 @@
 import { matchedData, validationResult } from 'express-validator';
 import { Request } from 'express';
 
-class ValidationHelper {
+export class ValidationHelper {
   static checkForNullOrUndefined(variable: any, errorMessage: string = 'Not handled variable'): void {
     if (variable === null || variable === undefined) {
       throw new Error(errorMessage + ' is null or undefined');
@@ -28,5 +28,3 @@ class ValidationHelper {
     return passwordRegex.test(password);
   }
 }
-
-module.exports = ValidationHelper;

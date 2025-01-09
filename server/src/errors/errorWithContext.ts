@@ -4,12 +4,14 @@ class ErrorWithContext extends Error {
   isValidation: boolean;
 
   constructor(context: { [key: string]: string }, message: string, statusCode: number, isValidation = false) {
-    super();
-    this.context = context;
-    this.context.type = 'context';
-    this.message = message;
-    this.statusCode = statusCode;
+    super(message);
+    this.context = context || {};
+    this.statusCode = statusCode || 500;
     this.isValidation = isValidation;
+
+    this.name = this.constructor.name;
+
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 

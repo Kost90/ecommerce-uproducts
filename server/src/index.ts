@@ -1,9 +1,11 @@
+import './types/express';
 import express, { Express } from 'express';
 import http from 'http';
 import cors from 'cors';
 import { router as productRoutes } from './routes/ProductRoutes';
 import { config } from './config/default';
 import getLogger from './utils/logger';
+import responseMiddleware from './midlewares/responseMiddleware';
 import errorHandlingMiddleware from './midlewares/errorHandlingMidleware';
 
 const { port } = config.server;
@@ -15,7 +17,9 @@ app.use(cors());
 app.use(express.json());
 const server = http.createServer(app);
 
+app.use(responseMiddleware);
 app.use('/products', productRoutes);
+
 app.use(errorHandlingMiddleware);
 
 server.listen(port, () => {

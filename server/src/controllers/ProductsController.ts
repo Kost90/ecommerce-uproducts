@@ -1,50 +1,49 @@
-import { PrismaClient } from "@prisma/client";
-import { Product } from "@prisma/client";
-import { Response, Request } from "express";
-import { getProductsUrl } from "../utils/getImageUrl";
+import { PrismaClient } from '@prisma/client';
+import { Product } from '@prisma/client';
+import { Response, Request } from 'express';
+import { getProductsUrl } from '../utils/getImageUrl';
+import ProductsService from '../services/productsService';
+import { config } from '../config/default';
+import { ValidationHelper } from '../helpers/validationHelper';
+import HttpCodesHelper from '../helpers/httpCodeHelper';
+import ErrorWithContext from '../errors/errorWithContext';
 
 const prisma = new PrismaClient();
 
-// Function for get All products
-export async function getAllProducts(
-  req: Request,
-  res: Response
-): Promise<Product[] | Product | unknown> {
-  try {
-    const limit = 6;
-    const page = Number(req.query.page) || 1;
-    const offset = (page - 1) * limit;
-    const [products, countProducts] = await Promise.all([
-      prisma.product.findMany({
-        skip: offset,
-        take: limit,
-      }),
-      prisma.product.count(),
-    ]);
+class ProductsController {
+  private productsService: ProductsService;
+  constructor(productsService: ProductsService) {
+    this.productsService = productsService;
+  }
 
-    if (!products) {
-      throw new Error(`Products is undefined or null`);
-    }
-    for (const product of products) {
-      product.imagePath = await getProductsUrl(product.imageKey);
-    }
-    const result = {
-      products: products,
-      total: countProducts,
-    };
+  public async getAllProducts(req: Request, res: Response): Promise<Product[] | unknown> {
+    try {
+      const matchedData = req?.matchedData;
 
-    return res.status(200).json(result);
-  } catch (error) {
-    throw new Error(
-      `Error in ProductsController method getAllProducts: ${error}`
-    );
+      ValidationHelper.checkForNullOrUndefined(matchedData.page, `${this.constructor.name}.getAllProducts: matchedData`);
+
+      const limit = config.limits.products.paginationsLimit;
+      const page = Number(matchedData.page) || 1;
+      const offset = (page - 1) * limit;
+
+      const { products, total } = await this.productsService.getAllProducts({
+        offset: offset,
+        limit: limit,
+      });
+
+      const result = {
+        products: products,
+        total: total,
+      };
+
+      return res.success(result, HttpCodesHelper.OK, 'Products fetched successfully');
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in ProductsController method getAllProducts: ${error}`, HttpCodesHelper.BAD);
+    }
   }
 }
 
-export async function getProductsByCategory(
-  req: Request,
-  res: Response
-): Promise<Product[] | Product | unknown> {
+export async function getProductsByCategory(req: Request, res: Response): Promise<Product[] | Product | unknown> {
   try {
     const { category } = req.params;
     if (!category) {
@@ -77,17 +76,12 @@ export async function getProductsByCategory(
 
     return res.status(200).json(result);
   } catch (error) {
-    throw new Error(
-      `Error in ProductsController method getAllProducts: ${error}`
-    );
+    throw new Error(`Error in ProductsController method getAllProducts: ${error}`);
   }
 }
 
 // FUNCTION FOR GET SINGLE PRODUCT
-export async function getSingleProduct(
-  req: Request,
-  res: Response
-): Promise<Product | unknown> {
+export async function getSingleProduct(req: Request, res: Response): Promise<Product | unknown> {
   try {
     const id = req.params.id;
     const product = await prisma.product.findUnique({ where: { id: id } });
@@ -102,10 +96,7 @@ export async function getSingleProduct(
 }
 
 // FUNCTION FOR SEARCH PRODUCTS BY NAME
-export async function searchProducts(
-  req: Request,
-  res: Response
-): Promise<Product[] | Product | unknown> {
+export async function searchProducts(req: Request, res: Response): Promise<Product[] | Product | unknown> {
   try {
     const name = req.params.name;
     const lowercaseProductName = name.toLowerCase();
@@ -129,17 +120,14 @@ export async function searchProducts(
 }
 
 // FUNCTION FOR POST NEW PRODUCT TO THE S3 BUCKET AND DB
-export async function creatProduct(
-  req: Request,
-  res: Response
-): Promise<Response | void> {
+export async function creatProduct(req: Request, res: Response): Promise<Response | void> {
   try {
-    const { name, imagePath, description, priceInCents, imageKey, categories } =
-      req.body;
-    const lowerCaseName = name.toLowerCase();
+    // TODO: take all from matchedData
+    const { name, imagePath, description, priceInCents, imageKey, categories } = req.body;
+    // const lowerCaseName = name.toLowerCase();
     const result = await prisma.product.create({
       data: {
-        name: lowerCaseName,
+        name: name,
         imagePath: imagePath,
         imageKey: imageKey,
         description: description,
@@ -154,20 +142,9 @@ export async function creatProduct(
 }
 
 // Update function
-export async function updateProduct(
-  req: Request,
-  res: Response
-): Promise<Response | void> {
+export async function updateProduct(req: Request, res: Response): Promise<Response | void> {
   try {
-    const {
-      id,
-      name,
-      description,
-      priceInCents,
-      imageKey,
-      imagePath,
-      categories,
-    } = req.body;
+    const { id, name, description, priceInCents, imageKey, imagePath, categories } = req.body;
     const lowerCaseName = name.toLowerCase();
     const updatedProduct = await prisma.product.update({
       where: { id: id },
@@ -191,11 +168,10 @@ export async function updateProduct(
 }
 
 // Remove function
-export async function removeProduct(
-  req: Request,
-  res: Response
-): Promise<Response | void> {
+export async function removeProduct(req: Request, res: Response): Promise<Response | void> {
   const id = req.params.id;
   const result = await prisma.product.delete({ where: { id: id } });
   return res.json(result);
 }
+
+export default ProductsController;

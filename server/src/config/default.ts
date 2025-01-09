@@ -8,6 +8,11 @@ interface IConfig {
     key: string;
     name: string;
   };
+  limits: {
+    products: {
+      paginationsLimit: number;
+    };
+  };
 }
 
 function getEnvVar(name: string): string {
@@ -25,5 +30,10 @@ export const config: IConfig = {
   apiAuth: {
     key: getEnvVar('API_KEY'),
     name: getEnvVar('API_NAME'),
+  },
+  limits: {
+    products: {
+      paginationsLimit: parseInt(getEnvVar('PRODUCTS_PER_PAGE')),
+    },
   },
 };

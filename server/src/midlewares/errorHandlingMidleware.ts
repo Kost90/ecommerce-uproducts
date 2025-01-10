@@ -8,13 +8,13 @@ const errorHandlingMiddleware: ErrorRequestHandler = (err: Error | ErrorWithCont
 
   if (err instanceof ErrorWithContext) {
     if (err.isValidation) {
-      errorHandler.validation(err.message, err.statusCode, res);
+      return errorHandler.validation(err.message, err.statusCode, res);
     } else {
-      errorHandler.standard(err, err.statusCode, res);
+      return errorHandler.standard(err, err.statusCode, res);
     }
   }
 
-  errorHandler.standard(err, HttpCodesHelper.SERVER_ERROR, res);
+  return errorHandler.standard(err, HttpCodesHelper.SERVER_ERROR, res);
 };
 
 export default errorHandlingMiddleware;

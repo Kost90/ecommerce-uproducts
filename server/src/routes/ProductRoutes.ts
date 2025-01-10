@@ -1,12 +1,5 @@
-import Express from 'express';
-import {
-  creatProduct,
-  removeProduct,
-  getSingleProduct,
-  searchProducts,
-  updateProduct,
-  getProductsByCategory,
-} from '../controllers/productsController';
+import Express, { Request, Response, NextFunction } from 'express';
+import { creatProduct, removeProduct, getSingleProduct, searchProducts, updateProduct } from '../controllers/productsController';
 import { AuthenticationMiddleware } from '../midlewares/authenticationMidleware';
 import RequestMiddleware from '../midlewares/requestMidleware';
 import ProductsValidator from '../validators/products';
@@ -19,13 +12,15 @@ const injectionService = new InjectionService(prisma);
 export const router = Express.Router();
 const productsController = new ProductsController(injectionService.getProductsService());
 
-router.get('/', AuthenticationMiddleware.verifyApiKey, RequestMiddleware.validateRequest, productsController.getAllProducts);
+router.get('/', AuthenticationMiddleware.verifyApiKey, RequestMiddleware.validateRequest, (req, res, next) =>
+  productsController.getAllProducts(req, res, next),
+);
 router.get(
-  '/:category',
+  '/category/:category',
   AuthenticationMiddleware.verifyApiKey,
-  ProductsValidator.getProductsByCategory,
+  ProductsValidator.getProductsByCategory(),
   RequestMiddleware.validateRequest,
-  getProductsByCategory,
+  (req: Request, res: Response, next: NextFunction) => productsController.getProductsByCategory(req, res, next),
 );
 router.get('/edit/:id', getSingleProduct);
 router.get('/search/:name', searchProducts);

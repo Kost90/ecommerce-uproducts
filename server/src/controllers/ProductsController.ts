@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Product } from '@prisma/client';
-import { Response, Request } from 'express';
+import { Response, Request, NextFunction } from 'express';
 import { getProductsUrl } from '../utils/getImageUrl';
 import ProductsService from '../services/productsService';
 import { config } from '../config/default';
@@ -16,11 +16,11 @@ class ProductsController {
     this.productsService = productsService;
   }
 
-  public async getAllProducts(req: Request, res: Response): Promise<Product[] | unknown> {
+  public async getAllProducts(req: Request, res: Response, next: NextFunction): Promise<Product[] | unknown> {
     try {
       const matchedData = req?.matchedData;
 
-      ValidationHelper.checkForNullOrUndefined(matchedData.page, `${this.constructor.name}.getAllProducts: matchedData`);
+      ValidationHelper.checkForNullOrUndefined(matchedData, `matchedData`);
 
       const limit = config.limits.products.paginationsLimit;
       const page = Number(matchedData.page) || 1;
@@ -38,86 +38,69 @@ class ProductsController {
 
       return res.success(result, HttpCodesHelper.OK, 'Products fetched successfully');
     } catch (error) {
-      throw new ErrorWithContext({}, `Error in ProductsController method getAllProducts: ${error}`, HttpCodesHelper.BAD);
+      next(new ErrorWithContext({}, `Error in ProductsController method getAllProducts: ${error}`, HttpCodesHelper.BAD));
+    }
+  }
+
+  public async getProductsByCategory(req: Request, res: Response, next: NextFunction): Promise<Product[] | Product | unknown> {
+    try {
+      const { category, page = 1 } = req?.matchedData;
+      ValidationHelper.checkForNullOrUndefined(category, 'category params');
+
+      const limit = config.limits.products.paginationsLimit;
+      const offset = (page - 1) * limit;
+
+      const { products, total } = await this.productsService.getProductsByCategory({
+        offset: offset,
+        limit: limit,
+        category,
+      });
+
+      const result = {
+        products: products,
+        total: total,
+      };
+
+      return res.success(result, HttpCodesHelper.OK, 'Products by category fetched successfully');
+    } catch (error) {
+      next(new ErrorWithContext({}, `Error in ProductsController method getProductsByCategory: ${error}`, HttpCodesHelper.BAD));
+    }
+  }
+
+  public async getSingleProduct(req: Request, res: Response, next: NextFunction): Promise<Product | unknown> {
+    try {
+      const { id } = req.matchedData;
+      ValidationHelper.checkForNullOrUndefined(id, 'id');
+
+      const product = await this.productsService.findProductById(id);
+
+      ValidationHelper.checkForNullOrUndefined(product, 'product');
+
+      return res.success(product, HttpCodesHelper.OK, 'Product by id fetched successfully');
+    } catch (error) {
+      next(new ErrorWithContext({}, `Error in ProductsController method getSingleProduct: ${error}`, HttpCodesHelper.BAD));
+    }
+  }
+
+  public async serchByProductName(req: Request, res: Response, next: NextFunction): Promise<Product | Product[] | unknown> {
+    try {
+      const { name } = req.matchedData;
+      ValidationHelper.checkForNullOrUndefined(name, 'name');
+
+      const { products, total } = await this.productsService.serchByProductName(name);
+
+      const result = {
+        products: products,
+        total: total,
+      };
+
+      return res.success(result, HttpCodesHelper.OK, 'Products by name fetched successfully');
+    } catch (error) {
+      next(new ErrorWithContext({}, `Error in ProductsController method serchByProductName: ${error}`, HttpCodesHelper.BAD));
     }
   }
 }
 
-export async function getProductsByCategory(req: Request, res: Response): Promise<Product[] | Product | unknown> {
-  try {
-    const { category } = req.params;
-    if (!category) {
-      throw new Error(`category param is undefined or null`);
-    }
-    const limit = 6;
-    const page = Number(req.query.page) || 1;
-    const offset = (page - 1) * limit;
-    const [products, countProducts] = await Promise.all([
-      prisma.product.findMany({
-        where: { categories: category.toLocaleLowerCase() },
-        skip: offset,
-        take: limit,
-      }),
-      prisma.product.count({
-        where: { categories: category.toLocaleLowerCase() },
-      }),
-    ]);
-
-    if (!products) {
-      throw new Error(`Products is undefined or null`);
-    }
-    for (const product of products) {
-      product.imagePath = await getProductsUrl(product.imageKey);
-    }
-    const result = {
-      products: products,
-      total: countProducts,
-    };
-
-    return res.status(200).json(result);
-  } catch (error) {
-    throw new Error(`Error in ProductsController method getAllProducts: ${error}`);
-  }
-}
-
-// FUNCTION FOR GET SINGLE PRODUCT
-export async function getSingleProduct(req: Request, res: Response): Promise<Product | unknown> {
-  try {
-    const id = req.params.id;
-    const product = await prisma.product.findUnique({ where: { id: id } });
-    if (!product) {
-      throw new Error(`product is undefined or null`);
-    }
-    product.imagePath = await getProductsUrl(product.imageKey);
-    return res.status(200).json(product);
-  } catch (error) {
-    return console.error(`Can't find single product: ${error}`);
-  }
-}
-
-// FUNCTION FOR SEARCH PRODUCTS BY NAME
-export async function searchProducts(req: Request, res: Response): Promise<Product[] | Product | unknown> {
-  try {
-    const name = req.params.name;
-    const lowercaseProductName = name.toLowerCase();
-    const product = await prisma.product.findMany({
-      where: { name: lowercaseProductName },
-    });
-
-    if (!product) {
-      throw new Error(`product is undefined or null`);
-    }
-
-    if (product && Array.isArray(product)) {
-      for (const el of product) {
-        el.imagePath = await getProductsUrl(el.imageKey);
-      }
-    }
-    return res.status(200).json(product);
-  } catch (error) {
-    return console.error(`Product doesn't exist: ${error}`);
-  }
-}
 
 // FUNCTION FOR POST NEW PRODUCT TO THE S3 BUCKET AND DB
 export async function creatProduct(req: Request, res: Response): Promise<Response | void> {

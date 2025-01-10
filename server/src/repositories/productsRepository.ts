@@ -3,9 +3,13 @@ import ErrorWithContext from '../errors/errorWithContext';
 import HttpCodesHelper from '../helpers/httpCodeHelper';
 import { IProductsRepository } from './interfaces/productsRepositoryInterface';
 
-interface IgetAllProductsParams {
+interface IPaginationParams {
   offset: number;
   limit: number;
+}
+
+interface IGetByCategoryParams extends IPaginationParams {
+  category: string;
 }
 
 class ProductsRepository implements IProductsRepository {
@@ -15,7 +19,7 @@ class ProductsRepository implements IProductsRepository {
     this.prismaClient = prisma;
   }
 
-  async getAllProducts(pagination: IgetAllProductsParams): Promise<{ products: Product[]; total: number }> {
+  async getAllProducts(pagination: IPaginationParams): Promise<{ products: Product[]; total: number }> {
     try {
       const [products, countProducts] = await Promise.all([
         this.prismaClient.product.findMany({
@@ -31,6 +35,63 @@ class ProductsRepository implements IProductsRepository {
       };
     } catch (error) {
       throw new ErrorWithContext({}, `Error in ProductsRepository method getAllProducts: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
+  async getByCategory(params: IGetByCategoryParams): Promise<{ products: Product[]; total: number }> {
+    try {
+      const [products, countProducts] = await Promise.all([
+        this.prismaClient.product.findMany({
+          skip: params.offset,
+          take: params.limit,
+          where: { categories: params.category },
+        }),
+        this.prismaClient.product.count(),
+      ]);
+
+      return {
+        products: products,
+        total: countProducts,
+      };
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in ProductsRepository method getAllProducts: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
+  async findById(id: string): Promise<Product | null> {
+    try {
+      const product = await this.prismaClient.product.findUnique({ where: { id: id } });
+
+      return product;
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in ProductsRepository method findById: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
+  async searchByName(name: string): Promise<{ products: Product[]; total: number }> {
+    try {
+      const [products, countProducts] = await Promise.all([
+        this.prismaClient.product.findMany({
+          where: {
+            name: { contains: name, mode: 'insensitive' },
+          },
+        }),
+        this.prismaClient.product.count({
+          where: {
+            name: {
+              contains: name,
+              mode: 'insensitive',
+            },
+          },
+        }),
+      ]);
+
+      return {
+        products: products,
+        total: countProducts,
+      };
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in ProductsRepository method searchByName: ${error}`, HttpCodesHelper.BAD);
     }
   }
 }

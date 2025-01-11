@@ -5,7 +5,7 @@ import { Product } from '@/constans/typeconstans';
 
 async function Grid(): Promise<JSX.Element> {
   const productsApi = await ProductsApi.getProducts();
-  const firstThree = productsApi ? productsApi.products.slice(0, 3) : [];
+  const firstThree = productsApi.status === 200 ? productsApi.data.products.slice(0, 3) : [];
 
   const firstItem = firstThree[0];
   const otherItems = firstThree.slice(1);

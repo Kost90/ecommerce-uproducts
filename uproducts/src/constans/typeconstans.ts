@@ -10,6 +10,15 @@ export type Product = {
 };
 
 export interface IProductsResponse {
-  products: Product[];
-  total: number;
+  status: number;
+  data: {
+    products: Product[];
+    total: number;
+  };
+  message: string;
+  error?: {
+    statusCode: number;
+    message: string;
+    type: string;
+  };
 }

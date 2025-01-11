@@ -70,11 +70,11 @@ class ProductsApi extends API {
     }
   }
 
-  async searchProducts(name: string): Promise<Product[]> {
+  async searchProducts(name: string): Promise<IProductsResponse> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response: Product[] = await this.fetch({
+      const response: IProductsResponse = await this.fetch({
         path: `products/search/${name}`,
         signal,
       });
@@ -84,13 +84,13 @@ class ProductsApi extends API {
     }
   }
 
-  async getProductsByCategory(category: string, page: string): Promise<IProductsResponse> {
+  async getProductsByCategory(category: string, page: string = '1'): Promise<IProductsResponse> {
     const controller = new AbortController();
     const signal = controller.signal;
     const queryParams = `?page=${page}`;
     try {
       const response: IProductsResponse = await this.fetch({
-        path: `products/${category}${queryParams}`,
+        path: `products/category/${category}${queryParams}`,
         signal,
       });
       return response;

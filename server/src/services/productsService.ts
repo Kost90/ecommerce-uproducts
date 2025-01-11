@@ -92,6 +92,22 @@ class ProductsService implements IProductsService {
     }
   }
 
+  async createProduct(product: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+    try {
+      ValidationHelper.checkForNullOrUndefined(product, 'product param');
+
+      logger.info(`Saving product ${product} to db`);
+      const savedProduct = await this.productsRepository.createProduct(product);
+
+      ValidationHelper.checkForNullOrUndefined(savedProduct, 'savedProduct');
+
+      return savedProduct;
+    } catch (error) {
+      logger.error(`Error saving product in ProductsService method createProduct:: ${error}`);
+      throw new ErrorWithContext({}, `Error in ProductsService method createProduct: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
   private async enrichProductData(products: Product[]): Promise<Product[]> {
     return Promise.all(
       products.map(async (product) => ({

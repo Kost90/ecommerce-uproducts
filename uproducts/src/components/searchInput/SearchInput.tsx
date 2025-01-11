@@ -30,6 +30,7 @@ function SearchInput({ placeholder }: { placeholder: string }): JSX.Element {
   return (
     <div className="relative flex w-full md:w-80">
       <Input
+        min={3}
         type="text"
         placeholder={placeholder}
         className="text-black"

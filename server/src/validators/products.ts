@@ -6,14 +6,22 @@ class ProductsValidator {
       category: {
         in: ['params'],
         isString: {
-          errorMessage: 'Category must be a string', 
+          errorMessage: 'Category must be a string',
         },
-        trim: true, 
+        trim: true,
         escape: true,
         isLength: {
-          errorMessage: 'Category should be at least 3 chars long', 
+          errorMessage: 'Category should be at least 3 chars long',
           options: { min: 3 },
         },
+      },
+      page: {
+        in: ['query'],
+        isString: {
+          errorMessage: 'page must be a string',
+        },
+        trim: true,
+        escape: true,
       },
     });
   }

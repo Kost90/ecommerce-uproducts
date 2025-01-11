@@ -1,5 +1,5 @@
 import Express, { Request, Response, NextFunction } from 'express';
-import { creatProduct, removeProduct, getSingleProduct, searchProducts, updateProduct } from '../controllers/productsController';
+import { removeProduct, updateProduct } from '../controllers/productsController';
 import { AuthenticationMiddleware } from '../midlewares/authenticationMidleware';
 import RequestMiddleware from '../midlewares/requestMidleware';
 import ProductsValidator from '../validators/products';
@@ -22,8 +22,26 @@ router.get(
   RequestMiddleware.validateRequest,
   (req: Request, res: Response, next: NextFunction) => productsController.getProductsByCategory(req, res, next),
 );
-router.get('/edit/:id', getSingleProduct);
-router.get('/search/:name', searchProducts);
+router.get(
+  '/edit/:id',
+  AuthenticationMiddleware.verifyApiKey,
+  ProductsValidator.getSingleProduct(),
+  RequestMiddleware.validateRequest,
+  (req: Request, res: Response, next: NextFunction) => productsController.getSingleProduct(req, res, next),
+);
+router.get(
+  '/search/:name',
+  AuthenticationMiddleware.verifyApiKey,
+  ProductsValidator.searchProducts(),
+  RequestMiddleware.validateRequest,
+  (req: Request, res: Response, next: NextFunction) => productsController.serchByProductName(req, res, next),
+);
 router.put('/update', updateProduct);
-router.post('/add', creatProduct);
+router.post(
+  '/add',
+  AuthenticationMiddleware.verifyApiKey,
+  ProductsValidator.createProduct,
+  RequestMiddleware.validateRequest,
+  (req: Request, res: Response, next: NextFunction) => productsController.createProduct(req, res, next),
+);
 router.delete('/:id', removeProduct);

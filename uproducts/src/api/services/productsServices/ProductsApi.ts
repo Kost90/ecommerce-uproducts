@@ -1,5 +1,5 @@
 import { API } from '@/api/Api';
-import { Product, IProductsResponse } from '@/constans/typeconstans';
+import { Product, IProductsResponse, IProductResponse } from '@/constans/typeconstans';
 
 const url = 'http://localhost:3001';
 
@@ -40,11 +40,11 @@ class ProductsApi extends API {
     }
   }
 
-  async getSingleProduct(id: string): Promise<Product> {
+  async getSingleProduct(id: string): Promise<IProductResponse> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response: Promise<Product> = await this.fetch({
+      const response: Promise<IProductResponse> = await this.fetch({
         path: `products/edit/${id}`,
         signal,
       });

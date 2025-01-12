@@ -40,7 +40,7 @@ router.put('/update', updateProduct);
 router.post(
   '/add',
   AuthenticationMiddleware.verifyApiKey,
-  ProductsValidator.createProduct,
+  ProductsValidator.createProduct(),
   RequestMiddleware.validateRequest,
   (req: Request, res: Response, next: NextFunction) => productsController.createProduct(req, res, next),
 );

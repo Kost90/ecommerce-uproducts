@@ -7,7 +7,7 @@ import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import PaginationSection from '../pagination/Pagination';
 
 async function ProductsTableWrapper({ page }: { page: string }): Promise<React.JSX.Element> {
-  const data = await ProductsApi.getProducts(page as string);
+  const response = await ProductsApi.getProducts(page as string);
   return (
     <>
       <div className="flex justify-between items-center gap-4">
@@ -17,9 +17,9 @@ async function ProductsTableWrapper({ page }: { page: string }): Promise<React.J
         </Button>
       </div>
 
-      <ProductsTable data={data} />
+      <ProductsTable data={response} />
 
-      <PaginationSection totalProducts={data.total} />
+      <PaginationSection totalProducts={response.data.total} />
     </>
   );
 }

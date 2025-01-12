@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Product } from '@prisma/client';
 import { Response, Request, NextFunction } from 'express';
-import { getProductsUrl } from '../utils/getImageUrl';
 import ProductsService from '../services/productsService';
 import { config } from '../config/default';
 import { ValidationHelper } from '../helpers/validationHelper';
@@ -102,7 +101,6 @@ class ProductsController {
 
   public async createProduct(req: Request, res: Response, next: NextFunction): Promise<Product | unknown> {
     try {
-      console.log(req.matchedData);
       const dataForSave = req.matchedData;
       ValidationHelper.checkForNullOrUndefined(dataForSave, 'dataForSave');
 

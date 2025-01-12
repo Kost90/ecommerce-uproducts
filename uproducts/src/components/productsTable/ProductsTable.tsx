@@ -10,12 +10,12 @@ import { Product, IProductsResponse } from '@/constans/typeconstans';
 // import PaginationSection from '../pagination/Pagination';
 
 async function ProductsTable({ data }: { data: IProductsResponse }): Promise<JSX.Element> {
-  // Todo:Catch error with toaster
-  if (!data) {
+  // Todo:Catch error with toaster and errorhandler and check status
+  if (data.error) {
     return <p>Something went wrong</p>;
   }
 
-  if (data && data.products.length === 0) return <p>No products found</p>;
+  if (data && data.data.products.length === 0) return <p>No products found</p>;
 
   return (
     <>
@@ -33,7 +33,7 @@ async function ProductsTable({ data }: { data: IProductsResponse }): Promise<JSX
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.products.map((product: Product) => (
+          {data.data.products.map((product: Product) => (
             <TableRow key={product.id}>
               <TableCell>{product.name}</TableCell>
               <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>

@@ -1,5 +1,4 @@
 import Express, { Request, Response, NextFunction } from 'express';
-import { removeProduct, updateProduct } from '../controllers/productsController';
 import { AuthenticationMiddleware } from '../midlewares/authenticationMidleware';
 import RequestMiddleware from '../midlewares/requestMidleware';
 import ProductsValidator from '../validators/products';
@@ -36,7 +35,13 @@ router.get(
   RequestMiddleware.validateRequest,
   (req: Request, res: Response, next: NextFunction) => productsController.serchByProductName(req, res, next),
 );
-router.put('/update', updateProduct);
+router.put(
+  '/update',
+  AuthenticationMiddleware.verifyApiKey,
+  ProductsValidator.updateProduct(),
+  RequestMiddleware.validateRequest,
+  (req: Request, res: Response, next: NextFunction) => productsController.updateProduct(req, res, next),
+);
 router.post(
   '/add',
   AuthenticationMiddleware.verifyApiKey,
@@ -44,4 +49,10 @@ router.post(
   RequestMiddleware.validateRequest,
   (req: Request, res: Response, next: NextFunction) => productsController.createProduct(req, res, next),
 );
-router.delete('/:id', removeProduct);
+router.delete(
+  '/:id',
+  AuthenticationMiddleware.verifyApiKey,
+  ProductsValidator.removeProduct(),
+  RequestMiddleware.validateRequest,
+  (req: Request, res: Response, next: NextFunction) => productsController.removeProduct(req, res, next),
+);

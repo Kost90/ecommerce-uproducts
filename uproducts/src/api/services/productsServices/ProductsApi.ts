@@ -25,7 +25,7 @@ class ProductsApi extends API {
     }
   }
 
-  async getProducts(page?: string): Promise<IProductsResponse> {
+  async getProducts(page?: string): Promise<IProductsResponse | unknown> {
     const controller = new AbortController();
     const signal = controller.signal;
     const queryParams = `?page=${page}`;
@@ -36,7 +36,7 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      throw new Error(`Failed to fetch data, ${error}`);
+      if (error instanceof Error) throw new Error(`Failed to fetch data, ${error.message}`);
     }
   }
 

@@ -112,6 +112,7 @@ class ProductsValidator {
         isString: true,
         trim: true,
         escape: true,
+        toLowerCase: true,
         isLength: {
           errorMessage: 'Categories should be at least 3 chars long',
           options: { min: 3 },
@@ -144,7 +145,7 @@ class ProductsValidator {
           options: { min: 3 },
         },
       },
-      price: {
+      priceInCents: {
         in: ['body'],
         toInt: true,
         isNumeric: true,
@@ -182,8 +183,14 @@ class ProductsValidator {
       },
       categories: {
         in: ['body'],
-        isArray: true,
-        errorMessage: 'Categories should be an array',
+        isString: true,
+        trim: true,
+        escape: true,
+        toLowerCase: true,
+        isLength: {
+          errorMessage: 'Categories should be at least 3 chars long',
+          options: { min: 3 },
+        },
       },
     });
   }

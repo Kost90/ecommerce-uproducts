@@ -103,6 +103,37 @@ class ProductsRepository implements IProductsRepository {
       throw new ErrorWithContext({}, `Error in ProductsRepository method createProduct: ${error}`, HttpCodesHelper.BAD);
     }
   }
+
+  public async update(product: Omit<Product, 'createdAt' | 'updatedAt'>): Promise<Product> {
+    try {
+      const updatedProduct = await this.prismaClient.product.update({
+        where: {
+          id: product.id,
+        },
+        data: {
+          name: product.name,
+          description: product.description,
+          priceInCents: product.priceInCents,
+          imageKey: product.imageKey,
+          imagePath: product.imagePath,
+          categories: product.categories,
+        },
+      });
+
+      return updatedProduct;
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in ProductsRepository method update: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
+  public async deleteProduct(id: string): Promise<Product | unknown> {
+    try {
+      const result = this.prismaClient.product.delete({ where: { id: id } });
+      return result;
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in ProductsRepository method deleteProduct: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
 }
 
 export default ProductsRepository;

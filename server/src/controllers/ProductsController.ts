@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Product } from '@prisma/client';
 import { Response, Request, NextFunction } from 'express';
-import { getProductsUrl } from '../utils/getImageUrl';
 import ProductsService from '../services/productsService';
 import { config } from '../config/default';
 import { ValidationHelper } from '../helpers/validationHelper';
@@ -102,7 +101,6 @@ class ProductsController {
 
   public async createProduct(req: Request, res: Response, next: NextFunction): Promise<Product | unknown> {
     try {
-      console.log(req.matchedData);
       const dataForSave = req.matchedData;
       ValidationHelper.checkForNullOrUndefined(dataForSave, 'dataForSave');
 
@@ -113,61 +111,33 @@ class ProductsController {
       next(new ErrorWithContext({}, `Error in ProductsController method createProduct: ${error}`, HttpCodesHelper.BAD));
     }
   }
-}
 
-// FUNCTION FOR POST NEW PRODUCT TO THE S3 BUCKET AND DB
-// export async function creatProduct(req: Request, res: Response): Promise<Response | void> {
-//   try {
-//     // TODO: take all from matchedData
-//     const { name, imagePath, description, priceInCents, imageKey, categories } = req.body;
-//     // const lowerCaseName = name.toLowerCase();
-//     const result = await prisma.product.create({
-//       data: {
-//         name: name,
-//         imagePath: imagePath,
-//         imageKey: imageKey,
-//         description: description,
-//         priceInCents: priceInCents,
-//         categories: categories,
-//       },
-//     });
-//     return res.status(200).json(result);
-//   } catch (error) {
-//     return console.error(`Product didn't created: ${error}`);
-//   }
-// }
+  public async updateProduct(req: Request, res: Response, next: NextFunction): Promise<Product | unknown> {
+    try {
+      const dataForUpdate = req.matchedData;
+      ValidationHelper.checkForNullOrUndefined(dataForUpdate, 'dataForUpdate');
 
-// Update function
-export async function updateProduct(req: Request, res: Response): Promise<Response | void> {
-  try {
-    const { id, name, description, priceInCents, imageKey, imagePath, categories } = req.body;
-    const lowerCaseName = name.toLowerCase();
-    const updatedProduct = await prisma.product.update({
-      where: { id: id },
-      data: {
-        name: lowerCaseName,
-        description: description,
-        priceInCents: priceInCents,
-        imageKey: imageKey,
-        imagePath: imagePath,
-        categories: categories,
-      },
-    });
-    if (!updatedProduct) {
-      throw new Error(`updatedProduct is undefined or null`);
+      const updatedProduct = await this.productsService.updateProduct(dataForUpdate);
+
+      return res.success(updatedProduct, HttpCodesHelper.OK, 'Product updated successfully');
+    } catch (error) {
+      next(new ErrorWithContext({}, `Error in ProductsController method updateProduct: ${error}`, HttpCodesHelper.BAD));
     }
-
-    return res.status(200).json(updatedProduct);
-  } catch (error) {
-    return console.error(`Can't update product: ${error}`);
   }
-}
 
-// Remove function
-export async function removeProduct(req: Request, res: Response): Promise<Response | void> {
-  const id = req.params.id;
-  const result = await prisma.product.delete({ where: { id: id } });
-  return res.json(result);
+  public async removeProduct(req: Request, res: Response, next: NextFunction): Promise<Product | unknown> {
+    try {
+      const productIdForRemove = req.matchedData;
+
+      ValidationHelper.checkForNullOrUndefined(productIdForRemove, 'productIdForRemove');
+
+      const removedProduct = await this.productsService.removeProduct(productIdForRemove);
+
+      return res.success(removedProduct, HttpCodesHelper.OK, 'Product removed successfully');
+    } catch (error) {
+      next(new ErrorWithContext({}, `Error in ProductsController method removeProduct: ${error}`, HttpCodesHelper.BAD));
+    }
+  }
 }
 
 export default ProductsController;

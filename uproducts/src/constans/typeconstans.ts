@@ -22,3 +22,15 @@ export interface IProductsResponse {
     type: string;
   };
 }
+
+//TODO: Change add extends
+export interface IProductResponse {
+  status: number;
+  data: Product;
+  message: string;
+  error?: {
+    statusCode: number;
+    message: string;
+    type: string;
+  };
+}

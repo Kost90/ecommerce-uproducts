@@ -98,33 +98,42 @@ class ProductsRepository implements IProductsRepository {
   public async createProduct(product: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
     try {
       const result = await this.prismaClient.product.create({ data: product });
-
       return result;
     } catch (error) {
       throw new ErrorWithContext({}, `Error in ProductsRepository method createProduct: ${error}`, HttpCodesHelper.BAD);
     }
   }
 
-  // export async function creatProduct(req: Request, res: Response): Promise<Response | void> {
-  //   try {
-  //     // TODO: take all from matchedData
-  //     const { name, imagePath, description, priceInCents, imageKey, categories } = req.body;
-  //     // const lowerCaseName = name.toLowerCase();
-  //     const result = await prisma.product.create({
-  //       data: {
-  //         name: name,
-  //         imagePath: imagePath,
-  //         imageKey: imageKey,
-  //         description: description,
-  //         priceInCents: priceInCents,
-  //         categories: categories,
-  //       },
-  //     });
-  //     return res.status(200).json(result);
-  //   } catch (error) {
-  //     return console.error(`Product didn't created: ${error}`);
-  //   }
-  // }
+  public async update(product: Omit<Product, 'createdAt' | 'updatedAt'>): Promise<Product> {
+    try {
+      const updatedProduct = await this.prismaClient.product.update({
+        where: {
+          id: product.id,
+        },
+        data: {
+          name: product.name,
+          description: product.description,
+          priceInCents: product.priceInCents,
+          imageKey: product.imageKey,
+          imagePath: product.imagePath,
+          categories: product.categories,
+        },
+      });
+
+      return updatedProduct;
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in ProductsRepository method update: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
+  public async deleteProduct(id: string): Promise<Product | unknown> {
+    try {
+      const result = this.prismaClient.product.delete({ where: { id: id } });
+      return result;
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in ProductsRepository method deleteProduct: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
 }
 
 export default ProductsRepository;

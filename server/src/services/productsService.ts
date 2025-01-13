@@ -108,6 +108,35 @@ class ProductsService implements IProductsService {
     }
   }
 
+  async updateProduct(product: Omit<Product, 'createdAt' | 'updatedAt'>): Promise<Product> {
+    try {
+      ValidationHelper.checkForNullOrUndefined(product, 'product param');
+      logger.info(`Updating product ${product} to db`);
+
+      const updatedProduct = await this.productsRepository.update(product);
+
+      ValidationHelper.checkForNullOrUndefined(updatedProduct, 'updatedProduct');
+      return updatedProduct;
+    } catch (error) {
+      logger.error(`Error saving product in ProductsService method updateProduct:: ${error}`);
+      throw new ErrorWithContext({}, `Error in ProductsService method updateProduct: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
+  async removeProduct(id: string): Promise<Product | unknown> {
+    try {
+      ValidationHelper.checkForNullOrUndefined(id, 'id param');
+
+      const removedProduct = await this.productsRepository.deleteProduct(id);
+      ValidationHelper.checkForNullOrUndefined(removedProduct, 'removedProduct');
+
+      return removedProduct;
+    } catch (error) {
+      logger.error(`Error saving product in ProductsService method removeProduct:: ${error}`);
+      throw new ErrorWithContext({}, `Error in ProductsService method removeProduct: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
   private async enrichProductData(products: Product[]): Promise<Product[]> {
     return Promise.all(
       products.map(async (product) => ({

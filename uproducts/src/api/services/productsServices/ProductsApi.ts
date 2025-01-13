@@ -1,5 +1,5 @@
 import { API } from '@/api/Api';
-import { Product, IProductsResponse } from '@/constans/typeconstans';
+import { Product, IProductsResponse, IProductResponse } from '@/constans/typeconstans';
 
 const url = 'http://localhost:3001';
 
@@ -25,7 +25,7 @@ class ProductsApi extends API {
     }
   }
 
-  async getProducts(page?: string): Promise<IProductsResponse> {
+  async getProducts(page?: string): Promise<IProductsResponse | unknown> {
     const controller = new AbortController();
     const signal = controller.signal;
     const queryParams = `?page=${page}`;
@@ -36,15 +36,15 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      throw new Error(`Failed to fetch data, ${error}`);
+      if (error instanceof Error) throw new Error(`Failed to fetch data, ${error.message}`);
     }
   }
 
-  async getSingleProduct(id: string): Promise<Product> {
+  async getSingleProduct(id: string): Promise<IProductResponse> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response: Promise<Product> = await this.fetch({
+      const response: Promise<IProductResponse> = await this.fetch({
         path: `products/edit/${id}`,
         signal,
       });

@@ -13,6 +13,12 @@ interface IConfig {
       paginationsLimit: number;
     };
   };
+  awsBucket: {
+    name: string;
+    region: string;
+    accessKeyId: string;
+    secretAccessKey: string;
+  };
 }
 
 function getEnvVar(name: string): string {
@@ -35,5 +41,11 @@ export const config: IConfig = {
     products: {
       paginationsLimit: parseInt(getEnvVar('PRODUCTS_PER_PAGE')),
     },
+  },
+  awsBucket: {
+    name: getEnvVar('AWS_BUCKET_NAME'),
+    region: getEnvVar('AWS_BUCKET_REGION'),
+    accessKeyId: getEnvVar('AWS_ACCESS_KEY') || '',
+    secretAccessKey: getEnvVar('AWS_SECRET_ACCESS_KEY') || '',
   },
 };

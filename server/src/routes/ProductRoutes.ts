@@ -11,8 +11,12 @@ const injectionService = new InjectionService(prisma);
 export const router = Express.Router();
 const productsController = new ProductsController(injectionService.getProductsService());
 
-router.get('/', AuthenticationMiddleware.verifyApiKey, RequestMiddleware.validateRequest, (req, res, next) =>
-  productsController.getAllProducts(req, res, next),
+router.get(
+  '/',
+  AuthenticationMiddleware.verifyApiKey,
+  ProductsValidator.getAllProducts(),
+  RequestMiddleware.validateRequest,
+  (req: Request, res: Response, next: NextFunction) => productsController.getAllProducts(req, res, next),
 );
 router.get(
   '/category/:category',

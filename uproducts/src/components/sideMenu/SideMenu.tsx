@@ -2,6 +2,7 @@ import React from 'react';
 import { Separator } from '../ui/separator';
 import SideMenuItem from '../sideMenuItem/SideMenuItem';
 import { setFirstLetterUppercase } from '@/helpers/helpers';
+import HoverWrapper from '../hover/HoverWrapper';
 
 type CategoryEnums = 'drinks' | 'coffee' | 'oil' | 'chocolate' | 'products';
 
@@ -13,7 +14,9 @@ function SideMenu(): React.JSX.Element {
       <div className="flex justify-between items-start h-full w-full">
         <div className="flex flex-col w-full justify-center items-start p-10 gap-10">
           {categoryArr.map((el, i) => (
-            <SideMenuItem key={`${i} + ${el}`} item={setFirstLetterUppercase(el)} className={'font-bold'} />
+            <HoverWrapper key={`${i} + ${el}`} className="w-28 px-4 py-2">
+              <SideMenuItem item={setFirstLetterUppercase(el)} className={'font-bold'} />
+            </HoverWrapper>
           ))}
         </div>
         <Separator orientation="vertical" />

@@ -23,14 +23,6 @@ export interface IProductsResponse {
   };
 }
 
-//TODO: Change add extends
-export interface IProductResponse {
-  status: number;
+export interface IProductResponse extends Omit<IProductsResponse, 'data'> {
   data: Product;
-  message: string;
-  error?: {
-    statusCode: number;
-    message: string;
-    type: string;
-  };
 }

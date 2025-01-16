@@ -20,7 +20,7 @@
 FROM node:22.11.0
 
 # Устанавливаем рабочую директорию внутри контейнера на /ecommerce/src
-WORKDIR /ecommerce/src
+WORKDIR /ecommerce/server
 
 # Копируем только package.json и package-lock.json в рабочую директорию
 COPY package*.json ./

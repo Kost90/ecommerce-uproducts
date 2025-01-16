@@ -23,13 +23,13 @@ FROM node:22.11.0
 WORKDIR /ecommerce/src
 
 # Копируем только package.json и package-lock.json в рабочую директорию
-COPY ../package*.json ./
+COPY package*.json ./
 
 # Устанавливаем зависимости
 RUN npm install
 
 # Копируем весь проект в контейнер
-COPY ../ ./
+COPY . .
 
 # Выполняем сборку проекта (если необходимо)
 RUN npm run build

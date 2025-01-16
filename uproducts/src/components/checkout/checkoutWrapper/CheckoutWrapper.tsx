@@ -41,7 +41,7 @@ function CheckoutWrapper(): React.JSX.Element {
 
   return (
     <LoadScriptNext googleMapsApiKey={googleMapApiKey} libraries={['places']}>
-      <div className="flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-16">
+      <div className="flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-16 mb-8">
         <div className="w-full flex justify-center flex-1 flex-col items-center gap-8">
           <TypographyH1 text="Write delivery location" />
           <CheckoutForm onChangePlace={handelChandeLocation} />

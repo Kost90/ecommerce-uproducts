@@ -10,7 +10,7 @@ const categoryArr: CategoryEnums[] = ['drinks', 'coffee', 'oil', 'chocolate', 'p
 
 function SideMenu(): React.JSX.Element {
   return (
-    <div className="hidden md:block h-screen-minus-header w-[20%]">
+    <div className="hidden md:block h-screen-minus-header w-[20%] bg-background rounded-md">
       <div className="flex justify-between items-start h-full w-full">
         <div className="flex flex-col w-full justify-center items-start p-10 gap-10">
           {categoryArr.map((el, i) => (
@@ -19,7 +19,6 @@ function SideMenu(): React.JSX.Element {
             </HoverWrapper>
           ))}
         </div>
-        <Separator orientation="vertical" />
       </div>
     </div>
   );

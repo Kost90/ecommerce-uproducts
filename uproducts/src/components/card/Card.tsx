@@ -34,7 +34,7 @@ function CardComponent({ ...props }: IProps): JSX.Element {
   );
 
   return (
-    <Card className={`cursor-pointer w-full h-full flex flex-col items-start justify-around p-2 ${className}`}>
+    <Card className={`cursor-pointer w-full h-full flex flex-col items-start justify-around p-2 hover:border-amber-300 ${className}`}>
       <CardHeader>
         <CardTitle className="capitalize">{name}</CardTitle>
       </CardHeader>

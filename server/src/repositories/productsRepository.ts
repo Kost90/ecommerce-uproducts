@@ -46,7 +46,11 @@ class ProductsRepository implements IProductsRepository {
           take: params.limit,
           where: { categories: params.category },
         }),
-        this.prismaClient.product.count(),
+        this.prismaClient.product.count({
+          where: {
+            categories: params.category,
+          },
+        }),
       ]);
 
       return {

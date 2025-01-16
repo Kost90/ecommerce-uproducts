@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { useState } from 'react';
 
-function SearchInput({ placeholder }: { placeholder: string }): JSX.Element {
+function SearchInput({ placeholder, className }: { placeholder: string; className: string }): JSX.Element {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('query') || '');
@@ -28,7 +28,7 @@ function SearchInput({ placeholder }: { placeholder: string }): JSX.Element {
   };
 
   return (
-    <div className="relative flex w-full md:w-80">
+    <div className={`relative w-full md:w-80 ${className}`}>
       <Input
         min={3}
         type="text"

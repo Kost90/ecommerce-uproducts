@@ -1,6 +1,19 @@
 import { checkSchema } from 'express-validator';
 
 class ProductsValidator {
+  public static getAllProducts() {
+    return checkSchema({
+      page: {
+        in: ['query'],
+        isString: {
+          errorMessage: 'page must be a string',
+        },
+        trim: true,
+        escape: true,
+      },
+    });
+  }
+
   public static getProductsByCategory() {
     return checkSchema({
       category: {

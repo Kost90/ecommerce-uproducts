@@ -6,6 +6,7 @@ import { config } from '../config/default';
 import { ValidationHelper } from '../helpers/validationHelper';
 import HttpCodesHelper from '../helpers/httpCodeHelper';
 import ErrorWithContext from '../errors/errorWithContext';
+import { IProductResponse } from '../types/types';
 
 const prisma = new PrismaClient();
 
@@ -15,7 +16,7 @@ class ProductsController {
     this.productsService = productsService;
   }
 
-  public async getAllProducts(req: Request, res: Response, next: NextFunction): Promise<Product[] | unknown> {
+  public async getAllProducts(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const matchedData = req?.matchedData;
 
@@ -127,12 +128,11 @@ class ProductsController {
 
   public async removeProduct(req: Request, res: Response, next: NextFunction): Promise<Product | unknown> {
     try {
-      const productIdForRemove = req.matchedData;
+      const { id } = req.matchedData;
 
-      ValidationHelper.checkForNullOrUndefined(productIdForRemove, 'productIdForRemove');
+      ValidationHelper.checkForNullOrUndefined(id, 'id');
 
-      const removedProduct = await this.productsService.removeProduct(productIdForRemove);
-
+      const removedProduct = await this.productsService.removeProduct(id);
       return res.success(removedProduct, HttpCodesHelper.OK, 'Product removed successfully');
     } catch (error) {
       next(new ErrorWithContext({}, `Error in ProductsController method removeProduct: ${error}`, HttpCodesHelper.BAD));

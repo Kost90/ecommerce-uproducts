@@ -1,5 +1,4 @@
 import React from 'react';
-import { Separator } from '../ui/separator';
 import SideMenuItem from '../sideMenuItem/SideMenuItem';
 import { setFirstLetterUppercase } from '@/helpers/helpers';
 import HoverWrapper from '../hover/HoverWrapper';

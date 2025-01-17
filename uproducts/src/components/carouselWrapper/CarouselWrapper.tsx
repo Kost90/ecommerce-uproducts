@@ -1,7 +1,6 @@
 import CarouselComponent from '../carouselComponent/CarouselComponent';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import ErrorHandler from '../ErrorHandler/ErrorHandler';
-ErrorHandler;
 
 async function CarouselWrapper(): Promise<React.JSX.Element> {
   const response = await ProductsApi.getProducts();

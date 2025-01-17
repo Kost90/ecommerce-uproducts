@@ -1,12 +1,14 @@
 FROM node:22.11.0
 
-WORKDIR /ecommerce/src
+WORKDIR /ecommerce
+
+COPY . .
 
 COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+RUN ls -l /ecommerce/src/controllers
 
 RUN npx prisma generate
 

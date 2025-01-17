@@ -9,11 +9,11 @@ interface IButtonProps {
   className?: string;
 }
 
-function ButtonComponent({ type, text, className }: IButtonProps) {
+function ButtonComponent({ type = 'submit', text, className }: IButtonProps) {
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" className={className}>
+    <Button type={type} className={className}>
       {pending ? 'Loading...' : text}
     </Button>
   );

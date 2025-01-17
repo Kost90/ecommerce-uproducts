@@ -19,7 +19,7 @@ async function isAuthenticated(req: NextRequest) {
 
   const [username, password] = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
 
-  return username === process.env.ADMIN_USERNAME && (await isValidPassword(password, process.env.AMIN_PASSWORD as string));
+  return username === process.env.NEXT_PUBLIC_ADMIN_USERNAME && (await isValidPassword(password, process.env.NEXT_PUBLIC_ADMIN_PASSWORD as string));
 }
 
 export const config = {

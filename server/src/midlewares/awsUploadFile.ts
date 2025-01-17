@@ -3,13 +3,13 @@ import { PutObjectCommand, S3Client, S3ClientConfig } from "@aws-sdk/client-s3";
 import { Response, Request } from "express";
 
 dotenv.config();
-const bucketName = process.env.AWS_BUCKET_NAME;
+const bucketName = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
 
 const s3Config: S3ClientConfig = {
-  region: process.env.AWS_BUCKET_REGION,
+  region: process.env.NEXT_PUBLIC_AWS_BUCKET_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY || "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY || "",
+    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY || "",
   },
 };
 

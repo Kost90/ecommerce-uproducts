@@ -4,7 +4,7 @@ import RequestMiddleware from '../midlewares/requestMidleware';
 import ProductsValidator from '../validators/products';
 import { PrismaClient } from '@prisma/client';
 import InjectionService from '../services/injectionServiceFactory';
-import ProductsController from '../controllers/productsController';
+import ProductsController from 'controllers/productsController';
 
 const prisma = new PrismaClient();
 const injectionService = new InjectionService(prisma);

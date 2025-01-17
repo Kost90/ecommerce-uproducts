@@ -81,8 +81,8 @@ export async function addProduct(prevState: unknown, formData: FormData) {
 
   const res = await ProductsApi.AddProduct(body);
 
-  if (!res.ok) {
-    console.error(Error);
+  if (res.error) {
+    console.error(res.error.message);
   }
 
   revalidatePath('/profile/products');
@@ -132,19 +132,21 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
   if (file !== undefined) {
     if (file.size > 0) {
       const product = await ProductsApi.getSingleProduct(id);
-      await deleteFileS3(product.imageKey);
-      const imageName = generateFileName();
-      const buffer = Buffer.from(await file.arrayBuffer());
-      FileName = await uploadFileToS3(buffer, imageName);
-      data = {
-        id: id,
-        name: data.name,
-        description: data.description,
-        priceInCents: data.priceInCents,
-        imageKey: FileName,
-        imagePath: 'path',
-        categories: data.categories,
-      };
+      if (product.status === 200 && product.data) {
+        await deleteFileS3(product.data.imageKey!);
+        const imageName = generateFileName();
+        const buffer = Buffer.from(await file.arrayBuffer());
+        FileName = await uploadFileToS3(buffer, imageName);
+        data = {
+          id: id,
+          name: data.name,
+          description: data.description,
+          priceInCents: data.priceInCents,
+          imageKey: FileName,
+          imagePath: 'path',
+          categories: data.categories,
+        };
+      }
     }
   } else {
     const singleProduct = await ProductsApi.getSingleProduct(id);
@@ -153,7 +155,7 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
       name: data.name,
       description: data.description,
       priceInCents: data.priceInCents,
-      imageKey: singleProduct.imageKey,
+      imageKey: singleProduct.data.imageKey,
       imagePath: 'path',
       categories: data.categories,
     };

@@ -13,8 +13,8 @@ class API {
     headers = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache',
-      'x-auth-key': `${process.env.NEXT_PUBLIC_REST_API_KEY}`,
-      'x-auth-user': `${process.env.NEXT_PUBLIC_REST_API_NAME}`,
+      'x-auth-key': `${process.env.NEXT_PUBLIC_ACCESS_KEY}`,
+      'x-auth-user': `${process.env.NEXT_PUBLIC_ACCESS_NAME}`,
     },
     cache = 'no-store',
     ...rest

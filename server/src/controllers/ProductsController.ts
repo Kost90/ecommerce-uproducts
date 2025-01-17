@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import { Product } from '@prisma/client';
 import { Response, Request, NextFunction } from 'express';
 import ProductsService from '../services/productsService';
@@ -6,9 +5,6 @@ import { config } from '../config/default';
 import { ValidationHelper } from '../helpers/validationHelper';
 import HttpCodesHelper from '../helpers/httpCodeHelper';
 import ErrorWithContext from '../errors/errorWithContext';
-
-
-const prisma = new PrismaClient();
 
 class ProductsController {
   private productsService: ProductsService;

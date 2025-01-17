@@ -2,7 +2,7 @@ import { API } from '@/api/Api';
 import { Product, IProductsResponse, IProductResponse } from '@/constans/typeconstans';
 
 // TODO: Remove it to the env
-const url = process.env.NEXT_API_URL;
+const url = process.env.NEXT_PUBLIC_REST_API_URL;
 
 // TODO:Make type of returns
 class ProductsApi extends API {

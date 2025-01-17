@@ -34,7 +34,7 @@ function Header(): React.JSX.Element {
 
   return (
     <header
-      className={`container lg:max-w-full fixed top-0 z-50 transition-all right-0 bg-amber-300 left-0 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}
+      className={`container lg:max-w-full fixed top-0 z-50 transition-all right-0  left-0 ${isScrolled ? 'bg-white shadow-lg' : 'bg-amber-300'}`}
     >
       <Nav className="justify-between mt-3 items-center gap-0 sm:mb-1">
         <div className="flex justify-between items-center gap-2 md:min-w-72">

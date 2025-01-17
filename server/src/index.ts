@@ -2,7 +2,7 @@ import './types/express';
 import express, { Express } from 'express';
 import http from 'http';
 import cors from 'cors';
-import { router as productRoutes } from './routes/productRoutes';
+import { router as productRoutes } from './routes/ProductRoutes';
 import { config } from './config/default';
 import getLogger from './utils/logger';
 import responseMiddleware from './midlewares/responseMiddleware';

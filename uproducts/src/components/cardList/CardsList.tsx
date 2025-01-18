@@ -5,6 +5,7 @@ import CardComponent from '../card/Card';
 import { formatCurrency } from '@/helpers/formatter';
 import PaginationSection from '../pagination/Pagination';
 import ErrorHandler from '../ErrorHandler/ErrorHandler';
+import { Suspense } from 'react';
 
 type Data = {
   status: number;
@@ -69,7 +70,11 @@ async function CardsList({ query, page, category }: { query: string; page: numbe
           />
         ))}
       </FlexContainer>
-      {!query && data.data && <PaginationSection totalProducts={data.data.total} />}
+      {!query && data.data && (
+        <Suspense>
+          <PaginationSection totalProducts={data.data.total} />
+        </Suspense>
+      )}
     </>
   );
 }

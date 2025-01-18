@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { Nav, NavLink } from '@/components/NavLink/Nav';
-import React, { lazy, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import SearchInput from '@/components/searchInput/SearchInput';
 import { Separator } from '@/components/ui/separator';
 import Logo from '../../../public/assets/Logo_Uproducts.svg';
@@ -49,7 +49,9 @@ function Header(): React.JSX.Element {
             </NavLink>
           </HoverWrapper>
 
-          <SearchInput placeholder="Search..." className={'hidden md:flex'} />
+          <Suspense>
+            <SearchInput placeholder="Search..." className={'hidden md:flex'} />
+          </Suspense>
         </div>
         <div className="flex items-center gap-3">
           <HamburgerIcon isOpen={isOpen} toggle={toggleMenu} />

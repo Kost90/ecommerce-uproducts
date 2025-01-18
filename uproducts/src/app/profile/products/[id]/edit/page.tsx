@@ -6,7 +6,7 @@ async function EditPage({ params: { id } }: { params: { id: string } }): Promise
 
   return (
     <div>
-      <ProductForm product={product} />
+      <ProductForm product={product.data} />
     </div>
   );
 }

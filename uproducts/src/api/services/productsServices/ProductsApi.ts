@@ -10,11 +10,11 @@ class ProductsApi extends API {
     super(baseurl);
   }
 
-  async AddProduct(product: Product): Promise<unknown> {
+  async AddProduct(product: Product): Promise<IProductResponse> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await this.fetch({
+      const response: IProductResponse = await this.fetch({
         path: `products/add`,
         signal,
         method: 'POST',

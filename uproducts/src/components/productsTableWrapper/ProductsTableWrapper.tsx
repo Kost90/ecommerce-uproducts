@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { Suspense } from 'react';
 import ProductsTable from '../productsTable/ProductsTable';
 import { Button } from '../ui/button';
 import TypographyH1 from '../typography/TypographyH1';
@@ -20,7 +20,9 @@ async function ProductsTableWrapper({ page }: { page: string }): Promise<React.J
 
         <ProductsTable data={response} />
 
-        <PaginationSection totalProducts={response.data.total} />
+        <Suspense>
+          <PaginationSection totalProducts={response.data.total} />
+        </Suspense>
       </>
     );
   } catch (error) {

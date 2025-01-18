@@ -24,18 +24,20 @@ const cartMiddleware: Middleware = (store) => (next) => (action: any) => {
 };
 
 const loadCartFromLocalStorage = (): any => {
-  const cartItem = localStorage.getItem('cart');
+  if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+    const cartItem = localStorage.getItem('cart');
 
-  if (!cartItem) return null;
+    if (!cartItem) return null;
 
-  const { data, expireAt } = JSON.parse(cartItem);
+    const { data, expireAt } = JSON.parse(cartItem);
 
-  if (Date.now() > expireAt) {
-    localStorage.removeItem('cart');
-    return null;
+    if (Date.now() > expireAt) {
+      localStorage.removeItem('cart');
+      return null;
+    }
+
+    return data;
   }
-
-  return data;
 };
 
 const rootReducers = combineReducers({ orders: orderSlice.reducer, cart: cartSlice.reducer, modal: modalSlice.reducer });

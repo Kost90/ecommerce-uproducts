@@ -8,7 +8,7 @@ import { useState } from 'react';
 function SearchInput({ placeholder, className }: { placeholder: string; className: string }): JSX.Element {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('query') || '');
+  const [, setSearchTerm] = useState(searchParams.get('query') || '');
 
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams.toString());

@@ -43,9 +43,9 @@ export const config: IConfig = {
     },
   },
   awsBucket: {
-    name: getEnvVar('NEXT_PUBLIC_AWS_BUCKET_NAME'),
-    region: getEnvVar('NEXT_PUBLIC_AWS_BUCKET_REGION'),
-    accessKeyId: getEnvVar('NEXT_PUBLIC_AWS_ACCESS_KEY') || '',
-    secretAccessKey: getEnvVar('NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY') || '',
+    name: getEnvVar('AWS_BUCKET_NAME'),
+    region: getEnvVar('AWS_BUCKET_REGION'),
+    accessKeyId: getEnvVar('AWS_ACCESS_KEY') || '',
+    secretAccessKey: getEnvVar('AWS_SECRET_ACCESS_KEY') || '',
   },
 };

@@ -12,7 +12,6 @@ class API {
     signal,
     headers = {
       'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache',
       'x-auth-key': `${process.env.NEXT_PUBLIC_ACCESS_KEY}`,
       'x-auth-user': `${process.env.NEXT_PUBLIC_ACCESS_NAME}`,
     },

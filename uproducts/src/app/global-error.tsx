@@ -8,8 +8,9 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
   return (
     <html>
       <body>
-        <TypographyH2 text={'Something went wrong! External server error.'} />
-        <Button onClick={() => reset()}>Try again</Button>
+        <div className="container mx-auto my-20">
+          <TypographyH2 text={'Something went wrong! External server error.'} />
+        </div>
       </body>
     </html>
   );

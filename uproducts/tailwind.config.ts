@@ -26,6 +26,9 @@ const config = {
         ring: 'hsl(var(--ring))',
         background: '#f5f5f5',
         foreground: 'hsl(var(--foreground))',
+        orange: '#FFAE5D',
+        separator: 'rgba(128, 128, 128, 1)',
+        navText: 'rgba(96, 96, 96, 1)',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',

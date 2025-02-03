@@ -14,7 +14,7 @@ function NavigationMenu(): React.JSX.Element {
           <SideMenuItem
             key={`${i} + ${el}`}
             item={setFirstLetterUppercase(el)}
-            className={'font-normal text-sm text-black hover:text-orange'}
+            className={'font-normal text-sm text-grey-basic hover:text-orange'}
           />
         ))}
       </div>

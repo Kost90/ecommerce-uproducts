@@ -48,7 +48,7 @@ function Header(): React.JSX.Element {
             <div className="relative w-4 h-4 md:w-6 md:h-6">
               <Image src={SignInIcon} alt="sign_in_icon" fill className="object-cover" />
             </div>
-            <span className="text-xs md:text-sm font-normal">Sign in</span>
+            <span className="text-xs md:text-sm font-normal text-grey-basic">Sign in</span>
           </NavLink>
         </div>
         <Separator />

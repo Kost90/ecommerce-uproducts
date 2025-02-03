@@ -6,7 +6,7 @@ function SideMenuItem({ item, className, toggleMenu }: { item: string; className
   return (
     <div>
       <Link href={`/${item}`} onClick={toggleMenu}>
-        <TypographyMuted text={item} className={className} />
+        <span className={`${className}`}>{item}</span>
       </Link>
     </div>
   );

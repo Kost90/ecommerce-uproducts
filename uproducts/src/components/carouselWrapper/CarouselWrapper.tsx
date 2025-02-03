@@ -13,6 +13,7 @@ async function CarouselWrapper(): Promise<React.JSX.Element> {
   if (firstThree.length === 0) {
     return <div className="hiddedn"></div>;
   }
+
   return <CarouselComponent firstThree={firstThree} />;
 }
 

@@ -5,9 +5,10 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import SearchInput from '@/components/searchInput/SearchInput';
 import { Separator } from '@/components/ui/separator';
 import Logo from '../../../public/assets/Logo_Uproducts.svg';
+import SignInIcon from '../../../public/assets/sign_in_icon.svg';
 import MobileNavigationMenu from '../mobileNavigationMenu/MobileNavigationMenu';
 import HamburgerIcon from '../hamburgerIcon/HamburgerIcon';
-import HoverWrapper from '../hover/HoverWrapper';
+import NavigationMenu from '../sideMenu/NavigationMenu';
 
 const Cart = lazy(() => import('@/components/cart/CartComponent'));
 
@@ -36,31 +37,41 @@ function Header(): React.JSX.Element {
     <header
       className={`container lg:max-w-full fixed top-0 z-50 transition-all right-0  left-0 ${isScrolled ? 'bg-white shadow-lg' : 'bg-inherit'}`}
     >
-      <Nav className="justify-between mt-3 items-center gap-0 sm:mb-1">
-        <div className="flex justify-between items-center gap-2 md:min-w-72">
+      <Nav className="flex flex-col mt-2 sm:mb-1 gap-2">
+        <div className="flex justify-between items-center">
           <NavLink href="/">
-            <div className="relative w-14 h-14 md:w-36 md:h-34">
-              <Image src={Logo} alt="logo" fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+            <div className="relative w-20 h-7 md:w-24">
+              <Image src={Logo} alt="logo" fill className="object-cover" />
             </div>
           </NavLink>
-          <HoverWrapper className="w-12 px-1">
-            <NavLink href="/search" className="block">
-              All
-            </NavLink>
-          </HoverWrapper>
+          <NavLink href="/" className="flex items-center gap-1 hover:text-orange">
+            <div className="relative w-4 h-4 md:w-6 md:h-6">
+              <Image src={SignInIcon} alt="sign_in_icon" fill className="object-cover" />
+            </div>
+            <span className="text-xs md:text-sm font-normal">Sign in</span>
+          </NavLink>
+        </div>
+        <Separator />
+        <div className="flex justify-between items-center gap-2 md:min-w-72">
+          <NavLink
+            href="/search"
+            className="block bg-orange rounded-sm md:px-3 text-sm md:text-base text-black hover:text-muted-foreground"
+          >
+            All
+          </NavLink>
 
-          <Suspense>
-            <SearchInput placeholder="Search..." className={'hidden md:flex'} />
-          </Suspense>
+          <div className="flex items-center gap-3">
+            <Suspense>
+              <SearchInput placeholder="Search..." className={'hidden md:flex lg:w-[500px]'} />
+            </Suspense>
+            <HamburgerIcon isOpen={isOpen} toggle={toggleMenu} />
+            <Cart />
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          <HamburgerIcon isOpen={isOpen} toggle={toggleMenu} />
-          <Cart />
-        </div>
+        <NavigationMenu />
+        <SearchInput placeholder="Search..." className={'flex md:hidden mb-4'} />
         <MobileNavigationMenu isOpen={isOpen} onClick={toggleMenu} />
       </Nav>
-      <SearchInput placeholder="Search..." className={'flex md:hidden mb-4'} />
-      <Separator />
     </header>
   );
 }

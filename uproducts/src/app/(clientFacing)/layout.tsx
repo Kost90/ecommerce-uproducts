@@ -1,5 +1,4 @@
 import Header from '@/components/header/Header';
-import SideMenu from '@/components/sideMenu/SideMenu';
 
 function CostumerFacingLayout({
   children,
@@ -9,10 +8,7 @@ function CostumerFacingLayout({
   return (
     <div className="relative">
       <Header />
-      <div className="flex mt-24 md:h-screen-minus-header">
-        <SideMenu />
-        <main className="container relative w-full mx-auto my-0 md:overflow-y-auto">{children}</main>
-      </div>
+      <main className="container relative w-full mx-auto mt-44 md:mb-10">{children}</main>
     </div>
   );
 }

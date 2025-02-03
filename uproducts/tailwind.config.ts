@@ -27,6 +27,9 @@ const config = {
         background: '#f5f5f5',
         foreground: 'hsl(var(--foreground))',
         orange: '#FFAE5D',
+        grey: {
+          basic: 'rgba(96, 96, 96, 1)',
+        },
         separator: 'rgba(128, 128, 128, 1)',
         navText: 'rgba(96, 96, 96, 1)',
         primary: {

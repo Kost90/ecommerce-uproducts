@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className={cn('min-h-screen bg-[#FFFFFF] font-sans antialiased lg:overflow-hidden', fontSans.variable)}>
+        <body className={cn('min-h-screen bg-[#FFFFFF] font-sans antialiased', fontSans.variable)}>
           {children}
           <Toaster />
           <Modal />

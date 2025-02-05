@@ -11,7 +11,7 @@ export default async function Home(): Promise<JSX.Element> {
         <CarouselWrapper />
       </Suspense>
 
-      <div className="flex items-center justify-center gap-3 flex-col lg:flex-row h-full lg:h-[960px] w-full">
+      <div className="flex items-center justify-center gap-3 flex-col lg:flex-row h-full w-full">
         <Suspense fallback={<GridSkeleton />}>
           <HeroSection />
         </Suspense>

@@ -51,7 +51,7 @@ function Header(): React.JSX.Element {
             <span className="text-xs md:text-sm font-normal text-grey-basic">Sign in</span>
           </NavLink>
         </div>
-        <Separator />
+        <Separator className="bg-olive" />
         <div className="flex justify-between items-center gap-2 md:min-w-72">
           <NavLink
             href="/search"

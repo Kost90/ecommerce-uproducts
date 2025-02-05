@@ -21,7 +21,7 @@ async function Grid(): Promise<JSX.Element> {
   );
 
   return (
-    <FlexContainer className={'gap-0 items-center w-2/3'}>
+    <FlexContainer className={'gap-0 items-center w-full max-w-[878px]'}>
       {productsApi.data.products.map((product, i) =>
         i < 6 ? renderCard(product, 'w-full max-h-[235px] h-full', 'max-w-[256px] max-h-[340px] border-0 rounded-none shadow-none') : null,
       )}

@@ -60,6 +60,7 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        olive: '#808080c9',
       },
       borderRadius: {
         lg: 'var(--radius)',

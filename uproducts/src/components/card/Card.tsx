@@ -34,12 +34,12 @@ function CardComponent({ ...props }: IProps): JSX.Element {
   );
 
   return (
-    <Card className={`cursor-pointer w-full h-full flex flex-col items-start justify-around p-2 hover:border-amber-300 ${className}`}>
+    <Card className={`cursor-pointer w-full h-full flex flex-col items-start justify-around p-2 ${className}`}>
       <CardHeader>
-        <CardTitle className="capitalize">{name}</CardTitle>
+        <CardTitle className="capitalize text-base">{name}</CardTitle>
       </CardHeader>
       <CardContent className={`flex flex-col ${imageHeigth}`}>
-        <div className={`relative w-full h-[250px] md:h-[300px] lg:h-[400px] overflow-hidden rounded-md`}>
+        <div className={`relative w-full h-[200px] md:h-[200px] lg:h-[400px] overflow-hidden rounded-md`}>
           <Image
             src={picture}
             alt={`picture_of_${name}`}
@@ -76,7 +76,7 @@ function CardComponent({ ...props }: IProps): JSX.Element {
             });
           }}
         >
-          <ShoppingCart className="text-black hover:text-slate-500" />
+          <ShoppingCart className="text-orange hover:text-slate-500" />
         </Button>
       </CardFooter>
     </Card>

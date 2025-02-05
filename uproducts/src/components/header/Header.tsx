@@ -8,7 +8,7 @@ import Logo from '../../../public/assets/Logo_Uproducts.svg';
 import SignInIcon from '../../../public/assets/sign_in_icon.svg';
 import MobileNavigationMenu from '../mobileNavigationMenu/MobileNavigationMenu';
 import HamburgerIcon from '../hamburgerIcon/HamburgerIcon';
-import NavigationMenu from '../sideMenu/NavigationMenu';
+import NavigationMenu from '../navigationMenu/NavigationMenu';
 
 const Cart = lazy(() => import('@/components/cart/CartComponent'));
 
@@ -51,7 +51,7 @@ function Header(): React.JSX.Element {
             <span className="text-xs md:text-sm font-normal text-grey-basic">Sign in</span>
           </NavLink>
         </div>
-        <Separator />
+        <Separator className="bg-olive" />
         <div className="flex justify-between items-center gap-2 md:min-w-72">
           <NavLink
             href="/search"

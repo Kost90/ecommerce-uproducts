@@ -15,7 +15,7 @@ function MobileNavigationMenu({ isOpen, onClick }: { isOpen: boolean; onClick: (
       initial="closed"
       animate={isOpen ? 'open' : 'closed'}
       variants={animations.menuVariants}
-      className="fixed lg:hidden top-0 left-0 h-screen w-2/3 z-40 shadow-lg"
+      className="fixed lg:hidden top-0 left-0 h-screen w-2/3 z-40 shadow-lg bg-[#fbf8f8]"
     >
       <div className="flex justify-around items-start p-4 my-5">
         <div className="flex flex-col justify-center items-start h-full w-full gap-4">

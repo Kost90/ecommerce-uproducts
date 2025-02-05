@@ -2,15 +2,22 @@ import CardComponent from '../card/Card';
 import { formatCurrency } from '@/helpers/formatter';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import { Product } from '@/constans/typeconstans';
+import FlexContainer from '../containers/FlexContainer';
+
+interface IProps {
+  id: string;
+  name: string;
+  price: string;
+  picture: string;
+  description: string;
+  className?: string;
+  imageHeigth?: string;
+}
 
 async function Grid(): Promise<JSX.Element> {
   const productsApi = await ProductsApi.getProducts();
-  const firstThree = productsApi.status === 200 ? productsApi.data.products.slice(0, 3) : [];
 
-  const firstItem = firstThree[0];
-  const otherItems = firstThree.slice(1);
-
-  const renderCard = (product: Product, imageHeight: string): JSX.Element => (
+  const renderCard = (product: Product, imageHeight: string, className: string): JSX.Element => (
     <CardComponent
       key={product.id}
       id={product.id!}
@@ -19,17 +26,16 @@ async function Grid(): Promise<JSX.Element> {
       price={formatCurrency(product.priceInCents / 100)}
       picture={product.imagePath as string}
       imageHeigth={imageHeight}
+      className={className}
     />
   );
 
   return (
-    <>
-      <div className="flex h-full w-full lg:col-span-3">{firstItem && renderCard(firstItem, 'w-full max-h-[500px] h-full')}</div>
-
-      <div className="flex flex-col gap-4 items-center justify-center h-full w-full">
-        {otherItems.map((product: Product) => renderCard(product, 'w-full max-h-[300px] h-full'))}
-      </div>
-    </>
+    <FlexContainer className={'gap-0 items-center w-2/3'}>
+      {productsApi.data.products.map((product, i) =>
+        i < 6 ? renderCard(product, 'w-full max-h-[235px] h-full', 'max-w-[256px] max-h-[340px] border-0 rounded-none shadow-none') : null,
+      )}
+    </FlexContainer>
   );
 }
 

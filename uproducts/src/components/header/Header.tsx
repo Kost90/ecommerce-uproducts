@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { Nav, NavLink } from '@/components/NavLink/Nav';
+import { Nav, NavLink } from '@/components/navLink/Nav';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import SearchInput from '@/components/searchInput/SearchInput';
 import { Separator } from '@/components/ui/separator';
@@ -8,7 +8,7 @@ import Logo from '../../../public/assets/Logo_Uproducts.svg';
 import SignInIcon from '../../../public/assets/sign_in_icon.svg';
 import MobileNavigationMenu from '../mobileNavigationMenu/MobileNavigationMenu';
 import HamburgerIcon from '../hamburgerIcon/HamburgerIcon';
-import NavigationMenu from '../sideMenu/NavigationMenu';
+import NavigationMenu from '../navigationMenu/NavigationMenu';
 
 const Cart = lazy(() => import('@/components/cart/CartComponent'));
 

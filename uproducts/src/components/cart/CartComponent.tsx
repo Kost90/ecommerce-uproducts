@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useAppSelector } from '@/hooks/hooks';
-import { NavLink } from '../navLink/Nav';
+import { NavLink } from '@/components/NavLink/Nav';
 import {
   Sheet,
   SheetClose,

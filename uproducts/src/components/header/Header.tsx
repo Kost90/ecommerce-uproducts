@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { Nav, NavLink } from '@/components/navLink/Nav';
+import { Nav, NavLink } from '@/components/NavLink/Nav';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import SearchInput from '@/components/searchInput/SearchInput';
 import { Separator } from '@/components/ui/separator';

@@ -1,4 +1,4 @@
-import { Nav, NavLink } from '@/components/navLink/Nav';
+import { NavLink, Nav } from '../../components/navLink/Nav';
 
 function AdminRootLayout({
   children,

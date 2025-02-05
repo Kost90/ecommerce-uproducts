@@ -4,16 +4,6 @@ import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import { Product } from '@/constans/typeconstans';
 import FlexContainer from '../containers/FlexContainer';
 
-interface IProps {
-  id: string;
-  name: string;
-  price: string;
-  picture: string;
-  description: string;
-  className?: string;
-  imageHeigth?: string;
-}
-
 async function Grid(): Promise<JSX.Element> {
   const productsApi = await ProductsApi.getProducts();
 

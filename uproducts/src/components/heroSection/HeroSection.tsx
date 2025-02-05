@@ -1,4 +1,3 @@
-import FlexContainer from '../containers/FlexContainer';
 import Grid from '../grid/Grid';
 
 function HeroSection() {

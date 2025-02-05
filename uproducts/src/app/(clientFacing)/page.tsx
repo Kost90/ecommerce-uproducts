@@ -1,5 +1,4 @@
 import { Suspense } from 'react';
-import Grid from '../../components/grid/Grid';
 import { GridSkeleton } from '@/components/skeletons/CardSkeleton';
 import CarouselSkeleton from '@/components/skeletons/CarouselSkeleton';
 import CarouselWrapper from '@/components/carouselWrapper/CarouselWrapper';

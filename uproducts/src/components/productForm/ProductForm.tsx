@@ -7,14 +7,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { useFormState } from 'react-dom';
 import { addProduct, updateProduct } from '../../app/profile/_actions/ProductsActions';
 import { SelectComponent } from '../selectComponent/Select';
-import Form from '@/components/form/Form';
 
 function ProductForm({ product }: { product?: Product | null }): JSX.Element {
   const [error, action] = useFormState(product == null ? addProduct : updateProduct.bind(null, product.id!), {});
 
   return (
     <>
-      <Form action={action} className="flex flex-col gap-3">
+      <form action={action} className="flex flex-col gap-3">
         <div className="space-y-2">
           <Label htmlFor="name">Name of product:</Label>
           <Input type="text" name="name" placeholder="Product name" required defaultValue={product?.name || ''} />
@@ -46,7 +45,7 @@ function ProductForm({ product }: { product?: Product | null }): JSX.Element {
           {error?.description && <div className="text-destructive">{error?.description}</div>}
         </div>
         <ButtonComponent type="submit" text="Add" />
-      </Form>
+      </form>
     </>
   );
 }

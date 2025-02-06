@@ -26,10 +26,10 @@ const addSchema = z.object({
 
 // Initial S3Config for S3 Bucket AWS
 const s3Config: S3ClientConfig = {
-  region: process.env.AWS_BUCKET_REGION,
+  region: process.env.NEXT_PUBLIC_AWS_BUCKET_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY || '',
+    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY || '',
   },
 };
 
@@ -38,12 +38,10 @@ const s3 = new S3Client(s3Config);
 
 // Function for uploading photos to AWS
 async function uploadFileToS3(file: any, fileName: string): Promise<string> {
-  const fileBuffer = file;
-
   const params = {
     Bucket: bucketName,
     Key: `${fileName}`,
-    Body: fileBuffer,
+    Body: file,
     ContentType: 'image/jpg',
   };
 

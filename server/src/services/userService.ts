@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
-import UserRepository from 'repositories/userRepository';
-import { UserResponseDTO } from 'dto/user/creat';
+import UserRepository from '../repositories/userRepository';
+import { UserResponseDTO } from '../dto/user/creat';
 import { ValidationHelper } from '../helpers/validationHelper';
 import HttpCodesHelper from '../helpers/httpCodeHelper';
 import ErrorWithContext from '../errors/errorWithContext';

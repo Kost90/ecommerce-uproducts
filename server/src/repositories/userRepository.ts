@@ -1,6 +1,6 @@
 import { PrismaClient, User } from '@prisma/client';
-import ErrorWithContext from 'errors/errorWithContext';
-import HttpCodesHelper from 'helpers/httpCodeHelper';
+import ErrorWithContext from '../errors/errorWithContext';
+import HttpCodesHelper from '../helpers/httpCodeHelper';
 
 export default class UserRepository {
   private prismaClient: PrismaClient;

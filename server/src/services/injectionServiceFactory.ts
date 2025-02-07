@@ -3,7 +3,7 @@ import ProductsService from './productsService';
 import UserService from './userService';
 import AuthorizationService from './authorizationService';
 import ProductsRepository from '../repositories/productsRepository';
-import UserRepository from 'repositories/userRepository';
+import UserRepository from '../repositories/userRepository';
 
 class InjectionService {
   private prismaClient: PrismaClient;

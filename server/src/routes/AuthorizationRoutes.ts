@@ -1,10 +1,10 @@
 import Express, { Request, Response, NextFunction } from 'express';
 import { AuthenticationMiddleware } from '../midlewares/authenticationMidleware';
 import RequestMiddleware from '../midlewares/requestMidleware';
-import AuthorizationValidator from 'validators/auth';
+import AuthorizationValidator from '../validators/auth';
 import { PrismaClient } from '@prisma/client';
 import InjectionService from '../services/injectionServiceFactory';
-import AuthorizationController from 'controllers/AuthorizationController';
+import AuthorizationController from '../controllers/AuthorizationController';
 
 const prisma = new PrismaClient();
 const injectionService = new InjectionService(prisma);

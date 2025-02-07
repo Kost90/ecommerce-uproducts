@@ -1,5 +1,5 @@
 import { checkSchema, Schema } from 'express-validator';
-import { ValidationHelper } from 'helpers/validationHelper';
+import { ValidationHelper } from '../helpers/validationHelper';
 
 export default class AuthorizationValidator {
   public static login() {
@@ -73,7 +73,9 @@ export default class AuthorizationValidator {
         custom: {
           options: (value) => {
             if (!ValidationHelper.isValidPassword(value)) {
-              throw new Error('Password must be at least 8 characters long and contain at least one letter and one number');
+              throw new Error(
+                'Password must be at least 8 characters long and contain at least one letter, one number, one special character',
+              );
             }
             return true;
           },
@@ -92,6 +94,14 @@ export default class AuthorizationValidator {
         notEmpty: {
           errorMessage: 'Telephone is required',
         },
+      },
+      role: {
+        in: ['body'],
+        optional: true,
+        isString: true,
+        trim: true,
+        escape: true,
+        errorMessage: 'Role must be an admin or costumer',
       },
     });
   }

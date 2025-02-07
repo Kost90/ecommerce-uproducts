@@ -1,5 +1,5 @@
-import AuthorizationService from 'services/authorizationService';
-import UserService from 'services/userService';
+import AuthorizationService from '../services/authorizationService';
+import UserService from '../services/userService';
 import { Response, Request, NextFunction } from 'express';
 import { config } from '../config/default';
 import { ValidationHelper } from '../helpers/validationHelper';

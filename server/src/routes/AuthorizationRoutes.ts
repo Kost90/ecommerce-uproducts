@@ -18,3 +18,11 @@ router.post(
   RequestMiddleware.validateRequest,
   (req: Request, res: Response, next: NextFunction) => authorizationController.signUp(req, res, next),
 );
+
+router.post(
+  '/login',
+  AuthenticationMiddleware.verifyApiKey,
+  AuthorizationValidator.login(),
+  RequestMiddleware.validateRequest,
+  (req: Request, res: Response, next: NextFunction) => authorizationController.signIn(req, res, next),
+);

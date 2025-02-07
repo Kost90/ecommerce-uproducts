@@ -6,6 +6,7 @@ import { ValidationHelper } from '../helpers/validationHelper';
 import HttpCodesHelper from '../helpers/httpCodeHelper';
 import ErrorWithContext from '../errors/errorWithContext';
 import getLogger from '../utils/logger';
+import UserDTO from '../dto/user/get';
 const logger = getLogger('ProductsService');
 
 export default class UserService {
@@ -37,6 +38,21 @@ export default class UserService {
     } catch (error) {
       logger.error(`Error saving new user in UserService method save:: ${error}`);
       throw new ErrorWithContext({}, `Error in UserService method save: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
+  async findOneByEmail(userEmail: string): Promise<UserDTO> {
+    try {
+      ValidationHelper.checkForNullOrUndefined(userEmail, `${this.constructor.name}: userEmail`);
+
+      const user = await this.userRepository.findByEmail(userEmail);
+
+      const userDTO = new UserDTO(user);
+
+      return userDTO;
+    } catch (error) {
+      logger.error(`Error find user by email in UserService method findOneByEmail:: ${error}`);
+      throw new ErrorWithContext({}, `Error in UserService method findOneByEmail: ${error}`, HttpCodesHelper.BAD);
     }
   }
 }

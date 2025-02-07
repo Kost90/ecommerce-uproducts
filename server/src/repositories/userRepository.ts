@@ -17,4 +17,22 @@ export default class UserRepository {
       throw new ErrorWithContext({}, `Error in UserRepository method store: ${error}`, HttpCodesHelper.BAD);
     }
   }
+
+  async findByEmail(userEmail: string): Promise<User> {
+    try {
+      const user = await this.prismaClient.user.findUnique({
+        where: {
+          email: userEmail,
+        },
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      return user;
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in UserRepository method findByEmail: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
 }

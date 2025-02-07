@@ -8,7 +8,6 @@ const logger = getLogger('session');
 
 const redisClient = createClient({
   url: config.redis,
-  legacyMode: true,
 });
 
 redisClient.connect().catch(logger.error);

@@ -1,4 +1,4 @@
-import { checkSchema, Schema } from 'express-validator';
+import { checkSchema } from 'express-validator';
 import { ValidationHelper } from '../helpers/validationHelper';
 
 export default class AuthorizationValidator {

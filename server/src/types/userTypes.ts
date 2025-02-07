@@ -5,7 +5,7 @@ export interface IUserBase {
   email: string;
   password: string;
   telephone: string;
-  addressId: string | null;
+  addressId?: string | null | undefined;
   role: string;
 }
 

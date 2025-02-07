@@ -5,6 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { router as productRoutes } from './routes/ProductRoutes';
 import { router as authorizationRouter } from './routes/AuthorizationRoutes';
+import { router as userRouter } from './routes/UserRoutes';
 import { config } from './config/default';
 import getLogger from './utils/logger';
 import responseMiddleware from './midlewares/responseMiddleware';
@@ -25,6 +26,7 @@ const server = http.createServer(app);
 app.use(responseMiddleware);
 app.use('/products', productRoutes);
 app.use('/auth', authorizationRouter);
+app.use('/user', userRouter);
 
 app.use(errorHandlingMiddleware);
 

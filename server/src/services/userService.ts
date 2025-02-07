@@ -55,4 +55,19 @@ export default class UserService {
       throw new ErrorWithContext({}, `Error in UserService method findOneByEmail: ${error}`, HttpCodesHelper.BAD);
     }
   }
+
+  async findById(userId: string): Promise<UserResponseDTO> {
+    try {
+      ValidationHelper.checkForNullOrUndefined(userId, `${this.constructor.name}: userId`);
+
+      const user = await this.userRepository.findById(userId);
+
+      const userDTO = new UserResponseDTO(user);
+
+      return userDTO;
+    } catch (error) {
+      logger.error(`Error find user by email in UserService method findById:: ${error}`);
+      throw new ErrorWithContext({}, `Error in UserService method findById: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
 }

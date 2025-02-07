@@ -4,9 +4,7 @@ import { SessionData } from 'express-session';
 declare module 'express' {
   interface Request {
     matchedData?: any;
-    // session: {
-    //   jwt?: string;
-    // };
+    user?: any;
   }
 }
 

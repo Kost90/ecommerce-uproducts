@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Address, User } from '@prisma/client';
 import { IUserBase, IUserResponse } from '../../types/userTypes';
 
 class UserDTO implements IUserBase {
@@ -28,16 +28,33 @@ export class UserResponseDTO implements IUserResponse {
   firstname: string;
   lastname: string;
   email: string;
-  addressId: string | null;
+  addressId?: string;
   role: string;
+  address?: {
+    city: string;
+    street: string;
+    number: string;
+    country: string;
+    postalCode: string;
+  };
 
-  constructor(data: IUserResponse) {
-    this.id = data.id as string;
+  constructor(data: IUserBase & { address?: Address | null }) {
+    this.id = data.id;
     this.email = data.email;
     this.firstname = data.firstname;
     this.lastname = data.lastname;
-    this.addressId = data.addressId;
+    this.addressId = data.addressId || undefined;
     this.role = data.role;
+
+    if (data.address) {
+      this.address = {
+        city: data.address.city,
+        street: data.address.street,
+        number: data.address.number,
+        country: data.address.country,
+        postalCode: data.address.postalCode,
+      };
+    }
   }
 }
 

@@ -2,18 +2,18 @@
 import ButtonComponent from '@/components/button/Button';
 import { InputComponent } from '../ui/InputComponent';
 import { useFormState } from 'react-dom';
-import { signUpUser } from '@/app/(clientFacing)/actions/registerActions';
+import { signInAction } from '@/app/(clientFacing)/actions/LoginActions';
 
-function RegisterForm() {
-  const [error, action] = useFormState(signUpUser, {});
+function LoginForm() {
+  const [error, action] = useFormState(signInAction, {});
   return (
     <form action={action} className="flex flex-col gap-3 w-full md:w-1/2 mx-auto">
-      {(['firstname', 'lastname', 'email', 'password', 'telephone'] as const).map((el, i) => (
+      {(['email', 'password'] as const).map((el, i) => (
         <InputComponent key={`${el} + ${i}`} label={el.toUpperCase()} name={el} placeholder={`Enter your ${el}`} error={error?.[el]?.[0]} />
       ))}
-      <ButtonComponent type="submit" text="Send" className="w-full md:max-w-28" />
+      <ButtonComponent type="submit" text="login" className="w-full md:max-w-28" />
     </form>
   );
 }
 
-export default RegisterForm;
+export default LoginForm;

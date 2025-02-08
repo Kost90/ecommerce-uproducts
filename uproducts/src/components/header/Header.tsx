@@ -21,7 +21,7 @@ function Header(): React.JSX.Element {
   useEffect(() => {
     // TODO: Make user fetch
     // if (!user) {
-    //   const response = await 
+    //   const response = await
     // }
     const handelScroll = (): void => {
       const scrolled = window.scrollY;
@@ -54,7 +54,7 @@ function Header(): React.JSX.Element {
             <div className="relative w-4 h-4 md:w-6 md:h-6">
               <Image src={SignInIcon} alt="sign_in_icon" fill className="object-cover" />
             </div>
-            <NavLink href="/" className="flex items-center gap-1 hover:text-orange">
+            <NavLink href="/login" className="flex items-center gap-1 hover:text-orange">
               <span className="text-xs md:text-sm font-normal text-grey-basic hover:text-orange">Sign in</span>
             </NavLink>
             <div className="text-grey-basic">/</div>

@@ -10,4 +10,12 @@ export interface IUserResponse {
   id: string;
   firstName: string;
   lastName: string;
+  address?: {
+    id: string;
+    city: string;
+    street: string;
+    numbe: string;
+    country: string;
+    postalCode: string;
+  };
 }

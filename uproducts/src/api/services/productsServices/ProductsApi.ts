@@ -128,4 +128,5 @@ class ProductsApi extends API {
   }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new ProductsApi(url!);

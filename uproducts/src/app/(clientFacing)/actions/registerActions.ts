@@ -4,11 +4,10 @@ import { revalidatePath } from 'next/cache';
 import authorizationService from '@/api/services/authorization/AuthorizationService';
 import signUpSchema from '../validations/signUpSchema';
 
-// TODO:How to return error message if user with email exist
 export async function signUpUser(prevState: unknown, formData: FormData) {
   const result = signUpSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!result.success) {
-    return result.error.formErrors.fieldErrors;
+    return { errors: result.error.formErrors.fieldErrors };
   }
 
   const body = {
@@ -22,7 +21,7 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
   const res = await authorizationService.signUp(body);
 
   if (res.status !== 200) {
-    throw new Error(`Signup failed: ${res.message}`);
+    return { serverError: res.message || 'Registration failed. Try different email.' };
   }
 
   revalidatePath('/');

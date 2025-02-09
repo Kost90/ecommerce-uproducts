@@ -1,6 +1,6 @@
 import { API } from '@/api/Api';
-import { IResponse } from '@/constans/typeconstans';
-import { IUserResponse, IUser } from '@/constans/userTypes';
+import { IResponse } from '@/types/typeconstans';
+import { IUserResponse, IUser } from '@/types/userTypes';
 
 const url = process.env.NEXT_PUBLIC_URL;
 

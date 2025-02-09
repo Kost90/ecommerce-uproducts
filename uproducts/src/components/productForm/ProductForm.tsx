@@ -1,5 +1,5 @@
 'use client';
-import { Product } from '@/constans/typeconstans';
+import { Product } from '@/types/typeconstans';
 import ButtonComponent from '@/components/button/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

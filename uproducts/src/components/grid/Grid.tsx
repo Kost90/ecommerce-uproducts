@@ -1,7 +1,7 @@
 import CardComponent from '../card/Card';
 import { formatCurrency } from '@/helpers/formatter';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
-import { Product } from '@/constans/typeconstans';
+import { Product } from '@/types/typeconstans';
 import FlexContainer from '../containers/FlexContainer';
 
 async function Grid(): Promise<JSX.Element> {

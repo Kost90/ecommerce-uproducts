@@ -1,7 +1,7 @@
 'use client';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
-import { Product } from '@/constans/typeconstans';
+import { Product } from '@/types/typeconstans';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';

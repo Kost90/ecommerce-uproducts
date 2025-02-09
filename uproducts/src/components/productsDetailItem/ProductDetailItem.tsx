@@ -1,5 +1,5 @@
 import React from 'react';
-import { Product } from '@/constans/typeconstans';
+import { Product } from '@/types/typeconstans';
 import TypographyH1 from '../typography/TypographyH1';
 import Image from 'next/image';
 import { setFirstLetterUppercase } from '@/helpers/helpers';

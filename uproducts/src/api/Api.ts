@@ -34,7 +34,9 @@ class API {
       body,
       cache,
       ...rest,
-    }).then((response) => response.json());
+    }).then(async (response) => {
+      return await response.json();
+    });
   }
 }
 

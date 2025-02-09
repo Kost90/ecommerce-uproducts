@@ -6,7 +6,7 @@ import { MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 import DeleteDropDownItem from '../deleteDropDownItem/DeleteDropDownItem';
 import { Button } from '../ui/button';
-import { Product, IProductsResponse } from '@/constans/typeconstans';
+import { Product, IProductsResponse } from '@/types/typeconstans';
 
 async function ProductsTable({ data }: { data: IProductsResponse }): Promise<JSX.Element> {
   // Todo:Catch error with toaster and errorhandler and check status

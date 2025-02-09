@@ -1,9 +1,3 @@
-export interface IResponse<T> {
-  status: number;
-  message: string;
-  data: T;
-}
-
 export type Product = {
   id?: string;
   name: string;
@@ -27,8 +21,4 @@ export interface IProductsResponse {
     message: string;
     type: string;
   };
-}
-
-export interface IProductResponse extends Omit<IProductsResponse, 'data'> {
-  data: Product;
 }

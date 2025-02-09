@@ -1,5 +1,5 @@
 import React from 'react';
-import { IProductResponse } from '@/constans/typeconstans';
+import { IProductResponse } from '@/types/typeconstans';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import ProductDetailItem from '../productsDetailItem/ProductDetailItem';
 

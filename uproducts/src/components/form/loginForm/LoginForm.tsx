@@ -4,12 +4,19 @@ import { InputComponent } from '../ui/InputComponent';
 import { useFormState } from 'react-dom';
 import { signInAction } from '@/app/(clientFacing)/actions/LoginActions';
 import { NavLink } from '@/components/NavLink/Nav';
+import { useRouter } from 'next/navigation';
 
 function LoginForm() {
+  const router = useRouter();
   const [state, action] = useFormState(signInAction, {
     errors: {},
     serverError: undefined,
+    succssese: undefined,
   });
+
+  if (state.succssese) {
+    router.push('/profile');
+  }
 
   // TODO: Change for Form component
   return (

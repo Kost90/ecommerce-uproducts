@@ -26,28 +26,27 @@ export class AuthenticationMiddleware {
   };
 
   async verifyAccesse(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const token = req.session.jwt;
-
-    if (!token) {
-      return next(new ErrorWithContext({}, 'No token provided.', HttpCodesHelper.FORBIDDEN));
-    }
-
     try {
+      const token = req.session.jwt;
+
+      if (!token) {
+        return next(new ErrorWithContext({}, 'No token provided.', HttpCodesHelper.FORBIDDEN));
+      }
       const decoded = jwt.verify(token, config.session.secret) as AuthTokenPayload;
 
-      if (decoded.userId) {
-        const user = await this.userService.findById(decoded.userId);
-
-        if (!user) {
-          return next(new ErrorWithContext({}, 'User not found', HttpCodesHelper.UNATHORIZED));
-        }
-
-        req.user = user;
-
-        next();
+      if (!decoded.userId) {
+        return next(new ErrorWithContext({}, 'Invalid token payload', HttpCodesHelper.UNATHORIZED));
       }
 
-      next(new ErrorWithContext({}, 'Invalid token payload', HttpCodesHelper.UNATHORIZED));
+      const user = await this.userService.findById(decoded.userId);
+
+      if (!user) {
+        return next(new ErrorWithContext({}, 'User not found', HttpCodesHelper.UNATHORIZED));
+      }
+
+      req.user = user;
+
+      next();
     } catch (error: unknown) {
       if (error instanceof Error) {
         next(new ErrorWithContext({}, 'Invalid token', HttpCodesHelper.UNATHORIZED));

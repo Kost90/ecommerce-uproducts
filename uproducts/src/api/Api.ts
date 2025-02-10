@@ -5,7 +5,7 @@ class API {
     this._baseUrl = baseUrl;
   }
 
-  fetch({
+  async fetch({
     path = '',
     method = 'GET',
     body,
@@ -28,6 +28,7 @@ class API {
     return fetch(`${this._baseUrl}/${path}`, {
       method,
       signal,
+      credentials: 'include',
       headers: {
         ...headers,
       },

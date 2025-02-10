@@ -17,7 +17,12 @@ const logger = getLogger('Server');
 
 // Express server
 const app: Express = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(sessionMiddleware);
@@ -27,7 +32,6 @@ app.use(responseMiddleware);
 app.use('/products', productRoutes);
 app.use('/auth', authorizationRouter);
 app.use('/user', userRouter);
-
 app.use(errorHandlingMiddleware);
 
 server.listen(port, () => {

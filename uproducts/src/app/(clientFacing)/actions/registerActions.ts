@@ -1,7 +1,7 @@
 'use server';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import authorizationService from '@/api/services/authorization/AuthorizationService';
+import authorizationService from '@/api/services/authorizationServices/AuthorizationService';
 import signUpSchema from '../validations/signUpSchema';
 
 export async function signUpUser(prevState: unknown, formData: FormData) {

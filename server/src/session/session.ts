@@ -10,17 +10,23 @@ const redisClient = createClient({
   url: config.redis,
 });
 
-redisClient.connect().catch(logger.error);
+redisClient
+  .connect()
+  .then(() => {
+    logger.info('Redis connected');
+  })
+  .catch((err) => {
+    logger.error('Redis connection error:', err);
+  });
 
 const redisStore = new RedisStore({
   client: redisClient,
-  disableTouch: true,
 });
 
 const cookieParams: session.CookieOptions = {
   httpOnly: true,
-  sameSite: 'strict',
-  secure: config.session.secureCookie,
+  sameSite: 'lax',
+  secure: false,
   maxAge: 24 * 60 * 60 * 1000,
 };
 

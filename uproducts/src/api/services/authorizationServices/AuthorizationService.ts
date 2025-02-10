@@ -40,6 +40,20 @@ class AuthorizationService extends API {
       throw new Error(`Can't login: ${error}`);
     }
   }
+
+  async signOut(): Promise<void> {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    try {
+      await this.fetch({
+        path: 'auth/logout',
+        method: 'POST',
+        signal: signal,
+      });
+    } catch (error) {
+      throw new Error(`Can't logout: ${error}`);
+    }
+  }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

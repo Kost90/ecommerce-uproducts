@@ -1,11 +1,9 @@
-'use server';
-import { redirect } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
-import authorizationService from '@/api/services/authorization/AuthorizationService';
+'use client';
+import authorizationService from '@/api/services/authorizationServices/AuthorizationService';
 import loginSchema from '../validations/loginSchema';
 
 export async function signInAction(prevState: unknown, formData: FormData) {
-  const result = loginSchema.safeParse(Object.fromEntries(formData.entries()));
+  const result = await loginSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!result.success) {
     return { errors: result.error.formErrors.fieldErrors };
   }
@@ -18,9 +16,8 @@ export async function signInAction(prevState: unknown, formData: FormData) {
   const res = await authorizationService.signIn(body);
 
   if (res.status !== 200) {
-    return { serverError: res.message || 'Login failed. Please try again.' };
+    return { serverError: res.error?.message || 'Login failed. Please try again.' };
   }
 
-  revalidatePath('/');
-  redirect('/profile');
+  return { succssese: true };
 }

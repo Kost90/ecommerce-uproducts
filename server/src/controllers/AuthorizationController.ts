@@ -51,7 +51,7 @@ export default class AuthorizationController {
       const isPasswordCorrect = this.authorizationService.comparePassword(matchedData.password, user.password);
 
       if (!isPasswordCorrect) {
-        next(new ErrorWithContext({ userId: user.id }, 'Password incorrect', HttpCodesHelper.FORBIDDEN));
+        return next(new ErrorWithContext({ userId: user.id }, 'Password incorrect', HttpCodesHelper.FORBIDDEN));
       }
 
       const token = jwt.sign({ userId: user.id }, config.session.secret, { expiresIn: '1d' });
@@ -63,5 +63,16 @@ export default class AuthorizationController {
     } catch (error) {
       next(new ErrorWithContext({}, `Error in AuthorizationController method signIn: ${error}`, HttpCodesHelper.BAD));
     }
+  }
+
+  async signOut(req: Request, res: Response) {
+    req.session.destroy((err: unknown) => {
+      if (err) {
+        return res.status(HttpCodesHelper.SERVER_ERROR).send({ message: 'Error logging out' });
+      }
+
+      res.clearCookie(config.session.cookieName);
+      res.status(HttpCodesHelper.OK).send({ message: 'Logged out successfully' });
+    });
   }
 }

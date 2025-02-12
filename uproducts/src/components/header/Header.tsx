@@ -4,7 +4,8 @@ import { Nav } from '@/components/NavLink/Nav';
 import { Separator } from '@/components/ui/separator';
 import MobileNavigationMenu from '../mobileNavigationMenu/MobileNavigationMenu';
 import NavigationMenu from '../navigationMenu/NavigationMenu';
-import useUser from '@/hooks/useUser';
+import { useGetUserQuery } from '@/lib/redux/apiSlice/apiSlice';
+// import useUser from '@/hooks/useUser';
 import LogoComponent from './LogoComponent';
 import AuthButtons from './AuthButtons';
 import HeaderSearch from './HeaderSearch';
@@ -13,7 +14,7 @@ import AuthorizationService from '@/api/services/authorizationServices/Authoriza
 function Header(): React.JSX.Element {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { user, loading } = useUser();
+  const { data, error, isLoading } = useGetUserQuery();
 
   useEffect(() => {
     const handleScroll = (): void => {
@@ -45,7 +46,7 @@ function Header(): React.JSX.Element {
       <Nav className="flex flex-col mt-2 sm:mb-1 gap-2">
         <div className="flex justify-between items-center">
           <LogoComponent />
-          {!loading && <AuthButtons user={user} handleLogout={handleLogout} />}
+          {!isLoading && <AuthButtons user={data?.data ?? null} handleLogout={handleLogout} />}
         </div>
         <Separator className="bg-olive" />
         <div className="flex justify-between items-center gap-2 md:min-w-72">

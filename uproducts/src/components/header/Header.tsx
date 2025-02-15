@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Nav } from '@/components/NavLink/Nav';
 import { Separator } from '@/components/ui/separator';
 import MobileNavigationMenu from '../mobileNavigationMenu/MobileNavigationMenu';
@@ -10,8 +10,10 @@ import AuthButtons from './AuthButtons';
 import HeaderSearch from './HeaderSearch';
 import { api } from '@/lib/redux/apiSlice/apiSlice';
 import { useAppDispatch } from '@/hooks/hooks';
+import { useRouter } from 'next/navigation';
 
-function Header(): React.JSX.Element {
+function Header({ profile = false }: { profile?: boolean }): React.JSX.Element {
+  const pathname = useRouter();
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data } = useGetUserQuery();
@@ -29,15 +31,18 @@ function Header(): React.JSX.Element {
     };
   }, []);
 
-  const toggleMenu = (): void => {
+  const toggleMenu = useCallback((): void => {
     setIsOpen(!isOpen);
-  };
+  }, [isOpen]);
 
   const handleLogout = async () => {
     try {
       await logout({}).unwrap();
       dispatch(api.util.invalidateTags([{ type: 'User' }]));
       dispatch(api.util.resetApiState());
+      if (profile) {
+        pathname.push('/');
+      }
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -52,7 +57,7 @@ function Header(): React.JSX.Element {
       <Nav className="flex flex-col mt-2 sm:mb-1 gap-2">
         <div className="flex justify-between items-center">
           <LogoComponent />
-          <AuthButtons user={data?.data ?? null} handleLogout={handleLogout} />
+          <AuthButtons user={data?.data ?? null} handleLogout={handleLogout} profile={profile} />
         </div>
         <Separator className="bg-olive" />
         <div className="flex justify-between items-center gap-2 md:min-w-72">

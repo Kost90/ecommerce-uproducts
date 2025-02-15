@@ -16,7 +16,7 @@ export async function signInAction(prevState: unknown, formData: FormData) {
   const res = await authorizationService.signIn(body);
 
   if (res.status !== 200) {
-    return { serverError: res.error?.message || 'Login failed. Please try again.' };
+    return { serverError: 'Login failed. Incorrect password or email' };
   }
 
   return { succssese: true };

@@ -2,20 +2,32 @@ import Image from 'next/image';
 import { NavLink } from '@/components/NavLink/Nav';
 import SignInIcon from '../../../public/assets/sign_in_icon.svg';
 import { IUserResponse } from '@/types/userTypes';
+import AdminNavigationMenu from '../adminNavigationMenu/AdminNavigationMenu';
+import { usersRolesList } from '@/constans/userRolesLists';
 
 interface AuthButtonsProps {
   user: IUserResponse | null;
   handleLogout: () => void;
+  profile?: boolean;
 }
 
-const AuthButtons: React.FC<AuthButtonsProps> = ({ user, handleLogout }) => {
+// TODO: AdminNavigationMenu - romevo in mobile display to gamburger
+
+const AuthButtons: React.FC<AuthButtonsProps> = ({ user, handleLogout, profile = false }) => {
   return (
     <div className="flex justify-center items-center gap-1">
       {user ? (
         <>
-          <NavLink href="/profile" className="flex items-center gap-1 hover:text-orange">
-            <span className="text-xs md:text-sm font-normal text-grey-basic hover:text-orange">Profile</span>
-          </NavLink>
+          {user.role === usersRolesList.admin && profile && <AdminNavigationMenu />}
+          {profile ? (
+            <NavLink href="/" className="text-xs md:text-sm font-normal text-grey-basic hover:text-orange">
+              Client side
+            </NavLink>
+          ) : (
+            <NavLink href="/profile" className="flex items-center gap-1 hover:text-orange">
+              <span className="text-xs md:text-sm font-normal text-grey-basic hover:text-orange">Profile</span>
+            </NavLink>
+          )}
           <button onClick={handleLogout} className="text-xs md:text-sm font-normal text-grey-basic hover:text-orange">
             Logout
           </button>

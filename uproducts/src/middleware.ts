@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isValidPassword } from './helpers/isValidpassword';
 
+// TODO: Remove authorization code and add another
 // Middleware for take accese to the admin route
 export default async function Middleware(req: NextRequest) {
   if ((await isAuthenticated(req)) === false) {

@@ -11,14 +11,12 @@ interface AuthButtonsProps {
   profile?: boolean;
 }
 
-// TODO: AdminNavigationMenu - romevo in mobile display to gamburger
-
 const AuthButtons: React.FC<AuthButtonsProps> = ({ user, handleLogout, profile = false }) => {
   return (
     <div className="flex justify-center items-center gap-1">
       {user ? (
         <>
-          {user.role === usersRolesList.admin && profile && <AdminNavigationMenu />}
+          {user.role === usersRolesList.admin && profile && <AdminNavigationMenu className="hidden" />}
           {profile ? (
             <NavLink href="/" className="text-xs md:text-sm font-normal text-grey-basic hover:text-orange">
               Client side

@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
-import Title from '@/components/ui/title';
 import UserDataList from '@/components/profile/userDataList/UserDataList';
+import TypographyH1 from '@/components/typography/TypographyH1';
 
 function ProfilePage() {
   return (
     <>
-      <Title text="User details page:" />
+      <TypographyH1 text="User details page:" />
 
       <UserDataList />
     </>

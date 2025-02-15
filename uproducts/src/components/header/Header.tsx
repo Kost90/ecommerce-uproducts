@@ -64,7 +64,7 @@ function Header({ profile = false }: { profile?: boolean }): React.JSX.Element {
           <NavigationMenu />
           <HeaderSearch isOpen={isOpen} toggleMenu={toggleMenu} />
         </div>
-        <MobileNavigationMenu isOpen={isOpen} onClick={toggleMenu} />
+        <MobileNavigationMenu isOpen={isOpen} onClick={toggleMenu} user={data?.data ?? null} />
       </Nav>
     </header>
   );

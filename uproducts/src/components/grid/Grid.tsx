@@ -1,8 +1,8 @@
 import CardComponent from '../card/Card';
 import { formatCurrency } from '@/helpers/formatter';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
-import { Product } from '@/types/typeconstans';
 import FlexContainer from '../containers/FlexContainer';
+import { Product } from '@/types/productTypes';
 
 async function Grid(): Promise<JSX.Element> {
   const productsApi = await ProductsApi.getProducts();

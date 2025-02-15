@@ -1,5 +1,4 @@
 'use client';
-import { Product } from '@/types/typeconstans';
 import ButtonComponent from '@/components/button/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useFormState } from 'react-dom';
 import { addProduct, updateProduct } from '../../app/profile/_actions/ProductsActions';
 import { SelectComponent } from '../selectComponent/Select';
+import { Product } from '@/types/productTypes';
 
 function ProductForm({ product }: { product?: Product | null }): JSX.Element {
   const [error, action] = useFormState(product == null ? addProduct : updateProduct.bind(null, product.id!), {});

@@ -10,7 +10,9 @@ export default function Error({ error }: { error: Error & { digest?: string }; r
 
   return (
     <div className="container mx-auto my-20">
-      <TypographyH2 text={'Something went wrong! External server error. Try to refresh the page.'} />
+      <TypographyH2
+        text={"Something went wrong! External server error. Currently I'm using free server deployment. Try to refresh the page."}
+      />
     </div>
   );
 }

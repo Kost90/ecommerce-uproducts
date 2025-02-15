@@ -27,4 +27,6 @@ router.post(
   (req: Request, res: Response, next: NextFunction) => authorizationController.signIn(req, res, next),
 );
 
-router.post('/logout', AuthenticationMiddleware.verifyApiKey, (req: Request, res: Response) => authorizationController.signOut(req, res));
+router.post('/logout', AuthenticationMiddleware.verifyApiKey, (req: Request, res: Response, next: NextFunction) =>
+  authorizationController.signOut(req, res, next),
+);

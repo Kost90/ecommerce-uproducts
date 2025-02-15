@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 
 function TypographyH3({ text, id, lang, title }: { text: string; id?: string; lang?: string; title?: string }): React.JSX.Element {

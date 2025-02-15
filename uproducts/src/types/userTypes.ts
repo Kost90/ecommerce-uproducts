@@ -8,8 +8,9 @@ export interface IUser {
 
 export interface IUserResponse {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
+  role: string;
   address?: {
     id: string;
     city: string;

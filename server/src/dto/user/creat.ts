@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 
-export class UserResponseDTO {
+export class UserCreatedResponseDTO {
   private firstName: string;
   private lastName: string;
   private id: string;

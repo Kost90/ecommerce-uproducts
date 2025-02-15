@@ -51,7 +51,7 @@ export default class AuthorizationController {
       const isPasswordCorrect = this.authorizationService.comparePassword(matchedData.password, user.password);
 
       if (!isPasswordCorrect) {
-        return next(new ErrorWithContext({ userId: user.id }, 'Password incorrect', HttpCodesHelper.FORBIDDEN));
+        return next(new ErrorWithContext({ userId: user.id }, 'Password or email is incorrect', HttpCodesHelper.FORBIDDEN));
       }
 
       const token = jwt.sign({ userId: user.id }, config.session.secret, { expiresIn: '1d' });
@@ -65,14 +65,18 @@ export default class AuthorizationController {
     }
   }
 
-  async signOut(req: Request, res: Response) {
-    req.session.destroy((err: unknown) => {
-      if (err) {
-        return res.status(HttpCodesHelper.SERVER_ERROR).send({ message: 'Error logging out' });
-      }
+  async signOut(req: Request, res: Response, next: NextFunction) {
+    try {
+      req.session.destroy((err: unknown) => {
+        if (err) {
+          return next(new ErrorWithContext({}, 'Error logging out', HttpCodesHelper.SERVER_ERROR));
+        }
 
-      res.clearCookie(config.session.cookieName);
-      res.status(HttpCodesHelper.OK).send({ message: 'Logged out successfully' });
-    });
+        res.clearCookie(config.session.cookieName);
+        return res.success({ logout: 'successfull' }, HttpCodesHelper.OK, 'Logged out successfully');
+      });
+    } catch (error) {
+      next(new ErrorWithContext({}, `Error in AuthorizationController method signOut: ${error}`, HttpCodesHelper.BAD));
+    }
   }
 }

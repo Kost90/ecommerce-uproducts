@@ -15,6 +15,9 @@ export const api = createApi({
   endpoints: (build) => ({
     ...userApi(build),
   }),
+  tagTypes: ['User'],
+  keepUnusedDataFor: 300,
+  // refetchOnMountOrArgChange: true,
 });
 
-export const { useGetUserQuery } = api;
+export const { useGetUserQuery, useLogoutMutation } = api;

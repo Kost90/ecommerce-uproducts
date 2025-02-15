@@ -1,76 +1,70 @@
 'use client';
-import Image from 'next/image';
-import { Nav, NavLink } from '@/components/NavLink/Nav';
-import React, { lazy, Suspense, useEffect, useState } from 'react';
-import SearchInput from '@/components/searchInput/SearchInput';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Nav } from '@/components/NavLink/Nav';
 import { Separator } from '@/components/ui/separator';
-import Logo from '../../../public/assets/Logo_Uproducts.svg';
-import SignInIcon from '../../../public/assets/sign_in_icon.svg';
 import MobileNavigationMenu from '../mobileNavigationMenu/MobileNavigationMenu';
-import HamburgerIcon from '../hamburgerIcon/HamburgerIcon';
 import NavigationMenu from '../navigationMenu/NavigationMenu';
+import { useGetUserQuery, useLogoutMutation } from '@/lib/redux/apiSlice/apiSlice';
+import LogoComponent from './LogoComponent';
+import AuthButtons from './AuthButtons';
+import HeaderSearch from './HeaderSearch';
+import { api } from '@/lib/redux/apiSlice/apiSlice';
+import { useAppDispatch } from '@/hooks/hooks';
+import { useRouter } from 'next/navigation';
 
-const Cart = lazy(() => import('@/components/cart/CartComponent'));
-
-function Header(): React.JSX.Element {
+function Header({ profile = false }: { profile?: boolean }): React.JSX.Element {
+  const pathname = useRouter();
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { data } = useGetUserQuery();
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const handelScroll = (): void => {
-      const scrolled = window.scrollY;
-      setIsScrolled(scrolled > 50);
+    const handleScroll = (): void => {
+      setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handelScroll);
-
+    window.addEventListener('scroll', handleScroll);
     return (): void => {
-      window.removeEventListener('scroll', handelScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  const toggleMenu = (): void => {
+  const toggleMenu = useCallback((): void => {
     setIsOpen(!isOpen);
+  }, [isOpen]);
+
+  const handleLogout = async () => {
+    try {
+      await logout({}).unwrap();
+      dispatch(api.util.invalidateTags([{ type: 'User' }]));
+      dispatch(api.util.resetApiState());
+      if (profile) {
+        pathname.push('/');
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
     <header
-      className={`container lg:max-w-full fixed top-0 z-50 transition-all right-0  left-0 ${isScrolled ? 'bg-white shadow-lg' : 'bg-inherit'}`}
+      className={`container lg:max-w-full fixed top-0 z-50 transition-all right-0 left-0 ${
+        isScrolled ? 'bg-white shadow-lg' : 'bg-inherit'
+      }`}
     >
       <Nav className="flex flex-col mt-2 sm:mb-1 gap-2">
         <div className="flex justify-between items-center">
-          <NavLink href="/">
-            <div className="relative w-20 h-7 md:w-24">
-              <Image src={Logo} alt="logo" fill className="object-cover" />
-            </div>
-          </NavLink>
-          <NavLink href="/" className="flex items-center gap-1 hover:text-orange">
-            <div className="relative w-4 h-4 md:w-6 md:h-6">
-              <Image src={SignInIcon} alt="sign_in_icon" fill className="object-cover" />
-            </div>
-            <span className="text-xs md:text-sm font-normal text-grey-basic">Sign in</span>
-          </NavLink>
+          <LogoComponent />
+          <AuthButtons user={data?.data ?? null} handleLogout={handleLogout} profile={profile} />
         </div>
         <Separator className="bg-olive" />
         <div className="flex justify-between items-center gap-2 md:min-w-72">
-          <NavLink
-            href="/search"
-            className="block bg-orange rounded-sm md:px-3 text-sm md:text-base text-black hover:text-muted-foreground"
-          >
-            All
-          </NavLink>
-
-          <div className="flex items-center gap-3">
-            <Suspense>
-              <SearchInput placeholder="Search..." className={'hidden md:flex lg:w-[500px]'} />
-            </Suspense>
-            <HamburgerIcon isOpen={isOpen} toggle={toggleMenu} />
-            <Cart />
-          </div>
+          <NavigationMenu />
+          <HeaderSearch isOpen={isOpen} toggleMenu={toggleMenu} />
         </div>
-        <NavigationMenu />
-        <SearchInput placeholder="Search..." className={'flex md:hidden mb-4'} />
-        <MobileNavigationMenu isOpen={isOpen} onClick={toggleMenu} />
+        <MobileNavigationMenu isOpen={isOpen} onClick={toggleMenu} user={data?.data ?? null} />
       </Nav>
     </header>
   );

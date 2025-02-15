@@ -8,8 +8,9 @@ services:
       - .env
     depends_on:
       - postgres
+      - redis
     ports:
-      - "3001:3001"
+      - '${PORT}:${PORT}'
     networks:
       - uproducts_network
 
@@ -22,12 +23,26 @@ services:
     volumes:
       - dbdata:/var/lib/postgresql/data
     ports:
-      - '6543:5432'
+      - '${DB_PORT}:${DB_PORT_IN_DOCKER}'
     networks:
       - uproducts_network
 
+  redis:
+    image: redis:latest
+    restart: always
+    container_name: redis-uproducts
+    ports: 
+      - "${REDIS_PORT}:${REDIS_PORT}"
+
+    networks:
+      - uproducts_network
+
+    volumes:
+      - redisdata:/data
+
 volumes:
   dbdata:
+  redisdata:
 
 networks:
   uproducts_network:

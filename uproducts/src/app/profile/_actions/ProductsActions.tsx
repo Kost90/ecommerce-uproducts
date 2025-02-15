@@ -148,12 +148,16 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
     }
   } else {
     const singleProduct = await ProductsApi.getSingleProduct(id);
+    if (!singleProduct.data) {
+      throw new Error('Product data is missing');
+    }
+
     data = {
       id: id,
       name: data.name,
       description: data.description,
       priceInCents: data.priceInCents,
-      imageKey: singleProduct.data.imageKey,
+      imageKey: singleProduct.data?.imageKey ?? '',
       imagePath: 'path',
       categories: data.categories,
     };

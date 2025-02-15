@@ -2,7 +2,7 @@ import { matchedData, validationResult } from 'express-validator';
 import { Request } from 'express';
 
 export class ValidationHelper {
-  static checkForNullOrUndefined(variable: any, errorMessage: string = 'Not handled variable'): void {
+  static checkForNullOrUndefined(variable: any, errorMessage: string = 'Not handled variable'): void | Error {
     if (variable === null || variable === undefined) {
       throw new Error(errorMessage + ' is null or undefined');
     }
@@ -24,7 +24,7 @@ export class ValidationHelper {
   }
 
   static isValidPassword(password: string): boolean {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     return passwordRegex.test(password);
   }
 }

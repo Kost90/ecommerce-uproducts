@@ -1,5 +1,4 @@
 import React from 'react';
-import { Product } from '@/constans/typeconstans';
 import TypographyH1 from '../typography/TypographyH1';
 import Image from 'next/image';
 import { setFirstLetterUppercase } from '@/helpers/helpers';
@@ -7,6 +6,7 @@ import { TypographyLead } from '../typography/TypographyLead';
 import { formatCurrency } from '@/helpers/formatter';
 import { TypographyLarge } from '../typography/TypographyLarge';
 import AddToBusketButton from '../addToBusketButton/AddToBusketButton';
+import { Product } from '@/types/productTypes';
 
 function ProductDetailItem({ product }: { product: Product }): React.JSX.Element {
   return (

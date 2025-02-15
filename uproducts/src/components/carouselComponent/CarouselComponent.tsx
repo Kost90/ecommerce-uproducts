@@ -1,10 +1,10 @@
 'use client';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
-import { Product } from '@/constans/typeconstans';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Product } from '@/types/productTypes';
 
 function CarouselComponent({ firstThree }: { firstThree: Product[] }): React.JSX.Element {
   const [api, setApi] = useState<CarouselApi>();

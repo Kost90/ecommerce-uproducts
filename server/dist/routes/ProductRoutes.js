@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.router = void 0;
+const express_1 = __importDefault(require("express"));
+const authenticationMidleware_1 = require("../midlewares/authenticationMidleware");
+const requestMidleware_1 = __importDefault(require("../midlewares/requestMidleware"));
+const products_1 = __importDefault(require("../validators/products"));
+const client_1 = require("@prisma/client");
+const injectionServiceFactory_1 = __importDefault(require("../services/injectionServiceFactory"));
+const ProductsController_1 = __importDefault(require("../controllers/ProductsController"));
+const prisma = new client_1.PrismaClient();
+const injectionService = new injectionServiceFactory_1.default(prisma);
+exports.router = express_1.default.Router();
+const productsController = new ProductsController_1.default(injectionService.getProductsService());
+exports.router.get('/', authenticationMidleware_1.AuthenticationMiddleware.verifyApiKey, products_1.default.getAllProducts(), requestMidleware_1.default.validateRequest, (req, res, next) => productsController.getAllProducts(req, res, next));
+exports.router.get('/category/:category', authenticationMidleware_1.AuthenticationMiddleware.verifyApiKey, products_1.default.getProductsByCategory(), requestMidleware_1.default.validateRequest, (req, res, next) => productsController.getProductsByCategory(req, res, next));
+exports.router.get('/edit/:id', authenticationMidleware_1.AuthenticationMiddleware.verifyApiKey, products_1.default.getSingleProduct(), requestMidleware_1.default.validateRequest, (req, res, next) => productsController.getSingleProduct(req, res, next));
+exports.router.get('/search/:name', authenticationMidleware_1.AuthenticationMiddleware.verifyApiKey, products_1.default.searchProducts(), requestMidleware_1.default.validateRequest, (req, res, next) => productsController.serchByProductName(req, res, next));
+exports.router.put('/update', authenticationMidleware_1.AuthenticationMiddleware.verifyApiKey, products_1.default.updateProduct(), requestMidleware_1.default.validateRequest, (req, res, next) => productsController.updateProduct(req, res, next));
+exports.router.post('/add', authenticationMidleware_1.AuthenticationMiddleware.verifyApiKey, products_1.default.createProduct(), requestMidleware_1.default.validateRequest, (req, res, next) => productsController.createProduct(req, res, next));
+exports.router.delete('/:id', authenticationMidleware_1.AuthenticationMiddleware.verifyApiKey, products_1.default.removeProduct(), requestMidleware_1.default.validateRequest, (req, res, next) => productsController.removeProduct(req, res, next));

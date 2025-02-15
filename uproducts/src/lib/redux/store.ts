@@ -2,6 +2,7 @@ import { configureStore, Middleware, combineReducers } from '@reduxjs/toolkit';
 import { orderSlice } from '@/lib/redux/reducers/orders/ordersSlice';
 import { cartSlice } from '@/lib/redux/reducers/cart/cartSlice';
 import { modalSlice } from './reducers/modal/modalSlice';
+import { api } from './apiSlice/apiSlice';
 
 const cartMiddleware: Middleware = (store) => (next) => (action: any) => {
   const result = next(action);
@@ -40,7 +41,12 @@ const loadCartFromLocalStorage = (): any => {
   }
 };
 
-const rootReducers = combineReducers({ orders: orderSlice.reducer, cart: cartSlice.reducer, modal: modalSlice.reducer });
+const rootReducers = combineReducers({
+  orders: orderSlice.reducer,
+  cart: cartSlice.reducer,
+  modal: modalSlice.reducer,
+  [api.reducerPath]: api.reducer,
+});
 
 export const makeStore = () => {
   const preloadedCart = loadCartFromLocalStorage();
@@ -50,7 +56,8 @@ export const makeStore = () => {
     preloadedState: {
       cart: preloadedCart || undefined,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(cartMiddleware),
+
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(cartMiddleware, api.middleware),
   });
 };
 

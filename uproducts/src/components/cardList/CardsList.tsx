@@ -1,26 +1,13 @@
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import FlexContainer from '@/components/containers/FlexContainer';
-import { Product } from '@/constans/typeconstans';
+import { IProductsResponse } from '@/types/productTypes';
 import CardComponent from '../card/Card';
 import { formatCurrency } from '@/helpers/formatter';
 import PaginationSection from '../pagination/Pagination';
 import ErrorHandler from '../ErrorHandler/ErrorHandler';
 import { Suspense } from 'react';
 
-type Data = {
-  status: number;
-  data?: {
-    products: Product[];
-    total: number;
-  };
-  error?: {
-    statusCode: number;
-    message: string;
-    type: string;
-  };
-};
-
-async function fetchProducts(query: string, page: number, category?: string): Promise<Data> {
+async function fetchProducts(query: string, page: number, category?: string): Promise<Partial<IProductsResponse>> {
   try {
     if (query.length !== 0) {
       return await ProductsApi.searchProducts(query);
@@ -32,8 +19,13 @@ async function fetchProducts(query: string, page: number, category?: string): Pr
 
     return await ProductsApi.getProducts(page.toString());
   } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Unknown error occurred');
     return {
       status: 500,
+      data: {
+        products: [],
+        total: 0,
+      },
       error: {
         statusCode: 500,
         message: error instanceof Error ? error.message : 'Unknown error occurred',

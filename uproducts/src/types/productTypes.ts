@@ -22,7 +22,3 @@ export interface IProductsResponse {
     type: string;
   };
 }
-
-export interface IProductResponse extends Omit<IProductsResponse, 'data'> {
-  data: Product;
-}

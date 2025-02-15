@@ -19,6 +19,12 @@ interface IConfig {
     accessKeyId: string;
     secretAccessKey: string;
   };
+  session: {
+    secureCookie: boolean;
+    cookieName: string;
+    secret: string;
+  };
+  redis: string;
 }
 
 function getEnvVar(name: string): string {
@@ -48,4 +54,10 @@ export const config: IConfig = {
     accessKeyId: getEnvVar('AWS_ACCESS_KEY') || '',
     secretAccessKey: getEnvVar('AWS_SECRET_ACCESS_KEY') || '',
   },
+  session: {
+    secureCookie: getEnvVar('NODE_ENV') === 'production',
+    cookieName: 'sid',
+    secret: getEnvVar('SESSION_SECRET'),
+  },
+  redis: getEnvVar('REDIS_URL'),
 };

@@ -1,20 +1,19 @@
 import { API } from '@/api/Api';
-import { Product, IProductsResponse, IProductResponse } from '@/constans/typeconstans';
+import { IResponse } from '@/types/typeconstans';
+import { Product, IProductsResponse } from '@/types/productTypes';
 
-// TODO: Remove it to the env
 const url = process.env.NEXT_PUBLIC_URL;
 
-// TODO:Make type of returns
 class ProductsApi extends API {
   constructor(baseurl: string) {
     super(baseurl);
   }
 
-  async AddProduct(product: Product): Promise<IProductResponse> {
+  async AddProduct(product: Product): Promise<IResponse<Product>> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response: IProductResponse = await this.fetch({
+      const response: IResponse<Product> = await this.fetch({
         path: `products/add`,
         signal,
         method: 'POST',
@@ -37,25 +36,21 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Failed to fetch data, ${error.message}`);
-      } else throw new Error('An unknown error occurred during fetching data.');
+      throw new Error(`Failed to fetch data ${error}`);
     }
   }
 
-  async getSingleProduct(id: string): Promise<IProductResponse> {
+  async getSingleProduct(id: string): Promise<IResponse<Product>> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response: Promise<IProductResponse> = await this.fetch({
+      const response: Promise<IResponse<Product>> = await this.fetch({
         path: `products/edit/${id}`,
         signal,
       });
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Failed to fetch single product, ${error.message}`);
-      } else throw new Error('An unknown error occurred during fetching data.');
+      throw new Error(`Failed to fetch single product, ${error}`);
     }
   }
 
@@ -71,9 +66,7 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Can't update single product, ${error.message}`);
-      } else throw new Error('An unknown error occurred during fetching data.');
+      throw new Error(`Can't update single product, ${error}`);
     }
   }
 
@@ -87,9 +80,7 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Products doesn't exists, ${error.message}`);
-      } else throw new Error('An unknown error occurred during fetching data.');
+      throw new Error(`Failed to search products, ${error}`);
     }
   }
 
@@ -104,28 +95,25 @@ class ProductsApi extends API {
       });
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Products doesn't exists, ${error.message}`);
-      } else throw new Error('An unknown error occurred during fetching data.');
+      throw new Error(`Failed to fetch products by category, ${error}`);
     }
   }
 
-  async removeProduct(id: string): Promise<IProductResponse> {
+  async removeProduct(id: string): Promise<IResponse<Product>> {
     const controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response: IProductResponse = await this.fetch({
+      const response: IResponse<Product> = await this.fetch({
         path: `products/${id}`,
         method: 'DELETE',
         signal,
       });
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`PCan't remove product, ${error.message}`);
-      } else throw new Error('An unknown error occurred during fetching data.');
+      throw new Error(`Failed to remove product, ${error}`);
     }
   }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new ProductsApi(url!);

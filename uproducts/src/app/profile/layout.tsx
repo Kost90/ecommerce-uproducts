@@ -1,21 +1,10 @@
-import { Nav, NavLink } from '@/components/NavLink/Nav';
+import Header from '@/components/header/Header';
 
-function AdminRootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+function AdminRootLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <header>
-        <Nav>
-          <NavLink href="/">Client side</NavLink>
-          <NavLink href="/profile">Dashboard</NavLink>
-          <NavLink href="/profile/products">Products</NavLink>
-          <NavLink href="/profile/addproduct">Add product</NavLink>
-        </Nav>
-      </header>
-      <div className="container my-6 overflow-y-auto min-h-screen">{children}</div>
+      <Header profile={true} />
+      <div className="container my-36 h-screen-minus-header">{children}</div>
     </>
   );
 }

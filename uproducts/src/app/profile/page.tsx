@@ -1,8 +1,16 @@
+'use client';
 import React from 'react';
-import Title from '@/components/ui/title';
+import UserDataList from '@/components/profile/userDataList/UserDataList';
+import TypographyH1 from '@/components/typography/TypographyH1';
 
-function page() {
-  return <Title text="Here will be dashboard with information about amount products and orders" />;
+function ProfilePage() {
+  return (
+    <>
+      <TypographyH1 text="User details page:" />
+
+      <UserDataList />
+    </>
+  );
 }
 
-export default page;
+export default ProfilePage;

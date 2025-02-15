@@ -1,15 +1,21 @@
 import React from 'react';
-import { IProductResponse } from '@/constans/typeconstans';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 import ProductDetailItem from '../productsDetailItem/ProductDetailItem';
+import { IResponse } from '@/types/typeconstans';
+import { Product } from '@/types/productTypes';
+import { TypographyLead } from '../typography/TypographyLead';
 
 async function ProductDetailsWrapper({ productId }: { productId: string }): Promise<React.JSX.Element> {
-  const response: IProductResponse = await ProductsApi.getSingleProduct(productId);
-  // TODO: add error handler
+  const response: IResponse<Product> = await ProductsApi.getSingleProduct(productId);
+
+  if (response.error) {
+    console.error(response.error.message);
+    return <TypographyLead text="Server error, try to refresh page." />;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center p-10">
-      <ProductDetailItem product={response.data} />
+      <ProductDetailItem product={response.data!} />
     </div>
   );
 }

@@ -1,0 +1,64 @@
+# services:
+#   uproducts-app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     restart: unless-stopped
+#     env_file:
+#       - .env
+#     depends_on:
+#       - postgres
+#       - redis
+#     ports:
+#       - '${PORT}:${PORT}'
+#     networks:
+#       - uproducts_network
+#     volumes:
+#       - .:/ecommerce
+#       - /ecommerce/node_modules
+
+#   postgres:
+#     image: postgres
+#     restart: always
+#     env_file:
+#       - .env
+#     container_name: postgres-uproducts
+#     volumes:
+#       - dbdata:/var/lib/postgresql/data
+#     ports:
+#       - '${DB_PORT}:${DB_PORT_IN_DOCKER}'
+#     networks:
+#       - uproducts_network
+
+#   redis:
+#     image: redis:latest
+#     restart: always
+#     container_name: redis-uproducts
+#     ports: 
+#       - "${REDIS_PORT}:${REDIS_PORT}"
+
+#     networks:
+#       - uproducts_network
+
+#     volumes:
+#       - redisdata:/data
+
+# volumes:
+#   dbdata:
+#   redisdata:
+
+# networks:
+#   uproducts_network:
+
+version: '3.8'
+
+services:
+  uproducts-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev 
+    volumes:
+      - .:/ecommerce 
+      - /ecommerce/node_modules  
+    command: ["npm", "run", "dev"]
+

@@ -61,13 +61,6 @@ export default class AuthorizationController {
 
       await req.session.save();
 
-      res.cookie(config.session.cookieName, token, {
-        httpOnly: true,
-        sameSite: 'none',
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 24 * 60 * 60 * 1000,
-      });
-
       return res.success(loginedUser, HttpCodesHelper.OK, 'User authenticated successfully');
     } catch (error) {
       next(new ErrorWithContext({}, `Error in AuthorizationController method signIn: ${error}`, HttpCodesHelper.BAD));

@@ -26,9 +26,8 @@ const redisStore = new RedisStore({
 const cookieParams: session.CookieOptions = {
   httpOnly: true,
   sameSite: 'none',
-  secure: config.session.secureCookie,
+  secure: true,
   maxAge: 24 * 60 * 60 * 1000,
-  domain: '.ecommerce-uproducts.onrender.com',
 };
 
 const sessionMiddleware = session({

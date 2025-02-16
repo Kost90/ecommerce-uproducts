@@ -13,16 +13,17 @@ import errorHandlingMiddleware from './midlewares/errorHandlingMidleware';
 import sessionMiddleware from './session/session';
 
 const { port } = config.server;
+const { forntUrl } = config;
 const logger = getLogger('Server');
 
 // Express server
 const app: Express = express();
 app.use(
   cors({
-    origin: [config.forntUrl, 'http://localhost:3000'],
+    origin: [forntUrl, 'http://localhost:3000'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-key', 'x-auth-user'],
   }),
 );
 app.use(cookieParser());

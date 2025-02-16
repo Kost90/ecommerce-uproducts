@@ -2,7 +2,7 @@ import React from 'react';
 
 type HoverWrapperProps = {
   children: React.ReactNode;
-  className: string;
+  className?: string;
 };
 
 function HoverWrapper({ children, className }: HoverWrapperProps): React.JSX.Element {

@@ -6,8 +6,13 @@ import getLogger from '../utils/logger';
 
 const logger = getLogger('session');
 
+console.log(config.redis);
+
 const redisClient = createClient({
   url: config.redis,
+  socket: {
+    reconnectStrategy: (retries) => Math.min(retries * 100, 3000),
+  },
 });
 
 redisClient
@@ -22,11 +27,12 @@ redisClient
 const redisStore = new RedisStore({
   client: redisClient,
   prefix: 'sess:',
+  ttl: 86400,
 });
 
 const cookieParams: session.CookieOptions = {
   httpOnly: true,
-  sameSite: 'lax',
+  sameSite: 'none',
   secure: true,
   maxAge: 24 * 60 * 60 * 1000,
 };

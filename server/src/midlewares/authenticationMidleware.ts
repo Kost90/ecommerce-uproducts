@@ -27,9 +27,6 @@ export class AuthenticationMiddleware {
 
   async verifyAccesse(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      console.log('Session ID:', req.sessionID);
-      console.log('Session data:', req.session);
-
       const token = req.session.jwt;
 
       if (!token) {

@@ -58,6 +58,8 @@ export default class AuthorizationController {
       const loginedUser = new UserResponseDTO(user);
 
       req.session.jwt = token;
+      req.session.isAuthenticated = true;
+      res.setHeader('X-Render-Bypass-Tunnel', 'true');
 
       return res.success(loginedUser, HttpCodesHelper.OK, 'User authenticated successfully');
     } catch (error) {

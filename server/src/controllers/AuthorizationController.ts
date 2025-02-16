@@ -60,6 +60,7 @@ export default class AuthorizationController {
       req.session.jwt = token;
       req.session.isAuthenticated = true;
       res.setHeader('X-Render-Bypass-Tunnel', 'true');
+      res.setHeader('Set-Cookie', `sid=${req.sessionID}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=86400`);
 
       return res.success(loginedUser, HttpCodesHelper.OK, 'User authenticated successfully');
     } catch (error) {

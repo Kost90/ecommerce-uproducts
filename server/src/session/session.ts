@@ -6,8 +6,6 @@ import getLogger from '../utils/logger';
 
 const logger = getLogger('session');
 
-console.log(config.redis);
-
 const redisClient = createClient({
   url: config.redis,
   socket: {

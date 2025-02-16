@@ -25,6 +25,7 @@ interface IConfig {
     secret: string;
   };
   redis: string;
+  forntUrl: string;
 }
 
 function getEnvVar(name: string): string {
@@ -60,4 +61,5 @@ export const config: IConfig = {
     secret: getEnvVar('SESSION_SECRET'),
   },
   redis: getEnvVar('REDIS_URL'),
+  forntUrl: getEnvVar('FRONT_URL'),
 };

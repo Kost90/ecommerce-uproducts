@@ -19,7 +19,7 @@ const logger = getLogger('Server');
 const app: Express = express();
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: [config.forntUrl, 'http://localhost:3000'],
     credentials: true,
   }),
 );

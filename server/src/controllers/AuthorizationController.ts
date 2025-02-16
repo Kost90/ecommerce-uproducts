@@ -61,12 +61,22 @@ export default class AuthorizationController {
       req.session.isAuthenticated = true;
       res.setHeader('X-Render-Bypass-Tunnel', 'true');
 
-      console.log('Session before response:', req.session);
-      console.log('Session ID:', req.session.id);
-      console.log('Session JWT:', req.session.jwt);
-      console.log('Session isAuthenticated:', req.session.isAuthenticated);
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error:', err);
+        }
 
-      return res.success(loginedUser, HttpCodesHelper.OK, 'User authenticated successfully');
+        res.cookie('sid', req.sessionID, {
+          httpOnly: true,
+          sameSite: 'none',
+          secure: process.env.NODE_ENV === 'production',
+          maxAge: 24 * 60 * 60 * 1000,
+        });
+
+        console.log('Response Headers:', res.getHeaders());
+
+        return res.success(loginedUser, HttpCodesHelper.OK, 'User authenticated successfully');
+      });
     } catch (error) {
       next(new ErrorWithContext({}, `Error in AuthorizationController method signIn: ${error}`, HttpCodesHelper.BAD));
     }

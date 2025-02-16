@@ -21,6 +21,7 @@ redisClient
 
 const redisStore = new RedisStore({
   client: redisClient,
+  prefix: 'sess:',
 });
 
 const cookieParams: session.CookieOptions = {

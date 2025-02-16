@@ -11,5 +11,6 @@ declare module 'express' {
 declare module 'express-session' {
   interface SessionData {
     jwt?: string;
+    isAuthenticated: boolean;
   }
 }

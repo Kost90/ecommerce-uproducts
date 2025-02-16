@@ -1,6 +1,6 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Nav } from '@/components/NavLink/Nav';
+import { Nav, NavLink } from '@/components/NavLink/Nav';
 import { Separator } from '@/components/ui/separator';
 import MobileNavigationMenu from '../mobileNavigationMenu/MobileNavigationMenu';
 import NavigationMenu from '../navigationMenu/NavigationMenu';
@@ -11,6 +11,7 @@ import HeaderSearch from './HeaderSearch';
 import { api } from '@/lib/redux/apiSlice/apiSlice';
 import { useAppDispatch } from '@/hooks/hooks';
 import { useRouter } from 'next/navigation';
+import HoverWrapper from '../hover/HoverWrapper';
 
 function Header({ profile = false }: { profile?: boolean }): React.JSX.Element {
   const pathname = useRouter();
@@ -61,6 +62,9 @@ function Header({ profile = false }: { profile?: boolean }): React.JSX.Element {
         </div>
         <Separator className="bg-olive" />
         <div className="flex justify-between items-center gap-2 md:min-w-72">
+          <HoverWrapper>
+            <NavLink href={'/search'}>All</NavLink>
+          </HoverWrapper>
           <NavigationMenu />
           <HeaderSearch isOpen={isOpen} toggleMenu={toggleMenu} />
         </div>

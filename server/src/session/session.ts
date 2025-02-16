@@ -28,6 +28,7 @@ const cookieParams: session.CookieOptions = {
   sameSite: 'none',
   secure: config.session.secureCookie,
   maxAge: 24 * 60 * 60 * 1000,
+  domain: '.ecommerce-uproducts.onrender.com',
 };
 
 const sessionMiddleware = session({

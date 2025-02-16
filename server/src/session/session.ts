@@ -24,7 +24,7 @@ const redisStore = new RedisStore({
 });
 
 const cookieParams: session.CookieOptions = {
-  httpOnly: false,
+  httpOnly: true,
   sameSite: 'none',
   // Change for false, for develompment.
   secure: true,
@@ -36,7 +36,7 @@ const sessionMiddleware = session({
   secret: config.session.secret,
   name: config.session.cookieName,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: cookieParams,
 });
 

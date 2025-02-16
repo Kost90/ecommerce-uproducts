@@ -29,8 +29,8 @@ const redisStore = new RedisStore({
 });
 
 const cookieParams: session.CookieOptions = {
-  httpOnly: false,
-  sameSite: 'lax',
+  httpOnly: true,
+  sameSite: 'none',
   secure: true,
   maxAge: 24 * 60 * 60 * 1000,
 };

@@ -36,7 +36,7 @@ const sessionMiddleware = session({
   secret: config.session.secret,
   name: config.session.cookieName,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: cookieParams,
 });
 

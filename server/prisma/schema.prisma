@@ -49,6 +49,7 @@ model Address {
   country String
   postalCode String
   user       User?
+  userId     String  @unique
 }
 
 model Order {

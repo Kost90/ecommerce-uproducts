@@ -15,7 +15,7 @@ export interface IUserResponse {
     id: string;
     city: string;
     street: string;
-    numbe: string;
+    number: string;
     country: string;
     postalCode: string;
   };

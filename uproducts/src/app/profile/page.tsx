@@ -6,7 +6,7 @@ import TypographyH1 from '@/components/typography/TypographyH1';
 function ProfilePage() {
   return (
     <>
-      <TypographyH1 text="User details page:" />
+      <TypographyH1 text="Profile" className="text-orange pb-4 border-b border-b-slate-300 w-1/2" />
 
       <UserDataList />
     </>

@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Address, User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import UserRepository from '../repositories/userRepository';
 import { UserCreatedResponseDTO } from '../dto/user/creat';
@@ -39,6 +39,21 @@ export default class UserService {
     } catch (error) {
       logger.error(`Error saving new user in UserService method save:: ${error}`);
       throw new ErrorWithContext({}, `Error in UserService method save: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
+  async updateUserAddress(userId: string, address: Omit<Address, 'id'>): Promise<UserResponseDTO> {
+    try {
+      const updatedUser = await this.userRepository.updateUserAddress(userId, address);
+
+      ValidationHelper.checkForNullOrUndefined(updatedUser, 'updatedUser');
+      logger.info(`Address created or updated in user with id: ${userId}`);
+
+      const response = new UserResponseDTO(updatedUser);
+      return response;
+    } catch (error) {
+      logger.error(`Error update or create user address in UserService method updateUserAddress: ${error}`);
+      throw new ErrorWithContext({}, `Error in UserService method updateUserAddress: ${error}`, HttpCodesHelper.BAD);
     }
   }
 

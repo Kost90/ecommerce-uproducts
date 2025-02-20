@@ -6,7 +6,7 @@ interface Props {
   searchParams: { page?: string };
 }
 
-function ProductsPage({ searchParams }: Props): JSX.Element {
+async function ProductsPage({ searchParams }: Props): Promise<JSX.Element> {
   const page = searchParams.page || '1';
   return (
     <>

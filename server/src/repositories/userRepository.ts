@@ -1,4 +1,4 @@
-import { PrismaClient, User } from '@prisma/client';
+import { Address, PrismaClient, User } from '@prisma/client';
 import ErrorWithContext from '../errors/errorWithContext';
 import HttpCodesHelper from '../helpers/httpCodeHelper';
 
@@ -15,6 +15,37 @@ export default class UserRepository {
       return result;
     } catch (error) {
       throw new ErrorWithContext({}, `Error in UserRepository method store: ${error}`, HttpCodesHelper.BAD);
+    }
+  }
+
+  async updateUserAddress(userId: string, address: Omit<Address, 'id'>): Promise<User & { address: Address | null }> {
+    try {
+      await this.prismaClient.address.upsert({
+        where: { userId },
+        update: {
+          city: address.city,
+          street: address.street,
+          number: address.number,
+          country: address.country,
+          postalCode: address.postalCode,
+        },
+        create: {
+          ...address,
+          userId: userId,
+          user: { connect: { id: userId } },
+        },
+      });
+
+      const updatedUserWithAddress = await this.prismaClient.user.findUniqueOrThrow({
+        where: {
+          id: userId,
+        },
+        include: { address: true },
+      });
+
+      return updatedUserWithAddress;
+    } catch (error) {
+      throw new ErrorWithContext({}, `Error in UserRepository method updateUserAddress: ${error}`, HttpCodesHelper.BAD);
     }
   }
 

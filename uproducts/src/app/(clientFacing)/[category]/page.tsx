@@ -2,6 +2,10 @@ import CardsList from '@/components/cardList/CardsList';
 import { CardListSkeleton } from '@/components/skeletons/CardSkeleton';
 import React, { Suspense } from 'react';
 
+export async function generateStaticParams() {
+  return [{ category: 'drinks' }, { category: 'coffee' }, { category: 'oil' }, { category: 'chocolate' }, { category: 'products' }];
+}
+
 function page({
   params,
   searchParams,

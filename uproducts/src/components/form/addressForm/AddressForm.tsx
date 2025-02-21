@@ -1,7 +1,7 @@
 'use client';
 import ButtonComponent from '@/components/button/Button';
 import { InputComponent } from '../ui/InputComponent';
-import Form from '../Form';
+// import Form from '../Form';
 import { useFormState } from 'react-dom';
 import { createUserAddress, updateUserAddress } from '@/app/profile/_actions/addressActions';
 import { IUserResponse } from '@/types/userTypes';
@@ -47,7 +47,7 @@ function AddressForm({
   );
 
   return (
-    <Form action={action} className="flex flex-col gap-3 w-full md:w-1/2 my-5">
+    <form action={action} className="flex flex-col gap-3 w-full md:w-1/2 my-5">
       {(['city', 'street', 'number', 'country', 'postalCode'] as const).map((el, i) => (
         <InputComponent
           key={`${el} + ${i}`}
@@ -70,7 +70,7 @@ function AddressForm({
           </Button>
         ) : null}
       </div>
-    </Form>
+    </form>
   );
 }
 

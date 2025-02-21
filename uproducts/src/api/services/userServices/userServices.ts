@@ -44,6 +44,23 @@ class UserService extends API {
       throw new Error(`Failed to post user address: ${error}`);
     }
   }
+
+  async updateUserAddress(userId: string, address: IAddress): Promise<IResponse<IUserResponse>> {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    try {
+      const response: IResponse<IUserResponse> = await this.fetch({
+        path: `user/${userId}/address/update`,
+        method: 'PATCH',
+        signal: signal,
+        body: JSON.stringify(address),
+      });
+
+      return response;
+    } catch (error) {
+      throw new Error(`Failed to post user address: ${error}`);
+    }
+  }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

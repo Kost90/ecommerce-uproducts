@@ -101,6 +101,7 @@ class ProductsController {
       const dataForSave = req.matchedData;
       ValidationHelper.checkForNullOrUndefined(dataForSave, 'dataForSave');
 
+      console.log(dataForSave);
       const savedProduct = await this.productsService.createProduct(dataForSave);
 
       return res.success(savedProduct, HttpCodesHelper.OK, 'Products saved successfully');

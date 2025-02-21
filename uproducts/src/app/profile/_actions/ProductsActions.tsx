@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache';
 import { S3Client, PutObjectCommand, S3ClientConfig, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import ProductsApi from '@/api/services/productsServices/ProductsApi';
 
-const bucketName = process.env.AWS_BUCKET_NAME;
+const bucketName = process.env.NEXT_PUBLIC_AWS_BUCKET_NAME;
 
 // Generator of random name
 const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');

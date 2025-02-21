@@ -3,16 +3,41 @@ import ButtonComponent from '@/components/button/Button';
 import { InputComponent } from '../ui/InputComponent';
 import Form from '../Form';
 import { useFormState } from 'react-dom';
-import { createUserAddress } from '@/app/profile/_actions/addressActions';
+import { createUserAddress, updateUserAddress } from '@/app/profile/_actions/addressActions';
+import { IUserResponse } from '@/types/userTypes';
+import { Button } from '@/components/ui/button';
 
-function AddressForm({ userId, refresh }: { userId: string; refresh: () => void }) {
+function AddressForm({
+  userId,
+  refresh,
+  address = null,
+  isEdit,
+  onChange,
+}: {
+  userId: string;
+  refresh: () => void;
+  address?: IUserResponse['address'] | null;
+  isEdit?: boolean;
+  onChange?: () => void;
+}) {
   const [state, action] = useFormState(
     async (prevState: unknown, formData: FormData) => {
-      const result = await createUserAddress(userId, prevState, formData);
-      if (result.succssese) {
-        refresh();
+      if (address && onChange) {
+        const result = await updateUserAddress(userId, prevState, formData);
+
+        if (result.succssese) {
+          refresh();
+        }
+
+        onChange();
+        return result;
+      } else {
+        const result = await createUserAddress(userId, prevState, formData);
+        if (result.succssese) {
+          refresh();
+        }
+        return result;
       }
-      return result;
     },
     {
       errors: {},
@@ -29,6 +54,7 @@ function AddressForm({ userId, refresh }: { userId: string; refresh: () => void 
           label={el.toUpperCase()}
           name={el}
           type={'text'}
+          defaultValue={address ? address[el] : ''}
           placeholder={`Enter your ${el}`}
           error={state?.errors?.[el]?.[0]}
         />
@@ -36,7 +62,14 @@ function AddressForm({ userId, refresh }: { userId: string; refresh: () => void 
 
       {state?.serverError && <p className="text-red-500 text-center">{state.serverError}</p>}
 
-      <ButtonComponent type="submit" text="Save address" className="w-full md:max-w-28" />
+      <div className="flex flex-col md:flex-row gap-5">
+        <ButtonComponent type="submit" text={!isEdit ? 'Save address' : 'Edite address'} className="w-full md:max-w-28" />
+        {isEdit ? (
+          <Button onClick={onChange} className="w-full md:max-w-28">
+            Cancel
+          </Button>
+        ) : null}
+      </div>
     </Form>
   );
 }

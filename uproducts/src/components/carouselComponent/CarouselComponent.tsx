@@ -53,11 +53,9 @@ function CarouselComponent({ firstThree }: { firstThree: Product[] }): React.JSX
                 <Link href={`/productdetails/${el.id}`}>
                   <Image
                     fill
-                    quality={75}
-                    className="object-cover rounded-sm"
-                    sizes="(max-width: 768px) 100vw, 
-             (max-width: 1200px) 75vw, 
-             50vw"
+                    quality={85}
+                    className="object-cover w-full h-full transition-all duration-500 ease-in-out transform hover:scale-105 rounded-sm"
+                    sizes="100vw"
                     src={el.imagePath as string}
                     alt={`${el.name}-picture`}
                   />

@@ -78,7 +78,6 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   };
 
   const res = await ProductsApi.AddProduct(body);
-  console.log(res);
 
   if (res.error) {
     console.error(res.error.message);

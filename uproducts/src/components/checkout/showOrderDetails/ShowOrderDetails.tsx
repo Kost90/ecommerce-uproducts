@@ -19,6 +19,7 @@ function ShowOrderDetails({ onClick }: { onClick: () => void }): React.JSX.Eleme
   const costumerDetails = useAppSelector(selectCostumerDetails);
   const cartData = useAppSelector(selectCartData);
   const cartDataWithouPicture = useAppSelector(selectCartItemsWithoutPicture);
+  
 
   // ! just for showing loader, in production change for real request
   const [isLoading, setIsLoading] = useState(false);

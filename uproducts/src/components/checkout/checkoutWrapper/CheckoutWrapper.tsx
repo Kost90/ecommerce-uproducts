@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CheckoutForm from '../checkoutForm/CheckoutForm';
 import MapComponent from '../mapComponent/MapComponent';
 import { Separator } from '@/components/ui/separator';
@@ -32,9 +32,11 @@ function CheckoutWrapper(): React.JSX.Element {
   const { items } = useAppSelector(selectCartData);
   const { data } = useGetUserQuery();
 
-  if (isEmptyObject(items)) {
-    router.push('/');
-  }
+  useEffect(() => {
+    if (typeof window !== 'undefined' && isEmptyObject(items)) {
+      router.push('/');
+    }
+  }, [items, router]);
 
   const handelChandeLocation = useCallback((newlocation: LocationParam) => {
     setLocation(newlocation);

@@ -28,6 +28,7 @@ export class UserResponseDTO implements IUserResponse {
   firstname: string;
   lastname: string;
   email: string;
+  telephone: string;
   addressId?: string;
   role: string;
   address?: {
@@ -43,6 +44,7 @@ export class UserResponseDTO implements IUserResponse {
     this.email = data.email;
     this.firstname = data.firstname;
     this.lastname = data.lastname;
+    this.telephone = data.telephone;
     this.addressId = data.addressId || undefined;
     this.role = data.role;
 

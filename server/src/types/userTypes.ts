@@ -9,7 +9,7 @@ export interface IUserBase {
   role: string;
 }
 
-export interface IUserResponse extends Omit<IUserBase, 'password' | 'telephone'> {}
+export interface IUserResponse extends Omit<IUserBase, 'password'> {}
 
 // export type IUserWithOptionalFields = Omit<IUserBase, 'address' | 'profile_photo'> & {
 //   address?: string;

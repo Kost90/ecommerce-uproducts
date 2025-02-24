@@ -13,8 +13,10 @@ import { openModal } from '@/lib/redux/reducers/modal/modalSlice';
 import Link from 'next/link';
 import { useState } from 'react';
 import AdminLoading from '@/app/profile/loading';
+import { IUserResponse } from '@/types/userTypes';
+import UserDetailsListFromDB from '../userDetailsFromDB/UserDetailsListFromDB';
 
-function ShowOrderDetails({ onClick }: { onClick: () => void }): React.JSX.Element {
+function ShowOrderDetails({ onClick, userDataFromDb }: { onClick: () => void; userDataFromDb?: IUserResponse }): React.JSX.Element {
   const dispatch = useDispatch();
   const costumerDetails = useAppSelector(selectCostumerDetails);
   const cartData = useAppSelector(selectCartData);
@@ -50,14 +52,16 @@ function ShowOrderDetails({ onClick }: { onClick: () => void }): React.JSX.Eleme
     <>
       <TypographyH2 text="Costumer details and delivery address:" />
       <div className="flex flex-col gap-8 my-8 w-full">
-        <div className="flex flex-col lg:flex-row justify-start items-start gap-10">
-          <CostumerDetailsList costumerDetails={costumerDetails} />
+        <div className="flex flex-col lg:flex-row justify-start lg:justify-between items-start gap-10">
+          {userDataFromDb ? <UserDetailsListFromDB user={userDataFromDb} /> : <CostumerDetailsList costumerDetails={costumerDetails} />}
           <OrderedProductsList cartDataProp={cartData} />
         </div>
         <div className="flex items-center gap-16 flex-wrap">
-          <Button onClick={onClick} className="min-w-32">
-            Change details
-          </Button>
+          {!userDataFromDb ? (
+            <Button onClick={onClick} className="min-w-32">
+              Change details
+            </Button>
+          ) : null}
           {Object.keys(cartData.items).length !== 0 ? (
             <Button onClick={handelAddOrder} className="w-32">
               Confirm

@@ -11,6 +11,8 @@ export interface IUserResponse {
   firstname: string;
   lastname: string;
   role: string;
+  email: string;
+  telephone: string;
   address?: {
     id: string;
     city: string;

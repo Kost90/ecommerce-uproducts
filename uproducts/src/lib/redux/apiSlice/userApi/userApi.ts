@@ -7,6 +7,14 @@ export const userApi = (builder: EndpointBuilder<any, any, any>) => ({
     query: () => `/user`,
     providesTags: ['User'],
   }),
+  login: builder.mutation<IResponse<IUserResponse>, { email: string; password: string }>({
+    query: (credentials) => ({
+      url: '/auth/login',
+      method: 'POST',
+      body: credentials,
+    }),
+    invalidatesTags: ['User'],
+  }),
   logout: builder.mutation({
     query: () => ({
       url: '/auth/logout',

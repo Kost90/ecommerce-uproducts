@@ -20,4 +20,4 @@ export const api = createApi({
   // refetchOnMountOrArgChange: true,
 });
 
-export const { useGetUserQuery, useLogoutMutation } = api;
+export const { useGetUserQuery, useLoginMutation, useLogoutMutation } = api;

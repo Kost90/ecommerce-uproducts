@@ -6,11 +6,13 @@ import { useCallback, useState } from 'react';
 
 function UserDataList() {
   const [isEdite, setIsEdit] = useState<boolean>(false);
-  const { data, refetch } = useGetUserQuery();
+  const { data, refetch, isLoading } = useGetUserQuery();
 
   const handelChange = useCallback(() => {
     setIsEdit(!isEdite);
   }, [isEdite]);
+
+  if (isLoading) return <div>Loading...</div>;
 
   const userAddress = (
     <span className="text-base font-normal">{`${data?.data?.address?.country}, ${data?.data?.address?.city}, ${data?.data?.address?.street}, ${data?.data?.address?.number}, ${data?.data?.address?.postalCode}`}</span>

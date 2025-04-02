@@ -57,7 +57,7 @@ async function ProductsTable({ data }: { data: IProductsResponse }): Promise<JSX
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <Button asChild className="w-full my-1">
-                    <Link href={`/admin/products/${product.id}/edit`}>Edit</Link>
+                    <Link href={`/profile/products/${product.id}/edit`}>Edit</Link>
                   </Button>
 
                   <DropdownMenuItem asChild>

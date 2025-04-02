@@ -3,7 +3,7 @@ import authorizationService from '@/api/services/authorizationServices/Authoriza
 import loginSchema from '../validations/loginSchema';
 
 export async function signInAction(prevState: unknown, formData: FormData) {
-  const result = await loginSchema.safeParse(Object.fromEntries(formData.entries()));
+  const result = loginSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!result.success) {
     return { errors: result.error.formErrors.fieldErrors };
   }
@@ -19,5 +19,5 @@ export async function signInAction(prevState: unknown, formData: FormData) {
     return { serverError: 'Login failed. Incorrect password or email' };
   }
 
-  return { succssese: true };
+  return { succssese: true, user: res.data };
 }
